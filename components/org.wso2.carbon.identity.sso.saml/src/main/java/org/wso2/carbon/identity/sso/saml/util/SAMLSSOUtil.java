@@ -24,7 +24,8 @@ import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
 import org.opensaml.Configuration;
 import org.opensaml.DefaultBootstrap;
-import org.opensaml.common.impl.SecureRandomIdentifierGenerator;
+import net.shibboleth.utilities.java.support.security.SecureRandomIdentifierGenerationStrategy;
+//import org.opensaml.common.impl.SecureRandomIdentifierGenerator;
 import org.opensaml.saml2.core.ArtifactResponse;
 import org.opensaml.saml2.core.Assertion;
 import org.opensaml.saml2.core.AuthnRequest;
@@ -32,7 +33,7 @@ import org.opensaml.saml2.core.EncryptedAssertion;
 import org.opensaml.saml2.core.Issuer;
 import org.opensaml.saml2.core.LogoutRequest;
 import org.opensaml.saml2.core.LogoutResponse;
-import org.opensaml.saml2.core.RequestAbstractType;
+import org.opensaml.saml.saml2.core.RequestAbstractType;
 import org.opensaml.saml2.core.Response;
 import org.opensaml.saml2.core.Status;
 import org.opensaml.saml2.core.StatusCode;
@@ -236,8 +237,8 @@ public class SAMLSSOUtil {
     public static int getSAMLAuthenticationRequestValidityPeriod() {
 
         if (IdentityUtil.getProperty(SAMLSSOConstants.SAML2_AUTHENTICATION_REQUEST_VALIDITY_PERIOD) != null) {
-           samlAuthenticationRequestValidityPeriod = Integer.parseInt(IdentityUtil.getProperty(
-                   SAMLSSOConstants.SAML2_AUTHENTICATION_REQUEST_VALIDITY_PERIOD));
+            samlAuthenticationRequestValidityPeriod = Integer.parseInt(IdentityUtil.getProperty(
+                    SAMLSSOConstants.SAML2_AUTHENTICATION_REQUEST_VALIDITY_PERIOD));
         }
         return samlAuthenticationRequestValidityPeriod;
     }
@@ -566,7 +567,7 @@ public class SAMLSSOUtil {
         } catch (IdentityProviderManagementException e) {
             throw IdentityException.error(
                     "Error occurred while retrieving Resident Identity Provider information for tenant " +
-                    tenantDomain, e);
+                            tenantDomain, e);
         }
         FederatedAuthenticatorConfig[] authnConfigs = identityProvider.getFederatedAuthenticatorConfigs();
         for (FederatedAuthenticatorConfig config : authnConfigs) {
@@ -721,28 +722,28 @@ public class SAMLSSOUtil {
     private static SignableXMLObject doSetSignature(SignableXMLObject request, String signatureAlgorithm, String
             digestAlgorithm, X509Credential cred) throws IdentityException {
 
-            doBootstrap();
-            try {
-                synchronized (Runtime.getRuntime().getClass()) {
-                    ssoSigner = (SSOSigner) Class.forName(IdentityUtil.getProperty(
-                            SAMLSSOConstants.SAMLSSO_SIGNER_CLASS_NAME).trim()).newInstance();
-                    ssoSigner.init();
-                }
-
-                return ssoSigner.setSignature(request, signatureAlgorithm, digestAlgorithm, cred);
-
-            } catch (ClassNotFoundException e) {
-                throw IdentityException.error("Class not found: "
-                                            + IdentityUtil.getProperty(SAMLSSOConstants.SAMLSSO_SIGNER_CLASS_NAME), e);
-            } catch (InstantiationException e) {
-                throw IdentityException.error("Error while instantiating class: "
-                                            + IdentityUtil.getProperty(SAMLSSOConstants.SAMLSSO_SIGNER_CLASS_NAME), e);
-            } catch (IllegalAccessException e) {
-                throw IdentityException.error("Illegal access to class: "
-                                            + IdentityUtil.getProperty(SAMLSSOConstants.SAMLSSO_SIGNER_CLASS_NAME), e);
-            } catch (Exception e) {
-                throw IdentityException.error("Error while signing the XML object.", e);
+        doBootstrap();
+        try {
+            synchronized (Runtime.getRuntime().getClass()) {
+                ssoSigner = (SSOSigner) Class.forName(IdentityUtil.getProperty(
+                        SAMLSSOConstants.SAMLSSO_SIGNER_CLASS_NAME).trim()).newInstance();
+                ssoSigner.init();
             }
+
+            return ssoSigner.setSignature(request, signatureAlgorithm, digestAlgorithm, cred);
+
+        } catch (ClassNotFoundException e) {
+            throw IdentityException.error("Class not found: "
+                    + IdentityUtil.getProperty(SAMLSSOConstants.SAMLSSO_SIGNER_CLASS_NAME), e);
+        } catch (InstantiationException e) {
+            throw IdentityException.error("Error while instantiating class: "
+                    + IdentityUtil.getProperty(SAMLSSOConstants.SAMLSSO_SIGNER_CLASS_NAME), e);
+        } catch (IllegalAccessException e) {
+            throw IdentityException.error("Illegal access to class: "
+                    + IdentityUtil.getProperty(SAMLSSOConstants.SAMLSSO_SIGNER_CLASS_NAME), e);
+        } catch (Exception e) {
+            throw IdentityException.error("Error while signing the XML object.", e);
+        }
     }
 
     public static EncryptedAssertion setEncryptedAssertion(Assertion assertion, String encryptionAlgorithm,
@@ -840,14 +841,16 @@ public class SAMLSSOUtil {
 
     public static String createID() {
 
-        try {
-            SecureRandomIdentifierGenerator generator = new SecureRandomIdentifierGenerator();
+//        try {
+//            SecureRandomIdentifierGenerator generator = new SecureRandomIdentifierGenerator();
+//            return generator.generateIdentifier();
+            SecureRandomIdentifierGenerationStrategy generator = new SecureRandomIdentifierGenerationStrategy();
             return generator.generateIdentifier();
-        } catch (NoSuchAlgorithmException e) {
-            log.error("Error while building Secure Random ID", e);
-            //TODO : throw exception and break the flow
-        }
-        return null;
+//        } catch (NoSuchAlgorithmException e) {
+//            log.error("Error while building Secure Random ID", e);
+//            //TODO : throw exception and break the flow
+//        }
+//        return null;
 
     }
 
@@ -941,7 +944,7 @@ public class SAMLSSOUtil {
                 X509CredentialImpl credentialImpl = getX509CredentialImplForTenant(domainName, alias);
                 if (isCertificateExpired(credentialImpl)) {
                     log.error("Signature Validation failed for the SAMLRequest : The signed certificate is" +
-                                " expired, for the issuer: " + authnReqDTO.getIssuerWithDomain());
+                            " expired, for the issuer: " + authnReqDTO.getIssuerWithDomain());
                     return false;
                 }
             } catch (IdentitySAML2SSOException e) {
@@ -1079,7 +1082,7 @@ public class SAMLSSOUtil {
         if (queryString != null) {
             return validateDeflateSignature(queryString, issuer, certificate);
         } else {
-            return validateXMLSignature(logoutRequest, certificate);
+            return validateXMLSignature((RequestAbstractType) logoutRequest, certificate);
         }
     }
 
@@ -1333,11 +1336,11 @@ public class SAMLSSOUtil {
 
         }
 
-		
-		/*
+
+        /*
          * IMPORTANT : checking if the consumer index in the request matches the
-		 * given id to the SP
-		 */
+         * given id to the SP
+         */
         if (((spDO.getAttributeConsumingServiceIndex() == null ||
                 "".equals(spDO.getAttributeConsumingServiceIndex())) &&
                 CollectionUtils.isEmpty(authnReqDTO.getRequestedAttributes())) ||
@@ -1679,7 +1682,7 @@ public class SAMLSSOUtil {
                 tenantId = realmService.getTenantManager().getTenantId(tenantDomain);
             } catch (UserStoreException e) {
                 throw new IdentitySAML2SSOException("Error occurred while retrieving tenant id for the domain : " +
-                                                    tenantDomain, e);
+                        tenantDomain, e);
             }
         }
 
@@ -1696,7 +1699,7 @@ public class SAMLSSOUtil {
             return persistenceManager.isServiceProviderExists(registry, issuerName);
         } catch (IdentityException e) {
             throw new IdentitySAML2SSOException("Error occurred while validating existence of SAML service provider " +
-                                                "'" + issuerName + "' in the tenant domain '" + tenantDomain + "'");
+                    "'" + issuerName + "' in the tenant domain '" + tenantDomain + "'");
         } finally {
             PrivilegedCarbonContext.endTenantFlow();
         }
@@ -1832,7 +1835,7 @@ public class SAMLSSOUtil {
 
     public static IdPInitSSOAuthnRequestProcessor getIdPInitSSOAuthnRequestProcessor() {
         if (iDPInitSSOAuthnRequestValidatorClassName == null || "".equals(iDPInitSSOAuthnRequestValidatorClassName)) {
-                return new IdPInitSSOAuthnRequestProcessor();
+            return new IdPInitSSOAuthnRequestProcessor();
         } else {
             try {
                 // Bundle class loader will cache the loaded class and returned
