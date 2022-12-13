@@ -15,16 +15,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml.builders.assertion;
 
-import org.joda.time.DateTime;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.wso2.carbon.identity.base.IdentityException;
 import org.wso2.carbon.identity.sso.saml.dto.SAMLSSOAuthnReqDTO;
 
+import java.time.Instant;
+
 public interface SAMLAssertionBuilder {
 
-    public void init() throws IdentityException;
+    void init() throws IdentityException;
 
     /**
      * Encrypt the SAML assertion
@@ -36,7 +38,7 @@ public interface SAMLAssertionBuilder {
      * @throws IdentityException
      */
 
-    public Assertion buildAssertion(SAMLSSOAuthnReqDTO authReqDTO, DateTime notOnOrAfter,
-                                    String sessionId) throws IdentityException;
+    Assertion buildAssertion(SAMLSSOAuthnReqDTO authReqDTO, Instant notOnOrAfter,
+                             String sessionId) throws IdentityException;
 
 }

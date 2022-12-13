@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml.session;
 
 import org.apache.commons.collections.MapUtils;
@@ -44,6 +45,7 @@ public class SSOSessionPersistenceManager {
     private static SSOSessionPersistenceManager sessionPersistenceManager;
 
     public static SSOSessionPersistenceManager getPersistenceManager() {
+
         if (sessionPersistenceManager == null) {
             sessionPersistenceManager = new SSOSessionPersistenceManager();
         }
@@ -64,9 +66,9 @@ public class SSOSessionPersistenceManager {
     /**
      * Adds Session Information to the cache.
      *
-     * @param key                    Key which cache entry is indexed.
-     * @param sessionInfoData        Session Information Data.
-     * @param loginTenantDomain      Tenant Domain where cache will add.
+     * @param key               Key which cache entry is indexed.
+     * @param sessionInfoData   Session Information Data.
+     * @param loginTenantDomain Tenant Domain where cache will add.
      */
     public static void addSessionInfoDataToCache(String key, SessionInfoData sessionInfoData,
                                                  String loginTenantDomain) {
@@ -92,9 +94,9 @@ public class SSOSessionPersistenceManager {
     /**
      * Adds Session Index to the cache.
      *
-     * @param key                   Key which cache entry is indexed
-     * @param sessionIndex          Session Index.
-     * @param loginTenantDomain     Tenant Domain where cache will add.
+     * @param key               Key which cache entry is indexed
+     * @param sessionIndex      Session Index.
+     * @param loginTenantDomain Tenant Domain where cache will add.
      */
     public static void addSessionIndexToCache(String key, String sessionIndex, String loginTenantDomain) {
 
@@ -118,8 +120,8 @@ public class SSOSessionPersistenceManager {
     /**
      * Retrieve the session information from the cache.
      *
-     * @param key                Cache key
-     * @param loginTenantDomain  Login Tenant Domain
+     * @param key               Cache key
+     * @param loginTenantDomain Login Tenant Domain
      * @return SessionInfoData
      */
     public static SessionInfoData getSessionInfoDataFromCache(String key, String loginTenantDomain) {
@@ -150,8 +152,8 @@ public class SSOSessionPersistenceManager {
     /**
      * Retrieve the session index from the cache.
      *
-     * @param key                Cache Key.
-     * @param loginTenantDomain  Login Tenant Domain.
+     * @param key               Cache Key.
+     * @param loginTenantDomain Login Tenant Domain.
      * @return session index.
      */
     public static String getSessionIndexFromCache(String key, String loginTenantDomain) {
@@ -182,8 +184,8 @@ public class SSOSessionPersistenceManager {
     /**
      * Clears the Session Information from the cache.
      *
-     * @param key                   Cache Key.
-     * @param loginTenantDomain     Login Tenant Domain.
+     * @param key               Cache Key.
+     * @param loginTenantDomain Login Tenant Domain.
      */
     public static void removeSessionInfoDataFromCache(String key, String loginTenantDomain) {
 
@@ -207,8 +209,8 @@ public class SSOSessionPersistenceManager {
     /**
      * Clears the session index from cache.
      *
-     * @param key                   Cache Key.
-     * @param loginTenantDomain     Login Tenant Domain.
+     * @param key               Cache Key.
+     * @param loginTenantDomain Login Tenant Domain.
      */
     public static void removeSessionIndexFromCache(String key, String loginTenantDomain) {
 
@@ -235,13 +237,13 @@ public class SSOSessionPersistenceManager {
     /**
      * Persists Session Information.
      *
-     * @param sessionIndex          Session Index
-     * @param subject               Subject
-     * @param spDO                  SAMLSSOServiceProviderDO
-     * @param rpSessionId           Rp Session id
-     * @param issuer                Name of the issuer
-     * @param assertionConsumerURL  Assertion Consumer URL
-     * @param loginTenantDomain     Login Tenant Domain
+     * @param sessionIndex         Session Index
+     * @param subject              Subject
+     * @param spDO                 SAMLSSOServiceProviderDO
+     * @param rpSessionId          Rp Session id
+     * @param issuer               Name of the issuer
+     * @param assertionConsumerURL Assertion Consumer URL
+     * @param loginTenantDomain    Login Tenant Domain
      */
     public void persistSession(String sessionIndex, String subject, SAMLSSOServiceProviderDO spDO,
                                String rpSessionId, String issuer, String assertionConsumerURL, String loginTenantDomain)
@@ -268,7 +270,6 @@ public class SSOSessionPersistenceManager {
      *
      * @param sessionIndex
      * @return
-     *
      * @deprecated This method was deprecated to move SAMLSSOParticipantCache to the tenant space.
      * Use {@link #getSessionInfo(String, String))} instead.
      */
@@ -282,8 +283,8 @@ public class SSOSessionPersistenceManager {
     /**
      * Get the session info data for a particular session.
      *
-     * @param sessionIndex          Session Index.
-     * @param loginTenantDomain     Login Tenant Domain.
+     * @param sessionIndex      Session Index.
+     * @param loginTenantDomain Login Tenant Domain.
      * @return SessionInfoData
      */
     public SessionInfoData getSessionInfo(String sessionIndex, String loginTenantDomain) {
@@ -298,6 +299,7 @@ public class SSOSessionPersistenceManager {
      */
     @Deprecated
     public void removeSession(String sessionIndex) {
+
         removeSessionInfoDataFromCache(sessionIndex);
     }
 
@@ -305,7 +307,6 @@ public class SSOSessionPersistenceManager {
      * Check whether this is an existing session
      *
      * @return
-     *
      * @deprecated This method was deprecated to move SAMLSSOParticipantCache to the tenant space.
      * Use {@link #isExistingSession(String, String))} instead.
      */
@@ -319,17 +320,14 @@ public class SSOSessionPersistenceManager {
     /**
      * Check whether this is an existing session.
      *
-     * @param sessionIndex          Session Index.
-     * @param loginTenantDomain     Login Tenant Domain.
+     * @param sessionIndex      Session Index.
+     * @param loginTenantDomain Login Tenant Domain.
      * @return true if this is an existing session, or else return false
      */
     public boolean isExistingSession(String sessionIndex, String loginTenantDomain) {
 
         SessionInfoData sessionInfoData = getSessionInfoDataFromCache(sessionIndex, loginTenantDomain);
-        if (sessionInfoData != null) {
-            return true;
-        }
-        return false;
+        return sessionInfoData != null;
     }
 
     /**
@@ -346,11 +344,12 @@ public class SSOSessionPersistenceManager {
     /**
      * Adds Session Index to the cache.
      *
-     * @param tokenId               Token Id.
-     * @param sessionIndex          Session Index.
-     * @param loginTenantDomain     Login Tenant Domain.
+     * @param tokenId           Token Id.
+     * @param sessionIndex      Session Index.
+     * @param loginTenantDomain Login Tenant Domain.
      */
     public void persistSession(String tokenId, String sessionIndex, String loginTenantDomain) {
+
         if (tokenId == null) {
             log.debug("SSO Token Id is null.");
             return;
@@ -371,32 +370,28 @@ public class SSOSessionPersistenceManager {
     public boolean isExistingTokenId(String tokenId) {
 
         // For backward compatibility, SUPER_TENANT_DOMAIN was used as the cache maintaining tenant.
-        return isExistingTokenId (tokenId, MultitenantConstants.SUPER_TENANT_DOMAIN_NAME);
+        return isExistingTokenId(tokenId, MultitenantConstants.SUPER_TENANT_DOMAIN_NAME);
     }
 
     /**
      * Checks the token id is an existing one.
      *
-     * @param tokenId               Token Id.
-     * @param loginTenantDomain     Login Tenant Domain.
+     * @param tokenId           Token Id.
+     * @param loginTenantDomain Login Tenant Domain.
      * @return true if token id is a existing one.
      */
     public boolean isExistingTokenId(String tokenId, String loginTenantDomain) {
 
         String sessionIndex = getSessionIndexFromCache(tokenId, loginTenantDomain);
 
-        if (sessionIndex != null) {
-            return true;
-        }
-        return false;
+        return sessionIndex != null;
     }
 
     /**
      * Clear the session when logout is called.
      *
      * @param sessionId created session id to invalidate
-     * @param issuer name of the issuer
-     *
+     * @param issuer    name of the issuer
      * @deprecated This method was deprecated to move SAMLSSOParticipantCache to the tenant space.
      * Use {@link #removeSession(String, String, String)} )} instead.
      */
@@ -404,7 +399,7 @@ public class SSOSessionPersistenceManager {
     public static void removeSession(String sessionId, String issuer) {
 
         // For backward compatibility, SUPER_TENANT_DOMAIN was used as the cache maintaining tenant.
-        removeSession (sessionId, issuer, MultitenantConstants.SUPER_TENANT_DOMAIN_NAME);
+        removeSession(sessionId, issuer, MultitenantConstants.SUPER_TENANT_DOMAIN_NAME);
     }
 
     /**
@@ -419,7 +414,7 @@ public class SSOSessionPersistenceManager {
         String sessionIndex = null;
         if (sessionId != null) {
             sessionIndex = getSessionIndexFromCache(sessionId, loginTenantDomain);
-            if(log.isDebugEnabled()) {
+            if (log.isDebugEnabled()) {
                 log.debug("Retrieved session index from session id with session index " + sessionIndex);
             }
         }
@@ -453,7 +448,7 @@ public class SSOSessionPersistenceManager {
             if (newCacheEntry.getSessionInfoData() == null || MapUtils.isEmpty(newCacheEntry.getSessionInfoData().
                     getServiceProviderList())) {
                 //Clear the session info cache if there isn't session data or service providers
-                if(log.isDebugEnabled()) {
+                if (log.isDebugEnabled()) {
                     log.debug("Clearing the session data from cache with session index " + sessionIndex + " and issuer " + issuer);
                 }
                 SAMLSSOParticipantCache.getInstance().clearCacheEntry(cacheKey, loginTenantDomain);
@@ -472,7 +467,7 @@ public class SSOSessionPersistenceManager {
     @Deprecated
     public static void removeBackChannelSLOEnabledSPs(SAMLSSOParticipantCacheEntry cacheEntry) {
 
-        Set<String> sloSupportedIssuers = new HashSet<String>();
+        Set<String> sloSupportedIssuers = new HashSet<>();
         // Filter out service providers which enabled the single logout and back-channel logout.
         addSLOSupportedIssuers(cacheEntry, sloSupportedIssuers);
         // Remove service providers which enabled the single logout and back-channel logout.
@@ -530,7 +525,7 @@ public class SSOSessionPersistenceManager {
      *
      * @param tokenId           Token Id.
      * @param loginTenantDomain Login tenant Domain.
-     * @return  Session Index.
+     * @return Session Index.
      */
     public String getSessionIndexFromTokenId(String tokenId, String loginTenantDomain) {
 
@@ -551,8 +546,8 @@ public class SSOSessionPersistenceManager {
     /**
      * Clears the session index from cache.
      *
-     * @param sessionId             Session Id.
-     * @param loginTenantDomain     Login Tenant Domain.
+     * @param sessionId         Session Id.
+     * @param loginTenantDomain Login Tenant Domain.
      */
     public void removeTokenId(String sessionId, String loginTenantDomain) {
 

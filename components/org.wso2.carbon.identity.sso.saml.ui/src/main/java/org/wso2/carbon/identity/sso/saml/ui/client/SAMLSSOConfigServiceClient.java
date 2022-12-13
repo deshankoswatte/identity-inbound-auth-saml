@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml.ui.client;
 
 import org.apache.axis2.AxisFault;
@@ -37,6 +38,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SAMLSSOConfigServiceClient {
@@ -47,6 +49,7 @@ public class SAMLSSOConfigServiceClient {
 
     public SAMLSSOConfigServiceClient(String cookie, String backendServerURL, ConfigurationContext configCtx)
             throws AxisFault {
+
         try {
             String serviceURL = backendServerURL + "IdentitySAMLSSOConfigService";
             stub = new IdentitySAMLSSOConfigServiceStub(configCtx, serviceURL);
@@ -62,7 +65,8 @@ public class SAMLSSOConfigServiceClient {
 
     // TODO : This method must return the added service provider data instead
     public boolean addServiceProvider(SAMLSSOServiceProviderDTO serviceProviderDTO) throws IdentitySAML2SSOUiException {
-        boolean status  ;
+
+        boolean status;
         try {
             status = stub.addRPServiceProvider(serviceProviderDTO);
         } catch (RemoteException | IdentitySAMLSSOConfigServiceIdentityException e) {
@@ -99,11 +103,10 @@ public class SAMLSSOConfigServiceClient {
         return serviceProviderDTO;
     }
 
-
-
     // TODO : remove bellow method once above is fixed
     // this kills performance
     public SAMLSSOServiceProviderDTO getServiceProvider(String issuer) throws AxisFault {
+
         try {
             SAMLSSOServiceProviderInfoDTO dto = stub.getServiceProviders();
             SAMLSSOServiceProviderDTO[] sps = dto.getServiceProviders();
@@ -123,9 +126,9 @@ public class SAMLSSOConfigServiceClient {
     }
 
     public SAMLSSOServiceProviderInfoDTO getRegisteredServiceProviders() throws AxisFault {
+
         try {
-            SAMLSSOServiceProviderInfoDTO spInfo = stub.getServiceProviders();
-            return spInfo;
+            return stub.getServiceProviders();
         } catch (Exception e) {
             log.error("Error retrieving service provider information", e);
             throw new AxisFault(e.getMessage(), e);
@@ -133,13 +136,12 @@ public class SAMLSSOConfigServiceClient {
     }
 
     public List<String> getCertAlias() throws AxisFault {
-        List<String> certAliasList = new ArrayList<>();
+
+        List<String> certAliasList;
         String[] certAliases;
         try {
             certAliases = stub.getCertAliasOfPrimaryKeyStore();
-            for (String alias : certAliases) {
-                certAliasList.add(alias);
-            }
+            certAliasList = new ArrayList<>(Arrays.asList(certAliases));
         } catch (Exception e) {
             log.error("Error retrieving Cert Aliases", e);
             throw new AxisFault(e.getMessage(), e);
@@ -148,6 +150,7 @@ public class SAMLSSOConfigServiceClient {
     }
 
     public boolean removeServiceProvier(String issuerName) throws AxisFault {
+
         try {
             return stub.removeServiceProvider(issuerName);
         } catch (Exception e) {
@@ -157,7 +160,8 @@ public class SAMLSSOConfigServiceClient {
     }
 
     public String[] getClaimURIs() throws AxisFault {
-        String[] claimUris = null;
+
+        String[] claimUris;
         try {
             claimUris = stub.getClaimURIs();
         } catch (Exception e) {
@@ -168,6 +172,7 @@ public class SAMLSSOConfigServiceClient {
     }
 
     public String[] getSigningAlgorithmUris() throws IdentityRuntimeException {
+
         String[] signingAlgorithmUris;
         try {
             signingAlgorithmUris = stub.getSigningAlgorithmUris();
@@ -178,6 +183,7 @@ public class SAMLSSOConfigServiceClient {
     }
 
     public String getSigningAlgorithmUriByConfig() throws IdentityRuntimeException {
+
         String signingAlgo;
         try {
             signingAlgo = stub.getSigningAlgorithmUriByConfig();
@@ -188,6 +194,7 @@ public class SAMLSSOConfigServiceClient {
     }
 
     public String[] getDigestAlgorithmURIs() throws IdentityRuntimeException {
+
         String[] digestAlgorithms;
         try {
             digestAlgorithms = stub.getDigestAlgorithmURIs();
@@ -198,6 +205,7 @@ public class SAMLSSOConfigServiceClient {
     }
 
     public String getDigestAlgorithmURIByConfig() throws IdentityRuntimeException {
+
         String digestAlgo;
         try {
             digestAlgo = stub.getDigestAlgorithmURIByConfig();
@@ -208,6 +216,7 @@ public class SAMLSSOConfigServiceClient {
     }
 
     public String[] getAssertionEncryptionAlgorithmURIs() throws IdentityRuntimeException {
+
         String[] assertionEncryptionAlgorithms;
         try {
             assertionEncryptionAlgorithms = stub.getAssertionEncryptionAlgorithmURIs();
@@ -218,6 +227,7 @@ public class SAMLSSOConfigServiceClient {
     }
 
     public String getAssertionEncryptionAlgorithmURIByConfig() throws IdentityRuntimeException {
+
         String assertionEncryptionAlgo;
         try {
             assertionEncryptionAlgo = stub.getAssertionEncryptionAlgorithmURIByConfig();
@@ -228,6 +238,7 @@ public class SAMLSSOConfigServiceClient {
     }
 
     public String[] getKeyEncryptionAlgorithmURIs() throws IdentityRuntimeException {
+
         String[] keyEncryptionAlgorithms;
         try {
             keyEncryptionAlgorithms = stub.getKeyEncryptionAlgorithmURIs();
@@ -238,6 +249,7 @@ public class SAMLSSOConfigServiceClient {
     }
 
     public String getKeyEncryptionAlgorithmURIByConfig() throws IdentityRuntimeException {
+
         String assertionEncryptionAlgo;
         try {
             assertionEncryptionAlgo = stub.getKeyEncryptionAlgorithmURIByConfig();

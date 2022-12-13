@@ -19,7 +19,6 @@
 package org.wso2.carbon.identity.sso.saml.dao.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.joda.time.DateTime;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.wso2.carbon.database.utils.jdbc.JdbcTemplate;
 import org.wso2.carbon.database.utils.jdbc.exceptions.DataAccessException;
@@ -63,8 +62,8 @@ public class SAML2ArtifactInfoDAOImpl implements SAML2ArtifactInfoDAO {
                     throw new SQLException("Could not set Saml2ArtifactInfo.AuthnReqDTO as a Blob.", e);
                 }
                 preparedStatement.setString(4, saml2ArtifactInfo.getSessionID());
-                preparedStatement.setTimestamp(5, new Timestamp(saml2ArtifactInfo.getInitTimestamp().getMillis()));
-                preparedStatement.setTimestamp(6, new Timestamp(saml2ArtifactInfo.getExpTimestamp().getMillis()));
+                preparedStatement.setTimestamp(5, new Timestamp(saml2ArtifactInfo.getInitTimestamp().toEpochMilli()));
+                preparedStatement.setTimestamp(6, new Timestamp(saml2ArtifactInfo.getExpTimestamp().toEpochMilli()));
                 preparedStatement.setString(7, saml2ArtifactInfo.getAssertionID());
             }), saml2ArtifactInfo, true);
         } catch (DataAccessException e) {
@@ -88,8 +87,8 @@ public class SAML2ArtifactInfoDAOImpl implements SAML2ArtifactInfoDAO {
                             return new SAML2ArtifactInfo(resultSet.getInt(1),
                                     (SAMLSSOAuthnReqDTO) DBUtil.getBlobObject(resultSet.getBinaryStream(2)),
                                     resultSet.getString(3),
-                                    new DateTime(resultSet.getTimestamp(4)),
-                                    new DateTime(resultSet.getTimestamp(5)));
+                                    (resultSet.getTimestamp(4)).toInstant(),
+                                    (resultSet.getTimestamp(5)).toInstant());
                         } catch (IOException e) {
                             throw new SQLException("Error in reading the AUTHN_REQ_DTO blob from the database for " +
                                     "sourceId: " + sourceId + ", messageHandler: " + messageHandler, e);

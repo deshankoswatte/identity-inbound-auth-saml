@@ -23,6 +23,7 @@ import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
 import org.wso2.carbon.identity.sso.saml.SAMLECPConstants;
 import org.wso2.carbon.identity.sso.saml.exception.IdentitySAML2ECPException;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -41,10 +42,8 @@ import javax.xml.soap.SOAPHeaderElement;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
 
 /**
  * A Utility which provides functionality to handle SOAP requests and responses.
@@ -54,16 +53,17 @@ public class SAMLSOAPUtils {
     private static final Log log = LogFactory.getLog(SAMLSOAPUtils.class);
 
     /**
-     *
      * Decode the request received by the samlecp servlet.
      * Validate the SOAP message
      * Check whether the SOAP body contains a valid SAML request
+     *
      * @param soapMessage
      * @return
      * @throws IdentitySAML2ECPException
      */
     public static String decodeSOAPMessage(SOAPMessage soapMessage) throws IdentitySAML2ECPException,
             TransformerException {
+
         SOAPBody body;
         String samlRequest = null;
         String strElement;
@@ -97,14 +97,15 @@ public class SAMLSOAPUtils {
     }
 
     /**
-     *
      * Creates a SOAP Fault message including the fault code and fault string.
+     *
      * @param faultString detailed error message
      * @param faultcode
      * @return
      */
     public static String createSOAPFault(String faultString, String faultcode) throws TransformerException,
             SOAPException {
+
         SOAPMessage soapMsg;
         MessageFactory factory = MessageFactory.newInstance();
         soapMsg = factory.createMessage();
@@ -118,12 +119,12 @@ public class SAMLSOAPUtils {
     }
 
     /**
-     *
      * @param samlRes SAML Response
-     * @param acUrl Assertion Consumer URL
+     * @param acUrl   Assertion Consumer URL
      * @return
      */
     public static String createSOAPMessage(String samlRes, String acUrl) throws TransformerException, SOAPException {
+
         SOAPMessage soapMsg;
         MessageFactory factory = MessageFactory.newInstance();
         soapMsg = factory.createMessage();
@@ -145,11 +146,13 @@ public class SAMLSOAPUtils {
     }
 
     /**
-     *Converts a  SOAP Message to String.
+     * Converts a  SOAP Message to String.
+     *
      * @param soapMessage
      * @return
      */
     public static String convertSOAPMsgToString(SOAPMessage soapMessage) throws TransformerException {
+
         String strElement;
         final StringWriter stringWriter = new StringWriter();
         IdentityUtil.getSecuredTransformerFactory().newTransformer().transform(
@@ -159,12 +162,14 @@ public class SAMLSOAPUtils {
     }
 
     /**
-     *Send the SOAP fault with the servlet response.
-     * @param resp Servlet response
+     * Send the SOAP fault with the servlet response.
+     *
+     * @param resp       Servlet response
      * @param faultsring SOAP Fault code
-     * @param faultcode SOAP fault code
+     * @param faultcode  SOAP fault code
      */
     public static void sendSOAPFault(HttpServletResponse resp, String faultsring, String faultcode) {
+
         PrintWriter out = null;
         String soapFault = null;
         try {
@@ -186,11 +191,13 @@ public class SAMLSOAPUtils {
 
     /**
      * Converts SOAPElement to String.
+     *
      * @param element SOAPElement
      * @return
      * @throws TransformerException
      */
     public static String convertSOAPElementToString(SOAPElement element) throws TransformerException {
+
         String strElement;
         StringWriter stringWriter = new StringWriter();
         IdentityUtil.getSecuredTransformerFactory().newTransformer().transform(

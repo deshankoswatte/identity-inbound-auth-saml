@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml.processors;
 
 import org.apache.commons.lang.StringUtils;
@@ -47,14 +48,14 @@ public class IdPInitSSOAuthnRequestProcessor implements SSOAuthnRequestProcessor
 
     public SAMLSSORespDTO process(SAMLSSOAuthnReqDTO authnReqDTO, String sessionId,
                                   boolean isAuthenticated, String authenticators, String authMode) throws Exception {
+
         try {
             SAMLSSOServiceProviderDO serviceProviderConfigs = getServiceProviderConfig(authnReqDTO);
-
 
             if (serviceProviderConfigs == null) {
                 String msg =
                         "A SAML Service Provider with the Issuer '" + authnReqDTO.getIssuer() + "' is not registered." +
-                        " Service Provider should be registered in advance.";
+                                " Service Provider should be registered in advance.";
                 log.warn(msg);
                 return buildErrorResponse(authnReqDTO.getId(),
                         SAMLSSOConstants.StatusCodes.REQUESTOR_ERROR, msg, null);
@@ -80,11 +81,11 @@ public class IdPInitSSOAuthnRequestProcessor implements SSOAuthnRequestProcessor
             if (StringUtils.isBlank(acsUrl) || !serviceProviderConfigs.getAssertionConsumerUrlList().contains
                     (acsUrl)) {
                 String msg = "ALERT: Invalid Assertion Consumer URL value '" + acsUrl + "' in the " +
-                             "AuthnRequest message from  the issuer '" + serviceProviderConfigs.getIssuer() +
-                             "'. Possibly " + "an attempt for a spoofing attack";
+                        "AuthnRequest message from  the issuer '" + serviceProviderConfigs.getIssuer() +
+                        "'. Possibly " + "an attempt for a spoofing attack";
                 log.error(msg);
                 return buildErrorResponse(authnReqDTO.getId(),
-                                          SAMLSSOConstants.StatusCodes.REQUESTOR_ERROR, msg, acsUrl);
+                        SAMLSSOConstants.StatusCodes.REQUESTOR_ERROR, msg, acsUrl);
             }
 
             // if subject is specified in AuthnRequest only that user should be
@@ -110,7 +111,7 @@ public class IdPInitSSOAuthnRequestProcessor implements SSOAuthnRequestProcessor
             SSOSessionPersistenceManager sessionPersistenceManager = SSOSessionPersistenceManager.getPersistenceManager();
 
             SAMLSSORespDTO samlssoRespDTO = null;
-            String sessionIndexId = null;
+            String sessionIndexId;
 
             if (isAuthenticated) {
                 if (sessionId != null && sessionPersistenceManager.isExistingTokenId(sessionId,
@@ -161,7 +162,7 @@ public class IdPInitSSOAuthnRequestProcessor implements SSOAuthnRequestProcessor
 
                     if (log.isDebugEnabled()) {
                         log.debug("Built SAML2 artifact for [SP: " + authnReqDTO.getIssuer() + ", subject: " +
-                                authnReqDTO.getSubject()  + ", tenant: " + authnReqDTO.getTenantDomain() +
+                                authnReqDTO.getSubject() + ", tenant: " + authnReqDTO.getTenantDomain() +
                                 "] -> Artifact: " + artifact);
                     }
 
@@ -213,7 +214,6 @@ public class IdPInitSSOAuthnRequestProcessor implements SSOAuthnRequestProcessor
         }
     }
 
-
     /**
      * Returns the configured service provider configurations. The
      * configurations are taken from the user registry or from the
@@ -226,6 +226,7 @@ public class IdPInitSSOAuthnRequestProcessor implements SSOAuthnRequestProcessor
      */
     private SAMLSSOServiceProviderDO getServiceProviderConfig(SAMLSSOAuthnReqDTO authnReqDTO)
             throws IdentityException {
+
         try {
             SSOServiceProviderConfigManager stratosIdpConfigManager = SSOServiceProviderConfigManager
                     .getInstance();
@@ -235,7 +236,7 @@ public class IdPInitSSOAuthnRequestProcessor implements SSOAuthnRequestProcessor
                 IdentityPersistenceManager persistenceManager = IdentityPersistenceManager
                         .getPersistanceManager();
                 Registry registry = (Registry) PrivilegedCarbonContext.getThreadLocalCarbonContext().getRegistry(RegistryType.SYSTEM_CONFIGURATION);
-                ssoIdpConfigs = persistenceManager.getServiceProvider(registry,authnReqDTO.getIssuer());
+                ssoIdpConfigs = persistenceManager.getServiceProvider(registry, authnReqDTO.getIssuer());
                 authnReqDTO.setStratosDeployment(false); // not stratos
             } else {
                 authnReqDTO.setStratosDeployment(true); // stratos deployment
@@ -297,7 +298,7 @@ public class IdPInitSSOAuthnRequestProcessor implements SSOAuthnRequestProcessor
     private SAMLSSORespDTO buildErrorResponse(String id, String status,
                                               String statMsg, String destination) throws Exception {
 
-        List<String> statusCodeList = new ArrayList<String>();
+        List<String> statusCodeList = new ArrayList<>();
         statusCodeList.add(status);
         return buildErrorResponse(id, statusCodeList, statMsg, destination);
     }

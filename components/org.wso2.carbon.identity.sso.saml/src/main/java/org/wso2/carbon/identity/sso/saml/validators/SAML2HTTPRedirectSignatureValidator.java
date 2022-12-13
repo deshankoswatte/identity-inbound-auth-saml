@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml.validators;
 
 import org.wso2.carbon.identity.base.IdentityException;
@@ -24,12 +25,9 @@ import java.security.cert.X509Certificate;
 
 public interface SAML2HTTPRedirectSignatureValidator {
 
-    public void init() throws IdentityException;
+    void init() throws IdentityException;
 
     /**
-     *
-     * @deprecated Use {@link #validateSignature(String, String, X509Certificate)}  instead.
-     *
      * @param queryString
      * @param issuer
      * @param alias
@@ -37,10 +35,11 @@ public interface SAML2HTTPRedirectSignatureValidator {
      * @return
      * @throws org.opensaml.security.SecurityException
      * @throws IdentitySAML2SSOException
+     * @deprecated Use {@link #validateSignature(String, String, X509Certificate)}  instead.
      */
     @Deprecated
-    public boolean validateSignature(String queryString, String issuer, String alias,
-                                     String domainName) throws org.opensaml.security.SecurityException, IdentitySAML2SSOException;
+    boolean validateSignature(String queryString, String issuer, String alias,
+                              String domainName) throws org.opensaml.security.SecurityException, IdentitySAML2SSOException;
 
     /**
      * Validates the signature of the given SAML request against the given signature.

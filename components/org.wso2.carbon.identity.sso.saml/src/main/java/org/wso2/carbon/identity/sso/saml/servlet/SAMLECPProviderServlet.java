@@ -17,6 +17,7 @@
  */
 
 package org.wso2.carbon.identity.sso.saml.servlet;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,6 +26,7 @@ import org.wso2.carbon.identity.sso.saml.SAMLSSOConstants;
 import org.wso2.carbon.identity.sso.saml.exception.IdentitySAML2ECPException;
 import org.wso2.carbon.identity.sso.saml.model.SamlSSORequestWrapper;
 import org.wso2.carbon.identity.sso.saml.util.SAMLSOAPUtils;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,6 +60,7 @@ public class SAMLECPProviderServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest httpServletRequest,
                          HttpServletResponse httpServletResponse) {
+
         String err = "Unsupported Request GET";
         SAMLSOAPUtils.sendSOAPFault(httpServletResponse, err, SAMLECPConstants.FaultCodes.SOAP_FAULT_CODE_CLIENT);
     }
@@ -65,11 +68,13 @@ public class SAMLECPProviderServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException {
+
         handleRequest(req, resp);
     }
 
     private void handleRequest(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException {
+
         try {
             if (StringUtils.isBlank(req.getHeader(SAMLECPConstants.AUTHORIZATION_HEADER))) {
                 String message = "Authorization Header Not Found";
@@ -103,23 +108,27 @@ public class SAMLECPProviderServlet extends HttpServlet {
 
     /**
      * This method returns the InputStream from the Servlet Request.
+     *
      * @param req ECP Servlet Request
      * @return
      * @throws IOException
      */
     private InputStream getInputStreamFromServletRequest(HttpServletRequest req) throws IOException {
+
         InputStream inputStream = req.getInputStream();
         return inputStream;
     }
 
     /**
      * This method returns s SOAP message from the given Servlet Input Stream.
+     *
      * @param inputStream InputStream from the servlet Request
      * @return
      * @throws IOException
      * @throws SOAPException
      */
     private SOAPMessage createSOAPMessagefromInputStream(InputStream inputStream) throws SOAPException, IOException {
+
         SOAPMessage soapMessage;
         MessageFactory messageFactory = MessageFactory.newInstance();
         soapMessage = messageFactory.createMessage(new MimeHeaders(), inputStream);
@@ -128,12 +137,14 @@ public class SAMLECPProviderServlet extends HttpServlet {
 
     /**
      * This method converts SOAPMessage to OutputStream and return the String.
+     *
      * @param soapMessage SOAPMessage from the InputStream.
      * @return
      * @throws SOAPException
      * @throws IOException
      */
     private String convertSOAPMsgToOutputStream(SOAPMessage soapMessage) throws SOAPException, IOException {
+
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         soapMessage.writeTo(outputStream);
         String strMsg = new String(outputStream.toByteArray(), StandardCharsets.UTF_8);

@@ -19,7 +19,6 @@ package org.wso2.carbon.identity.sso.saml.builders;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.joda.time.DateTime;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Status;
@@ -32,6 +31,7 @@ import org.opensaml.saml.saml2.core.impl.StatusMessageBuilder;
 import org.wso2.carbon.identity.base.IdentityException;
 import org.wso2.carbon.identity.sso.saml.util.SAMLSSOUtil;
 
+import java.time.Instant;
 import java.util.List;
 
 public class ErrorResponseBuilder {
@@ -80,7 +80,7 @@ public class ErrorResponseBuilder {
         if (destination != null) {
             response.setDestination(destination);
         }
-        response.setIssueInstant(new DateTime());
+        response.setIssueInstant(Instant.now());
         return response;
     }
 
@@ -103,10 +103,8 @@ public class ErrorResponseBuilder {
         //Set the status Message
         if (childStatusCode != null) {
             statusCode.setStatusCode(childStatusCode);
-            return statusCode;
-        } else {
-            return statusCode;
         }
+        return statusCode;
     }
 
     /**
@@ -117,9 +115,9 @@ public class ErrorResponseBuilder {
      */
     private Status buildStatusMsg(Status status, String statusMsg) {
         if (statusMsg != null) {
-            StatusMessage statusMesssage = new StatusMessageBuilder().buildObject();
-            statusMesssage.setMessage(statusMsg);
-            status.setStatusMessage(statusMesssage);
+            StatusMessage statusMessage = new StatusMessageBuilder().buildObject();
+            statusMessage.setMessage(statusMsg);
+            status.setStatusMessage(statusMessage);
         }
         return status;
     }

@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml.logout;
 
 import org.apache.commons.httpclient.HttpStatus;
@@ -77,6 +78,7 @@ public class LogoutRequestSender {
      * @return LogoutRequestSender instance
      */
     public static LogoutRequestSender getInstance() {
+
         return instance;
     }
 
@@ -87,6 +89,7 @@ public class LogoutRequestSender {
      * @param singleLogoutRequestDTOs Array of SingleLogoutRequestDTO representing all the session participants
      */
     public void sendLogoutRequests(org.wso2.carbon.identity.sso.saml.dto.SingleLogoutRequestDTO[] singleLogoutRequestDTOs) {
+
         if (singleLogoutRequestDTOs == null) {
             return;
         }
@@ -109,6 +112,7 @@ public class LogoutRequestSender {
      */
     private int derivePortFromAssertionConsumerURL(String assertionConsumerURL)
             throws URISyntaxException {
+
         int port = 443;    // use 443 as the default port
         try {
             URI uri = new URI(assertionConsumerURL);
@@ -134,14 +138,16 @@ public class LogoutRequestSender {
         private SingleLogoutRequestDTO logoutReqDTO;
 
         public LogoutReqSenderTask(SingleLogoutRequestDTO logoutReqDTO) {
+
             this.logoutReqDTO = logoutReqDTO;
         }
 
         @Override
         public void run() {
-            List<NameValuePair> logoutReqParams = new ArrayList<NameValuePair>();
+
+            List<NameValuePair> logoutReqParams = new ArrayList<>();
             StringBuffer logoutRequestWithSoapBinding = new StringBuffer();
-            String decodedSAMLRequest = null;
+            String decodedSAMLRequest;
 
             boolean propertySAMLSOAPBindingEnabled = IdentityConfigParser.getInstance()
                     .getConfiguration().containsKey(SAMLSSOConstants.SLO_SAML_SOAP_BINDING_ENABLED);
@@ -158,7 +164,7 @@ public class LogoutRequestSender {
 
             if (isSAMLSOAPBindingEnabled) {
                 decodedSAMLRequest = decodedSAMLRequest.replaceAll(SAMLSSOConstants.XML_TAG_REGEX, "").trim();
-                logoutRequestWithSoapBinding.append(SAMLSSOConstants.START_SOAP_BINDING + decodedSAMLRequest + SAMLSSOConstants.END_SOAP_BINDING);
+                logoutRequestWithSoapBinding.append(SAMLSSOConstants.START_SOAP_BINDING).append(decodedSAMLRequest).append(SAMLSSOConstants.END_SOAP_BINDING);
                 // set the logout request
                 logoutReqParams.add(new BasicNameValuePair(SAMLSSOConstants.SAML_REQUEST_PARAM_KEY,
                         SAMLSSOUtil.encode(logoutRequestWithSoapBinding.toString())));
@@ -173,10 +179,7 @@ public class LogoutRequestSender {
 
             String hostNameVerificationEnabledProperty =
                     IdentityUtil.getProperty(IdentityConstants.ServerConfig.SLO_HOST_NAME_VERIFICATION_ENABLED);
-            boolean isHostNameVerificationEnabled = true;
-            if ("false".equalsIgnoreCase(hostNameVerificationEnabledProperty)) {
-                isHostNameVerificationEnabled = false;
-            }
+            boolean isHostNameVerificationEnabled = !"false".equalsIgnoreCase(hostNameVerificationEnabledProperty);
 
             try {
 
@@ -267,9 +270,10 @@ public class LogoutRequestSender {
 
         /**
          * Validate the LogoutResponse whether it is success.
+         *
          * @param httpResponse Http Response object.
          * @return True if Logout response state success.
-         * @throws IOException Stream error.
+         * @throws IOException       Stream error.
          * @throws IdentityException Decoding error.
          */
         private boolean validateResponse(HttpResponse httpResponse, String certificateAlias, String tenantDomain,

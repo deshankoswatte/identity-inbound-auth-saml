@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml;
 
 public class SAMLSSOConstants {
@@ -105,7 +106,7 @@ public class SAMLSSOConstants {
     public static final String ATTR_NAME_AUTHENTICATED_IDPS = "authenticatedIdPs";
 
     // SAML2 Artifact Binding
-    public static final byte[] SAML2_ARTIFACT_TYPE_CODE = { 0, 4 };
+    public static final byte[] SAML2_ARTIFACT_TYPE_CODE = {0, 4};
     public static final String SAML_ART = "SAMLart";
     public static final String SAML_ARTIFACT_RESOLVE_URL = "/samlartresolve";
     public static final String CONTENT_TYPE_PARAM_KEY = "Content-Type";
@@ -116,8 +117,8 @@ public class SAMLSSOConstants {
     public static final String IS_POST = "isPost";
 
     private SAMLSSOConstants() {
-    }
 
+    }
 
     public enum QueryParameter {
 
@@ -130,11 +131,13 @@ public class SAMLSSOConstants {
         private final String parameterName;
 
         QueryParameter(String parameterName) {
+
             this.parameterName = parameterName;
         }
 
         @Override
         public String toString() {
+
             return parameterName;
         }
     }
@@ -184,10 +187,12 @@ public class SAMLSSOConstants {
         public static final String FRONT_CHANNEL_LOGOUT_BINDING = "FrontChannelLogoutBinding";
 
         private FileBasedSPConfig() {
+
         }
     }
 
     public static class StatusCodes {
+
         public static final String SUCCESS_CODE = "urn:oasis:names:tc:SAML:2.0:status:Success";
         public static final String REQUESTOR_ERROR = "urn:oasis:names:tc:SAML:2.0:status:Requester";
         public static final String IDENTITY_PROVIDER_ERROR = "urn:oasis:names:tc:SAML:2.0:status:Responder";
@@ -197,33 +202,41 @@ public class SAMLSSOConstants {
         public static final String UNKNOWN_PRINCIPAL = "urn:oasis:names:tc:SAML:2.0:status:UnknownPrincipal";
 
         private StatusCodes() {
+
         }
     }
 
     public static class SingleLogoutCodes {
+
         public static final String LOGOUT_USER = "urn:oasis:names:tc:SAML:2.0:logout:user";
         public static final String LOGOUT_ADMIN = "urn:oasis:names:tc:SAML:2.0:logout:admin";
 
         private SingleLogoutCodes() {
+
         }
     }
 
     public static class AuthnModes {
+
         public static final String USERNAME_PASSWORD = "usernamePasswordBasedAuthn";
         public static final String OPENID = "openIDBasedAuthn";
 
         private AuthnModes() {
+
         }
     }
 
     public static class Attribute {
+
         public static final String ISSUER_FORMAT = "urn:oasis:names:tc:SAML:2.0:nameid-format:entity";
 
         private Attribute() {
+
         }
     }
 
     public static class Notification {
+
         public static final String EXCEPTION_STATUS = "Error when processing the authentication request!";
         public static final String EXCEPTION_MESSAGE = "Please try login again.";
         public static final String NORELAY_STATUS = "RealyState is not present in the request!";
@@ -250,6 +263,7 @@ public class SAMLSSOConstants {
         public static final String EXCEPTION_STATUS_ARTIFACT_RESOLVE = "Error while resolving SAML artifact";
 
         private Notification() {
+
         }
     }
 

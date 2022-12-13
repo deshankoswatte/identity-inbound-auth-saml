@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml.processors;
 
 import org.opensaml.saml.saml2.core.LogoutRequest;
@@ -35,5 +36,5 @@ public interface SPInitSSOLogoutRequestProcessor {
      * @throws IdentityException
      */
     SAMLSSOReqValidationResponseDTO process(LogoutRequest logoutRequest, String sessionId,
-                                                   String queryString) throws IdentityException;
+                                            String queryString) throws IdentityException;
 }

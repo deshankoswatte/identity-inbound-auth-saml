@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml.builders.encryption;
 
 import org.opensaml.saml.saml2.core.Assertion;
@@ -28,7 +29,7 @@ import org.wso2.carbon.identity.base.IdentityException;
 
 public interface SSOEncrypter {
 
-    public void init() throws IdentityException;
+    void init() throws IdentityException;
 
     /**
      * Encrypt the SAML assertion
@@ -40,19 +41,19 @@ public interface SSOEncrypter {
      * @return SAML EncryptedAssertion
      * @throws IdentityException
      */
-    public EncryptedAssertion doEncryptedAssertion(Assertion assertion, X509Credential cred, String alias,
-                                                   String encryptionAlgorithm) throws IdentityException;
+    EncryptedAssertion doEncryptedAssertion(Assertion assertion, X509Credential cred, String alias,
+                                            String encryptionAlgorithm) throws IdentityException;
+
     /**
-     *
-     * @param assertion                     SAML assertion to be encrypted
-     * @param cred                          Encrypting credential
-     * @param alias                         Certificate alias against which use to Encrypt the assertion
-     * @param assertionEncryptionAlgorithm  Assertion Encryption algorithm
-     * @param keyEncryptionAlgorithm        Key Encryption algorithm
-     * @return                              SAML EncryptedAssertion
+     * @param assertion                    SAML assertion to be encrypted
+     * @param cred                         Encrypting credential
+     * @param alias                        Certificate alias against which use to Encrypt the assertion
+     * @param assertionEncryptionAlgorithm Assertion Encryption algorithm
+     * @param keyEncryptionAlgorithm       Key Encryption algorithm
+     * @return SAML EncryptedAssertion
      * @throws IdentityException
      */
-    public EncryptedAssertion doEncryptedAssertion(Assertion assertion, X509Credential cred, String alias,
-                                                   String assertionEncryptionAlgorithm, String
-                                                           keyEncryptionAlgorithm) throws IdentityException;
+    EncryptedAssertion doEncryptedAssertion(Assertion assertion, X509Credential cred, String alias,
+                                            String assertionEncryptionAlgorithm, String
+                                                    keyEncryptionAlgorithm) throws IdentityException;
 }

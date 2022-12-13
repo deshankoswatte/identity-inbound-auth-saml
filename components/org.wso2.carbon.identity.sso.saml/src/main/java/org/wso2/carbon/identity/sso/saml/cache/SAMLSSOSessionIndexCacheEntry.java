@@ -25,10 +25,12 @@ public class SAMLSSOSessionIndexCacheEntry extends CacheEntry {
     private String sessionIndex;
 
     public String getSessionIndex() {
+
         return sessionIndex;
     }
 
     public void setSessionIndex(String sessionIndex) {
+
         this.sessionIndex = sessionIndex;
     }
 }

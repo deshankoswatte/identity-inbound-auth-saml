@@ -64,8 +64,8 @@ import javax.servlet.Servlet;
  * Service component class for the SAML SSO service.
  */
 @Component(
-         name = "identity.sso.saml.component",
-         immediate = true)
+        name = "identity.sso.saml.component",
+        immediate = true)
 public class IdentitySAMLSSOServiceComponent {
 
     private static final Log log = LogFactory.getLog(IdentitySAMLSSOServiceComponent.class);
@@ -129,7 +129,7 @@ public class IdentitySAMLSSOServiceComponent {
                 SSOServiceProviderConfigManager.getInstance(), null);
 
         SAMLSSOConfigServiceImpl samlSSOConfigService = new SAMLSSOConfigServiceImpl();
-        ServiceRegistration samlSsoConfigServiceRegistration =
+        ServiceRegistration<SAMLSSOConfigServiceImpl> samlSsoConfigServiceRegistration =
                 ctxt.getBundleContext().registerService(SAMLSSOConfigServiceImpl.class, samlSSOConfigService, null);
         SAMLSSOUtil.setSamlssoConfigService(samlSSOConfigService);
 
@@ -199,7 +199,7 @@ public class IdentitySAMLSSOServiceComponent {
             ctxt.getBundleContext().registerService(SAMLExtensionProcessor.class.getName(),
                     new EidasExtensionProcessor(), null);
 
-            ServiceRegistration oauthApplicationMgtListener = ctxt.getBundleContext()
+            ServiceRegistration<?> oauthApplicationMgtListener = ctxt.getBundleContext()
                     .registerService(ApplicationMgtListener.class.getName(), new SAMLApplicationMgtListener(), null);
             if (oauthApplicationMgtListener != null) {
                 if (log.isDebugEnabled()) {
@@ -254,6 +254,7 @@ public class IdentitySAMLSSOServiceComponent {
             unbind = "unsetApplicationMgtService"
     )
     protected void setApplicationMgtService(ApplicationManagementService applicationMgtService) {
+
         if (log.isDebugEnabled()) {
             log.debug("ApplicationManagementService set in SAML SSO bundle");
         }
@@ -266,6 +267,7 @@ public class IdentitySAMLSSOServiceComponent {
      * @param applicationMgtService Application management service
      */
     protected void unsetApplicationMgtService(ApplicationManagementService applicationMgtService) {
+
         if (log.isDebugEnabled()) {
             log.debug("ApplicationManagementService unset in SAML SSO bundle");
         }

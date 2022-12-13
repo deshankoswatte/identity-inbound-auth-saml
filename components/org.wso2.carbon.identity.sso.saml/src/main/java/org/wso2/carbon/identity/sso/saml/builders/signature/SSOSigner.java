@@ -15,8 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.wso2.carbon.identity.sso.saml.builders.signature;
 
+package org.wso2.carbon.identity.sso.saml.builders.signature;
 
 import org.opensaml.saml.saml2.core.RequestAbstractType;
 import org.opensaml.security.x509.X509Credential;
@@ -29,7 +29,7 @@ import org.wso2.carbon.identity.base.IdentityException;
 
 public interface SSOSigner {
 
-    public void init() throws IdentityException;
+    void init() throws IdentityException;
 
     /**
      * Validate the  Signature in the SAML Assertion
@@ -41,8 +41,8 @@ public interface SSOSigner {
      * @throws IdentityException
      */
 
-    public boolean validateXMLSignature(RequestAbstractType request, X509Credential cred,
-                                        String alias) throws IdentityException;
+    boolean validateXMLSignature(RequestAbstractType request, X509Credential cred,
+                                 String alias) throws IdentityException;
 
     /**
      * Set the signature to XML object
@@ -54,7 +54,7 @@ public interface SSOSigner {
      * @return
      * @throws IdentityException
      */
-    public SignableXMLObject setSignature(SignableXMLObject signableXMLObject, String signatureAlgorithm, String
+    SignableXMLObject setSignature(SignableXMLObject signableXMLObject, String signatureAlgorithm, String
             digestAlgorithm, X509Credential cred) throws IdentityException;
 }
 

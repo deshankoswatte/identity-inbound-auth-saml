@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml;
 
 import org.apache.commons.logging.Log;
@@ -42,6 +43,7 @@ public enum SSOServiceProviderConfigManager {
     private ConcurrentHashMap<String, SAMLSSOServiceProviderDO> serviceProviderMap;
 
     private SSOServiceProviderConfigManager() {
+
         this.serviceProviderMap = new ConcurrentHashMap<String, SAMLSSOServiceProviderDO>();
     }
 
@@ -57,6 +59,7 @@ public enum SSOServiceProviderConfigManager {
      * @param spDO       SAMLSSOServiceProviderDO bean representing the Service Provider
      */
     public void addServiceProvider(String issuerName, SAMLSSOServiceProviderDO spDO) {
+
         if (serviceProviderMap.containsKey(issuerName)) {
             log.warn("Duplicate Service Providers detected.");
             return;
@@ -76,6 +79,7 @@ public enum SSOServiceProviderConfigManager {
      * @return SAMLSSOServiceProviderDO bean representing the Service Provider
      */
     public SAMLSSOServiceProviderDO getServiceProvider(String issuerName) {
+
         return serviceProviderMap.get(issuerName);
     }
 
@@ -85,6 +89,7 @@ public enum SSOServiceProviderConfigManager {
      * @return Enumeration of SAMLSSOServiceProviderDO objects
      */
     public Enumeration<SAMLSSOServiceProviderDO> getAllServiceProviders() {
+
         return serviceProviderMap.elements();
     }
 

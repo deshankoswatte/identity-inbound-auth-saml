@@ -30,18 +30,18 @@ import javax.xml.namespace.QName;
  */
 public interface RequestedAttributes extends SAMLObject {
 
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RequestedAttributes";
+    String DEFAULT_ELEMENT_LOCAL_NAME = "RequestedAttributes";
 
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(EidasConstants.EIDAS_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    QName DEFAULT_ELEMENT_NAME = new QName(EidasConstants.EIDAS_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             EidasConstants.EIDAS_PREFIX);
 
-    public static final String TYPE_LOCAL_NAME = "RequestedAttributesType";
+    String TYPE_LOCAL_NAME = "RequestedAttributesType";
 
     /**
      * Returns a reference to the list of the requested attributes.
      *
      * @return an attribute list
      */
-    public List<RequestedAttribute> getRequestedAttributes();
+    List<RequestedAttribute> getRequestedAttributes();
 
 }

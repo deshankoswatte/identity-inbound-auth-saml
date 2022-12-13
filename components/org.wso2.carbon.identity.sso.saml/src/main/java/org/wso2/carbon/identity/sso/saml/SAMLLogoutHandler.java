@@ -53,7 +53,7 @@ public class SAMLLogoutHandler extends AbstractEventHandler {
     @Override
     public void handleEvent(Event event) throws IdentityEventException {
 
-        String samlssoTokenId = null;
+        String samlssoTokenId;
         String issuer = null;
 
         if (StringUtils.equals(event.getEventName(), EventName.SESSION_TERMINATE.name())) {
@@ -101,13 +101,13 @@ public class SAMLLogoutHandler extends AbstractEventHandler {
         String samlssoTokenId = null;
         if (event.getEventProperties().get(EventProperty.REQUEST) instanceof HttpServletRequest) {
             HttpServletRequest request = (HttpServletRequest) event.getEventProperties().get(EventProperty.REQUEST);
-                Cookie cookie = FrameworkUtils.getCookie(request, SAMLSSOConstants.SAML_SSO_TOKEN_ID_COOKIE);
-                if (cookie != null) {
-                    if (log.isDebugEnabled()) {
-                        log.debug("Found samlssotokenId in the request object: " + cookie.getValue());
-                    }
-                    samlssoTokenId = cookie.getValue();
+            Cookie cookie = FrameworkUtils.getCookie(request, SAMLSSOConstants.SAML_SSO_TOKEN_ID_COOKIE);
+            if (cookie != null) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Found samlssotokenId in the request object: " + cookie.getValue());
                 }
+                samlssoTokenId = cookie.getValue();
+            }
         }
         if (StringUtils.isBlank(samlssoTokenId)) {
             if (log.isDebugEnabled()) {

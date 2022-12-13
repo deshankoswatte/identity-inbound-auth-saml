@@ -87,15 +87,15 @@ public class SAMLSSOConfigAdminTest extends PowerMockTestCase {
 
         mockStatic(SSOServiceProviderConfigManager.class);
         when(SSOServiceProviderConfigManager.getInstance()).thenReturn(ssoServiceProviderConfigManager);
-        when(identityPersistenceManager.addServiceProvider((Registry) any(), (SAMLSSOServiceProviderDO) any()))
+        when(identityPersistenceManager.addServiceProvider(any(), any()))
                 .thenReturn(true);
         SAMLSSOServiceProviderDTO samlssoServiceProviderDTO = new SAMLSSOServiceProviderDTO();
         samlssoServiceProviderDTO.setIssuer("testUser");
 
-        Assert.assertEquals(samlssoConfigAdmin.addRelyingPartyServiceProvider(samlssoServiceProviderDTO), true);
+        Assert.assertTrue(samlssoConfigAdmin.addRelyingPartyServiceProvider(samlssoServiceProviderDTO));
         samlssoServiceProvDO = new SAMLSSOServiceProviderDO();
         when(ssoServiceProviderConfigManager.getServiceProvider("testUser")).thenReturn(samlssoServiceProvDO);
-        Assert.assertEquals(samlssoConfigAdmin.addRelyingPartyServiceProvider(samlssoServiceProviderDTO), false);
+        Assert.assertFalse(samlssoConfigAdmin.addRelyingPartyServiceProvider(samlssoServiceProviderDTO));
     }
 
     @DataProvider(name = "dataProviders")
@@ -156,7 +156,7 @@ public class SAMLSSOConfigAdminTest extends PowerMockTestCase {
     public void testUploadRelyingPartyServiceProvider2(String issuer) throws Exception {
 
         String metadata = "metadata";
-        when(identityPersistenceManager.addServiceProvider((Registry) any(), (SAMLSSOServiceProviderDO) any()))
+        when(identityPersistenceManager.addServiceProvider(any(), any()))
                 .thenReturn(true);
         whenNew(SAMLSSOServiceProviderDO.class).withNoArguments().thenReturn(samlssoServiceProvDO);
         when(samlssoServiceProvDO.getIssuer()).thenReturn(issuer);

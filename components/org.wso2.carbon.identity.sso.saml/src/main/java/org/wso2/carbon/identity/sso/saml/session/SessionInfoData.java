@@ -15,11 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml.session;
-
-
-
-//import org.wso2.carbon.identity.saml.metadata.model.SAMLSSOServiceProviderDO;
 
 import org.wso2.carbon.identity.core.model.SAMLSSOServiceProviderDO;
 
@@ -36,10 +33,12 @@ public class SessionInfoData implements Serializable {
     private Map<String, String> issuerSubjectMap = new ConcurrentHashMap<>();
 
     public Map<String, SAMLSSOServiceProviderDO> getServiceProviderList() {
+
         return serviceProviderList;
     }
 
     public void addServiceProvider(String issuer, SAMLSSOServiceProviderDO spDO, String rpSessionId) {
+
         this.serviceProviderList.put(issuer, spDO);
         if (rpSessionId != null) {
             this.rpSessionList.put(issuer, rpSessionId);
@@ -47,19 +46,23 @@ public class SessionInfoData implements Serializable {
     }
 
     public void removeServiceProvider(String issuer) {
+
         serviceProviderList.remove(issuer);
         rpSessionList.remove(issuer);
     }
 
     public Map<String, String> getRPSessionsList() {
+
         return rpSessionList;
     }
 
     public String getSubject(String issuer) {
+
         return issuerSubjectMap.get(issuer);
     }
 
     public void setSubject(String issuer, String subject) {
+
         issuerSubjectMap.put(issuer, subject);
     }
 }

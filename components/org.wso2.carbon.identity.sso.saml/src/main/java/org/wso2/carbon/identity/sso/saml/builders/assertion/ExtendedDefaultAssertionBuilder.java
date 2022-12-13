@@ -33,6 +33,7 @@ import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.Instant;
 
 /**
  * This class is used to override existing implementation on Assertion building and
@@ -65,7 +66,7 @@ public class ExtendedDefaultAssertionBuilder extends DefaultSAMLAssertionBuilder
      * @throws IdentityException If unable to collect issuer information
      */
     @Override
-    public Assertion buildAssertion(SAMLSSOAuthnReqDTO samlssoAuthnReqDTO, DateTime notOnOrAfter, String sessionId)
+    public Assertion buildAssertion(SAMLSSOAuthnReqDTO samlssoAuthnReqDTO, Instant notOnOrAfter, String sessionId)
             throws IdentityException {
 
         Assertion assertion = super.buildAssertion(samlssoAuthnReqDTO, notOnOrAfter, sessionId);

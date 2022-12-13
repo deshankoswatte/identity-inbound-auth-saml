@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml.processors;
 
 import org.apache.commons.lang.StringUtils;
@@ -35,7 +36,7 @@ import java.util.Map;
 
 import static org.wso2.carbon.identity.sso.saml.util.SAMLSSOUtil.splitAppendedTenantDomain;
 
-public class IdPInitLogoutRequestProcessor implements IdpInitSSOLogoutRequestProcessor{
+public class IdPInitLogoutRequestProcessor implements IdpInitSSOLogoutRequestProcessor {
 
     private static final Log log = LogFactory.getLog(IdPInitLogoutRequestProcessor.class);
 
@@ -58,11 +59,11 @@ public class IdPInitLogoutRequestProcessor implements IdpInitSSOLogoutRequestPro
     /**
      * Process IDP initiated Logout Request.
      *
-     * @param sessionId             Session Id.
-     * @param queryParamDTOs        Query Param DTOs.
-     * @param serverURL             Server url.
-     * @param loginTenantDomain     Login tenant Domain.
-     * @return  validationResponseDTO.
+     * @param sessionId         Session Id.
+     * @param queryParamDTOs    Query Param DTOs.
+     * @param serverURL         Server url.
+     * @param loginTenantDomain Login tenant Domain.
+     * @return validationResponseDTO.
      * @throws IdentityException
      */
     public SAMLSSOReqValidationResponseDTO process(String sessionId, QueryParamDTO[] queryParamDTOs, String serverURL,

@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml.dto;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -36,7 +37,7 @@ public class SAMLSSOServiceProviderDTO implements Serializable {
 
     private String issuer;
     private String issuerQualifier;
-    @XmlElementWrapper(name="assertionConsumerUrls")
+    @XmlElementWrapper(name = "assertionConsumerUrls")
     @XmlElement(name = "assertionConsumerUrl")
     private String[] assertionConsumerUrls;
     private String defaultAssertionConsumerUrl;
@@ -52,13 +53,13 @@ public class SAMLSSOServiceProviderDTO implements Serializable {
     private boolean doSignAssertions;
     private boolean doSignResponse;
     private boolean doFrontChannelLogout;
-    @XmlElementWrapper(name="requestedClaims")
+    @XmlElementWrapper(name = "requestedClaims")
     @XmlElement(name = "requestedClaim")
     private String[] requestedClaims;
-    @XmlElementWrapper(name="requestedAudiences")
+    @XmlElementWrapper(name = "requestedAudiences")
     @XmlElement(name = "requestedAudience")
     private String[] requestedAudiences;
-    @XmlElementWrapper(name="requestedRecipients")
+    @XmlElementWrapper(name = "requestedRecipients")
     @XmlElement(name = "requestedRecipient")
     private String[] requestedRecipients;
     private boolean enableAttributeProfile;
@@ -69,7 +70,7 @@ public class SAMLSSOServiceProviderDTO implements Serializable {
     private String nameIDFormat;
     private boolean idPInitSSOEnabled;
     private boolean idPInitSLOEnabled;
-    @XmlElementWrapper(name="idpInitSLOReturnToURLs")
+    @XmlElementWrapper(name = "idpInitSLOReturnToURLs")
     @XmlElement(name = "idpInitSLOReturnToURL")
     private String[] idpInitSLOReturnToURLs;
     private boolean doEnableEncryptedAssertion;
@@ -81,7 +82,7 @@ public class SAMLSSOServiceProviderDTO implements Serializable {
     private boolean enableSAML2ArtifactBinding;
     private boolean doValidateSignatureInArtifactResolve;
     private boolean samlECP;
-    private  String idpEntityIDAlias;
+    private String idpEntityIDAlias;
 
     public void setDoValidateSignatureInArtifactResolve(boolean doValidateSignatureInArtifactResolve) {
 
@@ -104,6 +105,7 @@ public class SAMLSSOServiceProviderDTO implements Serializable {
     }
 
     public SAMLSSOServiceProviderDTO() {
+
         signingAlgorithmURI = IdentityApplicationManagementUtil.getSigningAlgoURIByConfig();
         digestAlgorithmURI = IdentityApplicationManagementUtil.getDigestAlgoURIByConfig();
         assertionEncryptionAlgorithmURI = IdentityApplicationManagementUtil
@@ -112,138 +114,170 @@ public class SAMLSSOServiceProviderDTO implements Serializable {
     }
 
     public String getSigningAlgorithmURI() {
+
         return signingAlgorithmURI;
     }
 
     public void setSigningAlgorithmURI(String signingAlgorithmURI) {
+
         if (StringUtils.isNotBlank(signingAlgorithmURI)) {
             this.signingAlgorithmURI = signingAlgorithmURI;
         }
     }
 
     public String getDigestAlgorithmURI() {
+
         return digestAlgorithmURI;
     }
 
     public void setDigestAlgorithmURI(String digestAlgorithmURI) {
+
         if (StringUtils.isNotBlank(digestAlgorithmURI)) {
             this.digestAlgorithmURI = digestAlgorithmURI;
         }
     }
 
     public String getAssertionEncryptionAlgorithmURI() {
+
         return assertionEncryptionAlgorithmURI;
     }
 
     public void setAssertionEncryptionAlgorithmURI(String assertionEncryptionAlgorithmURI) {
+
         if (StringUtils.isNotBlank(assertionEncryptionAlgorithmURI)) {
             this.assertionEncryptionAlgorithmURI = assertionEncryptionAlgorithmURI;
         }
     }
 
     public String getKeyEncryptionAlgorithmURI() {
+
         return keyEncryptionAlgorithmURI;
     }
 
     public void setKeyEncryptionAlgorithmURI(String keyEncryptionAlgorithmURI) {
+
         if (StringUtils.isNotBlank(keyEncryptionAlgorithmURI)) {
             this.keyEncryptionAlgorithmURI = keyEncryptionAlgorithmURI;
         }
     }
 
     public String getNameIDFormat() {
+
         return nameIDFormat;
     }
 
     public void setNameIDFormat(String nameIDFormat) {
+
         this.nameIDFormat = nameIDFormat;
     }
 
     public String getNameIdClaimUri() {
+
         return nameIdClaimUri;
     }
 
     public void setNameIdClaimUri(String nameIdClaimUri) {
+
         this.nameIdClaimUri = nameIdClaimUri;
     }
 
     public boolean isEnableAttributeProfile() {
+
         return enableAttributeProfile;
     }
 
     public void setEnableAttributeProfile(boolean enableAttributeProfile) {
+
         this.enableAttributeProfile = enableAttributeProfile;
     }
 
     public boolean isAssertionQueryRequestProfileEnabled() {
+
         return isAssertionQueryRequestProfileEnabled;
     }
 
     public void setAssertionQueryRequestProfileEnabled(boolean isAssertionQueryRequestProfileEnabled) {
+
         this.isAssertionQueryRequestProfileEnabled = isAssertionQueryRequestProfileEnabled;
     }
 
     public String getSupportedAssertionQueryRequestTypes() {
+
         return supportedAssertionQueryRequestTypes;
     }
 
     public void setSupportedAssertionQueryRequestTypes(String supportedAssertionQueryRequestTypes) {
+
         this.supportedAssertionQueryRequestTypes = supportedAssertionQueryRequestTypes;
     }
 
     public boolean isEnableAttributesByDefault() {
+
         return enableAttributesByDefault;
     }
 
     public void setEnableAttributesByDefault(boolean enableAttributesByDefault) {
+
         this.enableAttributesByDefault = enableAttributesByDefault;
     }
 
     public String getIssuer() {
+
         return issuer;
     }
 
     public void setIssuer(String issuer) {
+
         this.issuer = issuer;
     }
 
     public String getAssertionConsumerUrl() {
+
         return assertionConsumerUrl;
     }
 
     public void setAssertionConsumerUrl(String assertionConsumerUrl) {
+
         this.assertionConsumerUrl = assertionConsumerUrl;
     }
 
     public String getCertAlias() {
+
         return certAlias;
     }
 
     public void setCertAlias(String certAlias) {
+
         this.certAlias = certAlias;
     }
 
     public boolean isDoSingleLogout() {
+
         return doSingleLogout;
     }
 
     public void setDoSingleLogout(boolean doSingleLogout) {
+
         this.doSingleLogout = doSingleLogout;
     }
 
     public String getSloResponseURL() {
+
         return sloResponseURL;
     }
 
     public void setSloResponseURL(String logoutURL) {
+
         this.sloResponseURL = logoutURL;
     }
 
     public String getLoginPageURL() {
+
         return loginPageURL;
     }
 
     public void setLoginPageURL(String loginPageURL) {
+
         this.loginPageURL = loginPageURL;
     }
 
@@ -271,6 +305,7 @@ public class SAMLSSOServiceProviderDTO implements Serializable {
      * @return
      */
     public boolean isDoSignAssertions() {
+
         return doSignAssertions;
     }
 
@@ -278,14 +313,17 @@ public class SAMLSSOServiceProviderDTO implements Serializable {
      * @param doSignAssertions
      */
     public void setDoSignAssertions(boolean doSignAssertions) {
+
         this.doSignAssertions = doSignAssertions;
     }
 
     public String getAttributeConsumingServiceIndex() {
+
         return attributeConsumingServiceIndex;
     }
 
     public void setAttributeConsumingServiceIndex(String attributeConsumingServiceIndex) {
+
         this.attributeConsumingServiceIndex = attributeConsumingServiceIndex;
     }
 
@@ -359,6 +397,7 @@ public class SAMLSSOServiceProviderDTO implements Serializable {
      * @return the doSignResponse
      */
     public boolean isDoSignResponse() {
+
         return doSignResponse;
     }
 
@@ -366,30 +405,37 @@ public class SAMLSSOServiceProviderDTO implements Serializable {
      * @param doSignResponse the doSignResponse to set
      */
     public void setDoSignResponse(boolean doSignResponse) {
+
         this.doSignResponse = doSignResponse;
     }
 
     public boolean isIdPInitSSOEnabled() {
+
         return idPInitSSOEnabled;
     }
 
     public void setIdPInitSSOEnabled(boolean idPInitSSOEnabled) {
+
         this.idPInitSSOEnabled = idPInitSSOEnabled;
     }
 
     public boolean isDoEnableEncryptedAssertion() {
+
         return doEnableEncryptedAssertion;
     }
 
     public void setDoEnableEncryptedAssertion(boolean doEnableEncryptedAssertion) {
+
         this.doEnableEncryptedAssertion = doEnableEncryptedAssertion;
     }
 
     public boolean isDoValidateSignatureInRequests() {
+
         return doValidateSignatureInRequests;
     }
 
     public void setDoValidateSignatureInRequests(boolean doValidateSignatureInRequests) {
+
         this.doValidateSignatureInRequests = doValidateSignatureInRequests;
     }
 
@@ -402,30 +448,37 @@ public class SAMLSSOServiceProviderDTO implements Serializable {
     }
 
     public void setAssertionConsumerUrls(String[] assertionConsumerUrls) {
+
         this.assertionConsumerUrls = assertionConsumerUrls;
     }
 
     public String getDefaultAssertionConsumerUrl() {
+
         return defaultAssertionConsumerUrl;
     }
 
     public void setDefaultAssertionConsumerUrl(String defaultAssertionConsumerUrl) {
+
         this.defaultAssertionConsumerUrl = defaultAssertionConsumerUrl;
     }
 
     public String getSloRequestURL() {
+
         return sloRequestURL;
     }
 
     public void setSloRequestURL(String sloRequestURL) {
+
         this.sloRequestURL = sloRequestURL;
     }
 
     public boolean isIdPInitSLOEnabled() {
+
         return idPInitSLOEnabled;
     }
 
     public void setIdPInitSLOEnabled(boolean idPInitSLOEnabled) {
+
         this.idPInitSLOEnabled = idPInitSLOEnabled;
     }
 
@@ -439,7 +492,7 @@ public class SAMLSSOServiceProviderDTO implements Serializable {
 
     public void setIdpInitSLOReturnToURLs(String[] idpInitSLOReturnToURLs) {
 
-        if(idpInitSLOReturnToURLs != null) {
+        if (idpInitSLOReturnToURLs != null) {
             this.idpInitSLOReturnToURLs = idpInitSLOReturnToURLs.clone();
         } else {
             this.idpInitSLOReturnToURLs = null;
@@ -457,13 +510,14 @@ public class SAMLSSOServiceProviderDTO implements Serializable {
     }
 
     public boolean isSamlECP() {
+
         return samlECP;
     }
 
     public void setSamlECP(boolean samlECP) {
+
         this.samlECP = samlECP;
     }
-
 
     /**
      * Get issuer qualifier value.

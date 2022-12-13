@@ -21,7 +21,6 @@ package org.wso2.carbon.identity.sso.saml.builders;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xml.security.utils.Base64;
-import org.joda.time.DateTime;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.wso2.carbon.identity.base.IdentityException;
 import org.wso2.carbon.identity.sso.saml.SAMLSSOConstants;
@@ -37,6 +36,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.time.Instant;
 
 /**
  * This class is used to build the saml2 artifact.
@@ -70,11 +70,11 @@ public class SAMLArtifactBuilder {
 
         if (log.isDebugEnabled()) {
             log.debug("Building SAML2 Artifact for SP: " + authnReqDTO.getIssuer() +
-                    ", subject: " + authnReqDTO.getSubject()  + ", tenant: " + authnReqDTO.getTenantDomain());
+                    ", subject: " + authnReqDTO.getSubject() + ", tenant: " + authnReqDTO.getTenantDomain());
         }
 
-        DateTime initTimestamp = new DateTime();
-        DateTime expTimestamp = new DateTime(initTimestamp.getMillis()
+        Instant initTimestamp = Instant.now();
+        Instant expTimestamp = Instant.ofEpochMilli(initTimestamp.toEpochMilli()
                 + SAMLSSOUtil.getSAML2ArtifactValidityPeriod() * 60 * 1000L);
 
         byte[] endpointIndex = {0, 0};
@@ -113,13 +113,13 @@ public class SAMLArtifactBuilder {
     }
 
     private void persistSAML2ArtifactInfo(String sourceId, String messageHandler, SAMLSSOAuthnReqDTO authnReqDTO,
-                                          String sessionIndexId, DateTime initTimestamp, DateTime expTimestamp,
+                                          String sessionIndexId, Instant initTimestamp, Instant expTimestamp,
                                           String assertionID)
             throws ArtifactBindingException {
 
         if (log.isDebugEnabled()) {
             log.debug("Persisting SAML2 Artifact for SP: " + authnReqDTO.getIssuer() +
-                    ", subject: " + authnReqDTO.getSubject()  + ", tenant: " + authnReqDTO.getTenantDomain());
+                    ", subject: " + authnReqDTO.getSubject() + ", tenant: " + authnReqDTO.getTenantDomain());
         }
 
         // Storing artifact details.
@@ -136,10 +136,10 @@ public class SAMLArtifactBuilder {
         saml2ArtifactInfoDAO.storeArtifactInfo(saml2ArtifactInfo);
     }
 
-    private Assertion persistAssertion(SAMLSSOAuthnReqDTO authnReqDTO, DateTime issueInstant, String sessionId)
+    private Assertion persistAssertion(SAMLSSOAuthnReqDTO authnReqDTO, Instant issueInstant, String sessionId)
             throws IdentityException {
 
-        DateTime notOnOrAfter = new DateTime(issueInstant.getMillis()
+        Instant notOnOrAfter = Instant.ofEpochMilli(issueInstant.toEpochMilli()
                 + SAMLSSOUtil.getSAMLResponseValidityPeriod() * 60 * 1000L);
 
         ExtendedDefaultAssertionBuilder assertionBuilder = new ExtendedDefaultAssertionBuilder();

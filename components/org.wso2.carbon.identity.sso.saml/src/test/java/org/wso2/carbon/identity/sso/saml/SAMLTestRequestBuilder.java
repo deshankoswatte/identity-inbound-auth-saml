@@ -20,7 +20,6 @@ package org.wso2.carbon.identity.sso.saml;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.xml.security.c14n.Canonicalizer;
-import org.joda.time.DateTime;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.SAMLObjectContentReference;
@@ -61,7 +60,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Random;
 import java.util.zip.Deflater;
@@ -69,9 +71,11 @@ import java.util.zip.DeflaterOutputStream;
 import javax.xml.namespace.QName;
 
 public class SAMLTestRequestBuilder {
+
     private static Random random = new Random();
 
     public static AuthnRequest buildDefaultAuthnRequest() {
+
         return buildAuthnRequest(TestConstants.SP_ENTITY_ID, true, false, SAMLConstants.SAML2_POST_BINDING_URI,
                 TestConstants.ACS_URL, TestConstants.SAML_SSO_IDP_URL);
     }
@@ -84,14 +88,14 @@ public class SAMLTestRequestBuilder {
                 SAMLSSOConstants.FileBasedSPConfig.ISSUER, SAMLSSOConstants.FileBasedSPConfig.NAMESPACE_PREFIX);
         issuer.setValue(SPEntityID);
 
-		/* NameIDPolicy */
+        /* NameIDPolicy */
         NameIDPolicyBuilder nameIdPolicyBuilder = new NameIDPolicyBuilder();
         NameIDPolicy nameIdPolicy = nameIdPolicyBuilder.buildObject();
         nameIdPolicy.setFormat(SAMLSSOConstants.NAMEID_FORMAT_PERSISTENT);
         nameIdPolicy.setSPNameQualifier(SAMLSSOConstants.FileBasedSPConfig.ISSUER);
         nameIdPolicy.setAllowCreate(true);
 
-		/* AuthnContextClass */
+        /* AuthnContextClass */
         AuthnContextClassRefBuilder authnContextClassRefBuilder = new AuthnContextClassRefBuilder();
         AuthnContextClassRef authnContextClassRef =
                 authnContextClassRefBuilder.buildObject(SAMLSSOConstants.SAML_ASSERTION_URN,
@@ -99,16 +103,16 @@ public class SAMLTestRequestBuilder {
                         SAMLSSOConstants.FileBasedSPConfig.NAMESPACE_PREFIX);
         authnContextClassRef.setAuthnContextClassRef(SAMLSSOConstants.PASSWORD_PROTECTED_TRANSPORT_CLASS);
 
-		/* AuthnContex */
+        /* AuthnContex */
         RequestedAuthnContextBuilder requestedAuthnContextBuilder =
                 new RequestedAuthnContextBuilder();
         RequestedAuthnContext requestedAuthnContext = requestedAuthnContextBuilder.buildObject();
         requestedAuthnContext.setComparison(AuthnContextComparisonTypeEnumeration.EXACT);
         requestedAuthnContext.getAuthnContextClassRefs().add(authnContextClassRef);
 
-        DateTime issueInstant = new DateTime();
+        Instant issueInstant = Instant.now();
 
-		/* AuthRequestObject */
+        /* AuthRequestObject */
         AuthnRequestBuilder authRequestBuilder = new AuthnRequestBuilder();
         AuthnRequest authRequest =
                 authRequestBuilder.buildObject(SAMLSSOConstants.SAML_PROTOCOL_URN,
@@ -132,6 +136,7 @@ public class SAMLTestRequestBuilder {
     public static AuthnRequest buildAuthnRequest(String SPEntityID, boolean isPassiveAuthn, boolean isForceAuthn,
                                                  String httpBinding, String ACSUrl, String destinationUrl,
                                                  Extensions extensions) {
+
         AuthnRequest authRequest = buildAuthnRequest(SPEntityID, isPassiveAuthn, isForceAuthn, httpBinding, ACSUrl,
                 destinationUrl);
         authRequest.setExtensions(extensions);
@@ -141,6 +146,7 @@ public class SAMLTestRequestBuilder {
     public static AuthnRequest buildAuthnRequest(String SPEntityID, boolean isPassiveAuthn, boolean isForceAuthn,
                                                  String httpBinding, String ACSUrl, String destinationUrl,
                                                  Integer consumerServiceIndex) {
+
         AuthnRequest authRequest = buildAuthnRequest(SPEntityID, isPassiveAuthn, isForceAuthn, httpBinding, ACSUrl,
                 destinationUrl);
         // Requesting Attributes. This Index value is registered in the IDP.
@@ -151,6 +157,7 @@ public class SAMLTestRequestBuilder {
     public static AuthnRequest buildAuthnRequest(String SPEntityID, boolean isPassiveAuthn, boolean isForceAuthn,
                                                  String httpBinding, String ACSUrl, String destinationUrl,
                                                  Extensions extensions, Integer consumerServiceIndex) {
+
         AuthnRequest authRequest = buildAuthnRequest(SPEntityID, isPassiveAuthn, isForceAuthn, httpBinding, ACSUrl,
                 destinationUrl);
         authRequest.setExtensions(extensions);
@@ -186,11 +193,12 @@ public class SAMLTestRequestBuilder {
 
     public static String encodeRequestMessage(RequestAbstractType requestMessage) throws MarshallingException,
             IOException, InitializationException {
+
         SAMLInitializer.doBootstrap();
         System.setProperty("javax.xml.parsers.DocumentBuilderFactory",
                 "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
         Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(requestMessage);
-        Element authDOM = null;
+        Element authDOM;
         authDOM = marshaller.marshall(requestMessage);
 
         /* Compress the message */
@@ -201,7 +209,7 @@ public class SAMLTestRequestBuilder {
         deflaterOutputStream.close();
 
         /* Encoding the compressed message */
-        String encodedRequestMessage = Base64Support.encode(byteArrayOutputStream.toByteArray(), Base64Support.UNCHUNKED);
+        String encodedRequestMessage = Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray());
 
         byteArrayOutputStream.write(byteArrayOutputStream.toByteArray());
         byteArrayOutputStream.toString();
@@ -212,13 +220,14 @@ public class SAMLTestRequestBuilder {
     public static void addSignatureToHTTPQueryString(StringBuilder httpQueryString,
                                                      String signatureAlgorithmURI, X509Credential credential) throws
             UnsupportedEncodingException, org.opensaml.security.SecurityException {
+
         httpQueryString.append("&SigAlg=");
         httpQueryString.append(URLEncoder.encode(signatureAlgorithmURI, "UTF-8").trim());
         byte[] rawSignature = XMLSigningUtil.signWithURI(credential, signatureAlgorithmURI,
-                httpQueryString.toString().getBytes("UTF-8"));
+                httpQueryString.toString().getBytes(StandardCharsets.UTF_8));
 
-        String base64Signature = Base64Support.encode(rawSignature, Base64Support.UNCHUNKED);
-        httpQueryString.append("&Signature=" + URLEncoder.encode(base64Signature, "UTF-8").trim());
+        String base64Signature = Base64.getEncoder().encodeToString(rawSignature);
+        httpQueryString.append("&Signature=").append(URLEncoder.encode(base64Signature, "UTF-8").trim());
     }
 
     /**
@@ -234,6 +243,7 @@ public class SAMLTestRequestBuilder {
     public static void setSignature(RequestAbstractType request, String signatureAlgorithm,
                                     String digestAlgorithm, boolean includeCert, X509Credential x509Credential)
             throws Exception {
+
         SAMLInitializer.doBootstrap();
         if (StringUtils.isEmpty(signatureAlgorithm)) {
             signatureAlgorithm = IdentityApplicationManagementUtil.getXMLSignatureAlgorithms().get(
@@ -278,15 +288,17 @@ public class SAMLTestRequestBuilder {
     /**
      * Base64 encode XML string
      *
-     * @param xmlString Unmarshelled xml string
+     * @param xmlString Unmarshalled xml string
      * @return Base 64 encoded xml string
      */
     public static String encode(String xmlString) {
-        String encodedRequestMessage = Base64Support.encode(xmlString.getBytes(), Base64Support.UNCHUNKED);
+
+        String encodedRequestMessage = Base64.getEncoder().encodeToString(xmlString.getBytes());
         return encodedRequestMessage.trim();
     }
 
     private static XMLObject buildXMLObject(QName objectQName) {
+
         XMLObjectBuilder builder = XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(objectQName);
         return builder.buildObject(objectQName.getNamespaceURI(), objectQName.getLocalPart(), objectQName.getPrefix());
     }

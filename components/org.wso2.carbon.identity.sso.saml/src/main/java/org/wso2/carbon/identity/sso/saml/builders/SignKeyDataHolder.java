@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml.builders;
 
 import org.apache.commons.lang.StringUtils;
@@ -57,7 +58,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
-
 public class SignKeyDataHolder implements X509Credential {
 
     private static final String DSA_ENCRYPTION_ALGORITHM = "DSA";
@@ -76,6 +76,7 @@ public class SignKeyDataHolder implements X509Credential {
     private static final Log log = LogFactory.getLog(SignKeyDataHolder.class);
 
     public SignKeyDataHolder(String username) throws IdentityException {
+
         int tenantID;
         String tenantDomain = null;
         String userTenantDomain;
@@ -143,6 +144,7 @@ public class SignKeyDataHolder implements X509Credential {
      * @throws Exception
      */
     private void initializeKeyDataForTenant(int tenantID, String tenantDomain) throws Exception {
+
         if (log.isDebugEnabled()) {
             log.debug("Initializing Key Data for tenant: " + tenantDomain);
         }
@@ -170,6 +172,7 @@ public class SignKeyDataHolder implements X509Credential {
      * @throws Exception
      */
     private void initializeKeyDataForSuperTenantFromSystemKeyStore() throws Exception {
+
         if (log.isDebugEnabled()) {
             log.debug("Initializing Key Data for super tenant using system key store");
         }
@@ -200,6 +203,7 @@ public class SignKeyDataHolder implements X509Credential {
      * @return true if necessary configurations are defined for sign KeyStore; false otherwise.
      */
     private boolean isSignKeyStoreConfigured() {
+
         String keyStoreLocation = ServerConfiguration.getInstance().getFirstProperty(
                 SECURITY_SAML_SIGN_KEY_STORE_LOCATION);
         String keyStoreType = ServerConfiguration.getInstance().getFirstProperty(
@@ -223,6 +227,7 @@ public class SignKeyDataHolder implements X509Credential {
      * @throws IdentityException
      */
     private void initializeKeyDataForSuperTenantFromSignKeyStore() throws IdentityException {
+
         if (log.isDebugEnabled()) {
             log.debug("Initializing Key Data for super tenant using separate sign key store");
         }
@@ -285,25 +290,30 @@ public class SignKeyDataHolder implements X509Credential {
     }
 
     public String getSignatureAlgorithm() {
+
         return signatureAlgorithm;
     }
 
     public void setSignatureAlgorithm(String signatureAlgorithm) {
+
         this.signatureAlgorithm = signatureAlgorithm;
     }
 
     @Override
     public Collection<X509CRL> getCRLs() {
+
         return Collections.emptyList();
     }
 
     @Override
     public X509Certificate getEntityCertificate() {
+
         return issuerCerts[0];
     }
 
     @Override
     public Collection<X509Certificate> getEntityCertificateChain() {
+
         return Arrays.asList(issuerCerts);
     }
 
@@ -313,6 +323,7 @@ public class SignKeyDataHolder implements X509Credential {
      */
     @Override
     public CredentialContextSet getCredentialContextSet() {
+
         return null;
     }
 
@@ -336,11 +347,13 @@ public class SignKeyDataHolder implements X509Credential {
 
     @Override
     public PrivateKey getPrivateKey() {
+
         return issuerPrivateKey;
     }
 
     @Override
     public PublicKey getPublicKey() {
+
         return issuerCerts[0].getPublicKey();
     }
 

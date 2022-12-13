@@ -69,5 +69,6 @@ public class SAMLSSOUIConstants {
     public static final String SLO_TYPE = "singleLogoutType";
 
     private SAMLSSOUIConstants() {
+
     }
 }

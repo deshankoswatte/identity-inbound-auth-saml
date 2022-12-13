@@ -15,19 +15,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml.validators;
 
-import net.shibboleth.utilities.java.support.codec.Base64Support;
 import org.apache.commons.lang.StringUtils;
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.security.SecurityException;
 import net.shibboleth.utilities.java.support.net.URISupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import org.opensaml.xmlsec.config.DefaultSecurityConfigurationBootstrap;
 import org.opensaml.security.credential.impl.CollectionCredentialResolver;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
+import org.opensaml.xmlsec.config.impl.DefaultSecurityConfigurationBootstrap;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.opensaml.xmlsec.signature.support.impl.ExplicitKeySignatureTrustEngine;
@@ -40,8 +40,10 @@ import org.wso2.carbon.identity.sso.saml.util.SAMLSSOUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 public class SAML2HTTPRedirectDeflateSignatureValidator implements SAML2HTTPRedirectSignatureValidator {
@@ -51,10 +53,11 @@ public class SAML2HTTPRedirectDeflateSignatureValidator implements SAML2HTTPRedi
     /**
      * Build a criteria set suitable for input to the trust engine.
      *
-     * @param  issuer      Issuer of the SAML request.
+     * @param issuer Issuer of the SAML request.
      * @return criteriaSet Criteria set which acts as input to the trust engine.
      */
     private static CriteriaSet buildCriteriaSet(String issuer) {
+
         CriteriaSet criteriaSet = new CriteriaSet();
         if (StringUtils.isNotBlank(issuer)) {
             criteriaSet.add(new EntityIdCriterion(issuer));
@@ -66,11 +69,12 @@ public class SAML2HTTPRedirectDeflateSignatureValidator implements SAML2HTTPRedi
     /**
      * Extract the signature algorithm from the query string.
      *
-     * @param  queryString The raw HTTP query string from the request.
+     * @param queryString The raw HTTP query string from the request.
      * @return sigAlg      The signature algorithm.
      * @throws SecurityException If the signature algorithm cannot be extracted.
      */
     private static String getSigAlg(String queryString) throws SecurityException {
+
         String sigAlgQueryParam = URISupport.getRawQueryStringParameter(queryString, "SigAlg");
         if (StringUtils.isBlank(sigAlgQueryParam)) {
             throw new SecurityException(
@@ -100,16 +104,17 @@ public class SAML2HTTPRedirectDeflateSignatureValidator implements SAML2HTTPRedi
      * Defaults to the Base64-decoded value of the HTTP request parameter named
      * <code>Signature</code>.
      *
-     * @param  queryString The raw HTTP query string from the request.
+     * @param queryString The raw HTTP query string from the request.
      * @return byte[] containing the signature.
      * @throws SecurityException If the signature algorithm cannot be extracted.
      */
     protected static byte[] getSignature(String queryString) throws SecurityException {
+
         String signatureQueryParam = URISupport.getRawQueryStringParameter(queryString, "Signature");
         if (StringUtils.isEmpty(signatureQueryParam)) {
             throw new SecurityException("Could not extract the Signature from query string");
         }
-        String signature = null;
+        String signature;
         try {
             /* Split 'Signature=<sig_value>' query param using '=' as the delimiter,
 		      and get the Signature value */
@@ -121,13 +126,13 @@ public class SAML2HTTPRedirectDeflateSignatureValidator implements SAML2HTTPRedi
             // JVM is required to support UTF-8
             return new byte[0];
         }
-        return Base64Support.decode(signature);
+        return Base64.getDecoder().decode(signature);
     }
 
     /**
      * Extract the signed content from the query string.
      *
-     * @param  queryString The raw HTTP query string from the request.
+     * @param queryString The raw HTTP query string from the request.
      * @return byte[] containing the signed content.
      * @throws SecurityException Thrown if there is an error during request processing.
      */
@@ -151,26 +156,19 @@ public class SAML2HTTPRedirectDeflateSignatureValidator implements SAML2HTTPRedi
         if (log.isDebugEnabled()) {
             log.debug("Constructed signed content string for HTTP-Redirect DEFLATE " + constructed);
         }
-        try {
-            return constructed.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            if (log.isDebugEnabled()) {
-                log.debug("Encoding not supported.", e);
-            }
-            // JVM is required to support UTF-8
-            return new byte[0];
-        }
+        return constructed.getBytes(StandardCharsets.UTF_8);
     }
 
     /**
      * Extract the raw request parameters and build a string representation of
      * the content that was signed.
      *
-     * @param  queryString The raw HTTP query string from the request.
+     * @param queryString The raw HTTP query string from the request.
      * @return A string representation of the signed content.
      * @throws SecurityException Thrown if there is an error during request processing.
      */
     private static String buildSignedContentString(String queryString) throws SecurityException {
+
         StringBuilder builder = new StringBuilder();
 
         // One of these two is mandatory
@@ -193,13 +191,14 @@ public class SAML2HTTPRedirectDeflateSignatureValidator implements SAML2HTTPRedi
      * The appended value will be in the form 'paramName=paramValue' (minus the
      * quotes).
      *
-     * @param  builder     String builder to which to append the parameter.
-     * @param  queryString The URL query string containing parameters.
-     * @param  paramName   The name of the parameter to append.
+     * @param builder     String builder to which to append the parameter.
+     * @param queryString The URL query string containing parameters.
+     * @param paramName   The name of the parameter to append.
      * @return true if parameter was found, false otherwise.
      */
     private static boolean appendParameter(StringBuilder builder, String queryString,
                                            String paramName) {
+
         String rawParam = URISupport.getRawQueryStringParameter(queryString, paramName);
         if (rawParam == null) {
             return false;
@@ -219,18 +218,19 @@ public class SAML2HTTPRedirectDeflateSignatureValidator implements SAML2HTTPRedi
     /**
      * Validates the signature of the given SAML request using the given domain name and alias.
      *
-     * @param  queryString SAML request (passed an an HTTP query parameter).
-     * @param  issuer      Issuer of the SAML request.
-     * @param  alias       Name given to a CA certificate.
-     * @param  domainName  The tenant domain name.
+     * @param queryString SAML request (passed an an HTTP query parameter).
+     * @param issuer      Issuer of the SAML request.
+     * @param alias       Name given to a CA certificate.
+     * @param domainName  The tenant domain name.
      * @return A boolean value representing whether the signature is valid or not.
-     * @throws SecurityException Thrown if there is an error during request processing.
+     * @throws SecurityException         Thrown if there is an error during request processing.
      * @throws IdentitySAML2SSOException Thrown if there is an error when creating X509CredentialImpl object.
      */
     @Override
     public boolean validateSignature(String queryString, String issuer, String alias,
                                      String domainName) throws SecurityException,
             IdentitySAML2SSOException {
+
         byte[] signature = getSignature(queryString);
         byte[] signedContent = getSignedContent(queryString);
         String algorithmUri = getSigAlg(queryString);
@@ -241,7 +241,7 @@ public class SAML2HTTPRedirectDeflateSignatureValidator implements SAML2HTTPRedi
                 SAMLSSOUtil.getX509CredentialImplForTenant(domainName,
                         alias);
 
-        List<Credential> credentials = new ArrayList<Credential>();
+        List<Credential> credentials = new ArrayList<>();
         credentials.add(credential);
         CollectionCredentialResolver credResolver = new CollectionCredentialResolver(credentials);
         KeyInfoCredentialResolver kiResolver = DefaultSecurityConfigurationBootstrap.buildBasicInlineKeyInfoCredentialResolver();
@@ -252,9 +252,9 @@ public class SAML2HTTPRedirectDeflateSignatureValidator implements SAML2HTTPRedi
     /**
      * Validates the signature of the given SAML request against the given certificate.
      *
-     * @param  queryString SAML request (passed an an HTTP query parameter).
-     * @param  issuer      Issuer of the SAML request.
-     * @param  certificate Certificate for validating the signature.
+     * @param queryString SAML request (passed an an HTTP query parameter).
+     * @param issuer      Issuer of the SAML request.
+     * @param certificate Certificate for validating the signature.
      * @return A boolean value representing whether the signature is valid or not.
      * @throws SecurityException Thrown if there is an error during request processing.
      */
@@ -270,7 +270,7 @@ public class SAML2HTTPRedirectDeflateSignatureValidator implements SAML2HTTPRedi
         // creating the SAML2HTTPRedirectDeflateSignatureRule
         X509CredentialImpl credential = new X509CredentialImpl(certificate, issuer);
 
-        List<Credential> credentials = new ArrayList<Credential>();
+        List<Credential> credentials = new ArrayList<>();
         credentials.add(credential);
         CollectionCredentialResolver credResolver = new CollectionCredentialResolver(credentials);
         KeyInfoCredentialResolver kiResolver = DefaultSecurityConfigurationBootstrap.buildBasicInlineKeyInfoCredentialResolver();

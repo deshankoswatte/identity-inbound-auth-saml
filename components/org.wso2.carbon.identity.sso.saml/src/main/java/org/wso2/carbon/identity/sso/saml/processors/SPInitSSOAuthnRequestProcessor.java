@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml.processors;
 
 import org.apache.commons.lang.StringUtils;
@@ -43,7 +44,7 @@ import org.wso2.carbon.registry.core.utils.UUIDGenerator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SPInitSSOAuthnRequestProcessor implements SSOAuthnRequestProcessor{
+public class SPInitSSOAuthnRequestProcessor implements SSOAuthnRequestProcessor {
 
     private static final Log log = LogFactory.getLog(SPInitSSOAuthnRequestProcessor.class);
 
@@ -65,7 +66,7 @@ public class SPInitSSOAuthnRequestProcessor implements SSOAuthnRequestProcessor{
 
             if (isECPReqfromECPEnabledSP(authnReqDTO, serviceProviderConfigs)) {
                 String msg = "The SAML Service Provider with the Issuer '" + authnReqDTO.getIssuer() +
-                                "' is not ECP enabled.";
+                        "' is not ECP enabled.";
                 log.warn(msg);
                 return buildErrorResponse(authnReqDTO.getId(),
                         SAMLSSOConstants.StatusCodes.REQUESTOR_ERROR, msg, null);
@@ -96,7 +97,7 @@ public class SPInitSSOAuthnRequestProcessor implements SSOAuthnRequestProcessor{
             SSOSessionPersistenceManager sessionPersistenceManager = SSOSessionPersistenceManager.getPersistenceManager();
 
             SAMLSSORespDTO samlssoRespDTO = null;
-            String sessionIndexId = null;
+            String sessionIndexId;
 
             if (isAuthenticated) {
                 if (sessionId != null && sessionPersistenceManager.
@@ -152,7 +153,7 @@ public class SPInitSSOAuthnRequestProcessor implements SSOAuthnRequestProcessor{
 
                     if (log.isDebugEnabled()) {
                         log.debug("Built SAML2 artifact for [SP: " + authnReqDTO.getIssuer() + ", subject: " +
-                                authnReqDTO.getSubject()  + ", tenant: " + authnReqDTO.getTenantDomain() +
+                                authnReqDTO.getSubject() + ", tenant: " + authnReqDTO.getTenantDomain() +
                                 "] -> Artifact: " + artifact);
                     }
 
@@ -198,7 +199,6 @@ public class SPInitSSOAuthnRequestProcessor implements SSOAuthnRequestProcessor{
         }
     }
 
-
     /**
      * Returns the configured service provider configurations. The
      * configurations are taken from the user registry or from the
@@ -211,6 +211,7 @@ public class SPInitSSOAuthnRequestProcessor implements SSOAuthnRequestProcessor{
      */
     private SAMLSSOServiceProviderDO getServiceProviderConfig(SAMLSSOAuthnReqDTO authnReqDTO)
             throws IdentityException {
+
         try {
             SSOServiceProviderConfigManager stratosIdpConfigManager = SSOServiceProviderConfigManager
                     .getInstance();
@@ -222,7 +223,7 @@ public class SPInitSSOAuthnRequestProcessor implements SSOAuthnRequestProcessor{
                 IdentityPersistenceManager persistenceManager = IdentityPersistenceManager.getPersistanceManager();
                 Registry registry = (Registry) PrivilegedCarbonContext.getThreadLocalCarbonContext().getRegistry
                         (RegistryType.SYSTEM_CONFIGURATION);
-                ssoIdpConfigs =  persistenceManager.getServiceProvider(registry, authnReqDTO.getIssuer());
+                ssoIdpConfigs = persistenceManager.getServiceProvider(registry, authnReqDTO.getIssuer());
                 authnReqDTO.setStratosDeployment(false); // not stratos
             } else {
                 authnReqDTO.setStratosDeployment(true); // stratos deployment
@@ -306,6 +307,7 @@ public class SPInitSSOAuthnRequestProcessor implements SSOAuthnRequestProcessor{
     }
 
     private boolean isECPReqfromECPEnabledSP(SAMLSSOAuthnReqDTO authnReqDTO, SAMLSSOServiceProviderDO serviceProviderConfigs) {
+
         return authnReqDTO.isSamlECPEnabled() && !serviceProviderConfigs.isSamlECP();
     }
 }

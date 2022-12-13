@@ -15,12 +15,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml.validators;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.joda.time.DateTime;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.saml2.core.AuthnContextComparisonTypeEnumeration;
 import org.opensaml.saml.saml2.core.AuthnRequest;
@@ -34,6 +34,7 @@ import org.wso2.carbon.identity.sso.saml.dto.SAMLAuthenticationContextClassRefDT
 import org.wso2.carbon.identity.sso.saml.dto.SAMLSSOReqValidationResponseDTO;
 import org.wso2.carbon.identity.sso.saml.util.SAMLSSOUtil;
 
+import java.time.Instant;
 import java.util.List;
 
 public class SPInitSSOAuthnRequestValidator extends SSOAuthnRequestAbstractValidator {
@@ -279,18 +280,18 @@ public class SPInitSSOAuthnRequestValidator extends SSOAuthnRequestAbstractValid
      */
     private String validateRequestIssueInstant() {
 
-        DateTime validFrom = authnReq.getIssueInstant();
+        Instant validFrom = authnReq.getIssueInstant();
         if (validFrom == null) {
             return "IssueInstant time is not valid.";
         }
-        DateTime validTill = validFrom.plusSeconds(SAMLSSOUtil.getSAMLAuthenticationRequestValidityPeriod());
+        Instant validTill = validFrom.plusSeconds(SAMLSSOUtil.getSAMLAuthenticationRequestValidityPeriod());
         int timeStampSkewInSeconds = IdentityUtil.getClockSkewInSeconds();
 
-        if (validFrom.minusSeconds(timeStampSkewInSeconds).isAfterNow()) {
+        if (validFrom.minusSeconds(timeStampSkewInSeconds).isAfter(Instant.now())) {
             return "The request IssueInstant time is 'Not Before'";
         }
 
-        if (validTill != null && validTill.plusSeconds(timeStampSkewInSeconds).isBeforeNow()) {
+        if (validTill != null && validTill.plusSeconds(timeStampSkewInSeconds).isBefore(Instant.now())) {
             return "The request IssueInstant time is  'Not On Or After'";
         }
 

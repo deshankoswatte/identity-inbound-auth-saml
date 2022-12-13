@@ -28,9 +28,9 @@ import javax.xml.namespace.QName;
  */
 public interface SPType extends SAMLObject {
 
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SPType";
+    String DEFAULT_ELEMENT_LOCAL_NAME = "SPType";
 
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(EidasConstants.EIDAS_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    QName DEFAULT_ELEMENT_NAME = new QName(EidasConstants.EIDAS_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             EidasConstants.EIDAS_PREFIX);
 
 }

@@ -16,7 +16,8 @@
   ~  specific language governing permissions and limitations
   ~  under the License.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
         <groupId>org.wso2.carbon.identity.inbound.auth.saml2</groupId>
@@ -268,6 +269,28 @@
             </exclusions>
         </dependency>
 
+        <!-- Ant wsimport task -->
+        <dependency>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-tools</artifactId>
+        </dependency>
+
+        <!-- javax implementation bindings -->
+        <dependency>
+            <groupId>javax.xml.ws</groupId>
+            <artifactId>jaxws-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.xml.soap</groupId>
+            <artifactId>javax.xml.soap-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.jws</groupId>
+            <artifactId>javax.jws-api</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock-module-testng</artifactId>
@@ -275,7 +298,7 @@
         </dependency>
         <dependency>
             <groupId>org.powermock</groupId>
-            <artifactId>powermock-api-mockito</artifactId>
+            <artifactId>powermock-api-mockito2</artifactId>
             <scope>test</scope>
         </dependency>
 
@@ -334,13 +357,17 @@
                             org.wso2.carbon.registry.api; version="${carbon.kernel.registry.imp.pkg.version}",
                             org.wso2.carbon.identity.base;version="${carbon.identity.framework.imp.pkg.version.range}",
                             org.wso2.carbon.idp.mgt; version="${carbon.identity.framework.imp.pkg.version.range}",
-                            org.wso2.carbon.identity.application.common; version="${carbon.identity.framework.imp.pkg.version.range}",
-                            org.wso2.carbon.identity.application.mgt.listener; version="${carbon.identity.framework.imp.pkg.version.range}",
+                            org.wso2.carbon.identity.application.common;
+                            version="${carbon.identity.framework.imp.pkg.version.range}",
+                            org.wso2.carbon.identity.application.mgt.listener;
+                            version="${carbon.identity.framework.imp.pkg.version.range}",
                             org.apache.xerces.impl; resolution:= optional,
                             org.owasp.encoder,
                             org.wso2.carbon.base.api,
-                            org.wso2.carbon.identity.sp.metadata.saml2.exception; version="${identity.metadata.saml2.imp.pkg.version.range}",
-                            org.wso2.carbon.identity.sp.metadata.saml2.util; version="${identity.metadata.saml2.imp.pkg.version.range}",
+                            org.wso2.carbon.identity.sp.metadata.saml2.exception;
+                            version="${identity.metadata.saml2.imp.pkg.version.range}",
+                            org.wso2.carbon.identity.sp.metadata.saml2.util;
+                            version="${identity.metadata.saml2.imp.pkg.version.range}",
                             org.wso2.carbon.identity.core.model,
                             org.wso2.carbon.identity.saml.common.util.*; version="${saml.common.util.version.range}",
                             org.wso2.carbon.idp.mgt.util,
@@ -400,8 +427,10 @@
                             org.wso2.carbon.utils,
                             org.wso2.carbon.utils.multitenancy,
                             org.wso2.carbon.identity.event; version="${carbon.identity.package.import.version.range}",
-                            org.wso2.carbon.identity.event.event; version="${carbon.identity.package.import.version.range}",
-                            org.wso2.carbon.identity.event.handler; version="${carbon.identity.package.import.version.range}",
+                            org.wso2.carbon.identity.event.event;
+                            version="${carbon.identity.package.import.version.range}",
+                            org.wso2.carbon.identity.event.handler;
+                            version="${carbon.identity.package.import.version.range}",
 
                         </Import-Package>
                         <Export-Package>

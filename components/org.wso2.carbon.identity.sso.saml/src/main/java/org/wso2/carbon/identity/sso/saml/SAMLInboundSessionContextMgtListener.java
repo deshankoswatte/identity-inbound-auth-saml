@@ -78,8 +78,8 @@ public class SAMLInboundSessionContextMgtListener implements SessionContextMgtLi
 
     @Override
     public Map<String, String> onPreUpdateSession(String sessionId, HttpServletRequest httpServletRequest,
-                                               HttpServletResponse httpServletResponse,
-                                               AuthenticationContext authenticationContext) {
+                                                  HttpServletResponse httpServletResponse,
+                                                  AuthenticationContext authenticationContext) {
 
         if (log.isDebugEnabled()) {
             log.debug("Handling onPreUpdateSession for samlsso.");

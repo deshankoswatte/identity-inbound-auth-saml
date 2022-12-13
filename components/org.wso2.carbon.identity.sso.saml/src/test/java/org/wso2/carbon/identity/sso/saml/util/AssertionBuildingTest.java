@@ -19,8 +19,6 @@
 package org.wso2.carbon.identity.sso.saml.util;
 
 import org.apache.axis2.transport.http.HTTPConstants;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.mockito.Mock;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.saml2.core.Assertion;
@@ -62,6 +60,7 @@ import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.carbon.user.core.tenant.TenantManager;
 import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -92,6 +91,7 @@ public class AssertionBuildingTest extends PowerMockTestCase {
 
     @ObjectFactory
     public IObjectFactory getObjectFactory() {
+
         return new PowerMockObjectFactory();
     }
 
@@ -193,25 +193,26 @@ public class AssertionBuildingTest extends PowerMockTestCase {
         prepareIdentityPersistentManager(TestConstants.ATTRIBUTE_CONSUMER_INDEX, TestConstants.TRAVELOCITY_ISSUER,
                 Collections.emptyList());
         TestUtils.startTenantFlow(MultitenantConstants.SUPER_TENANT_DOMAIN_NAME);
-        boolean isACSValied = SAMLSSOUtil.validateACS(MultitenantConstants.SUPER_TENANT_DOMAIN_NAME, TestConstants
+        boolean isACSValid = SAMLSSOUtil.validateACS(MultitenantConstants.SUPER_TENANT_DOMAIN_NAME, TestConstants
                 .TRAVELOCITY_ISSUER, TestConstants.ACS_URL);
-        assertFalse(isACSValied, "Expected to ACS to be validated. But failed");
+        assertFalse(isACSValid, "Expected to ACS to be validated. But failed");
     }
 
     @Test
     public void validateACSWithACSInSP() throws Exception {
 
-        List<String> acs = new ArrayList();
+        List<String> acs = new ArrayList<>();
         acs.add(TestConstants.ACS_URL);
         prepareIdentityPersistentManager(TestConstants.ATTRIBUTE_CONSUMER_INDEX, TestConstants.TRAVELOCITY_ISSUER, acs);
         TestUtils.startTenantFlow(MultitenantConstants.SUPER_TENANT_DOMAIN_NAME);
-        boolean isACSValied = SAMLSSOUtil.validateACS(MultitenantConstants.SUPER_TENANT_DOMAIN_NAME, TestConstants
+        boolean isACSValid = SAMLSSOUtil.validateACS(MultitenantConstants.SUPER_TENANT_DOMAIN_NAME, TestConstants
                 .TRAVELOCITY_ISSUER, TestConstants.ACS_URL);
-        assertTrue(isACSValied, "No ACS configured in SAML SP. Hence expecting false");
+        assertTrue(isACSValid, "No ACS configured in SAML SP. Hence expecting false");
     }
 
     @DataProvider(name = "getSPInitSSOAuthnRequestValidator")
     public Object[][] getSSOAuthnValidatorClasses() {
+
         String signatureAlgorithm = "http://www.w3.org/2000/09/xmldsig#rsa-sha1";
         return new Object[][]{
                 {null, "Expected SP init SSO Authn Request validator not to be null"},
@@ -262,10 +263,9 @@ public class AssertionBuildingTest extends PowerMockTestCase {
 
         Assertion assertion = buildAssertionWithSessionNotOnOrAfter();
         List<AuthnStatement> authStatements = assertion.getAuthnStatements();
-        DateTimeZone utcTimeZone = DateTimeZone.UTC;
-        DateTime sessionNotOnOrAfterTestValue = new DateTime(authStatements.get(0).getAuthnInstant().getMillis() +
-                TimeUnit.SECONDS.toMillis((long) Integer.parseInt(TestConstants.SAML_SESSION_NOT_ON_OR_AFTER_PERIOD_NUMERIC.trim()) * 60), utcTimeZone);
-        assertEquals(assertion.getAuthnStatements().get(0).getSessionNotOnOrAfter(), sessionNotOnOrAfterTestValue ,
+        Instant sessionNotOnOrAfterTestValue = Instant.ofEpochMilli(authStatements.get(0).getAuthnInstant().toEpochMilli() +
+                TimeUnit.SECONDS.toMillis((long) Integer.parseInt(TestConstants.SAML_SESSION_NOT_ON_OR_AFTER_PERIOD_NUMERIC.trim()) * 60));
+        assertEquals(assertion.getAuthnStatements().get(0).getSessionNotOnOrAfter(), sessionNotOnOrAfterTestValue,
                 "Expected value for the SessionNotOnOrAfter is different.");
     }
 
@@ -303,7 +303,6 @@ public class AssertionBuildingTest extends PowerMockTestCase {
         when(ssoServiceProviderConfigManager.getServiceProvider(spName)).thenReturn(samlssoServiceProviderDO);
     }
 
-
     private Assertion buildAssertion() throws Exception {
 
         prepareForGetIssuer();
@@ -331,10 +330,10 @@ public class AssertionBuildingTest extends PowerMockTestCase {
         response.setDestination(authnReqDTO.getAssertionConsumerURL());
         response.setStatus(SAMLSSOUtil.buildResponseStatus(SAMLSSOConstants.StatusCodes.SUCCESS_CODE, null));
         response.setVersion(SAMLVersion.VERSION_20);
-        DateTime issueInstant = new DateTime();
+        Instant issueInstant = Instant.now();
         response.setIssueInstant(issueInstant);
 
-        Assertion assertion = SAMLSSOUtil.buildSAMLAssertion(authnReqDTO, new DateTime(00000000L), TestConstants
+        Assertion assertion = SAMLSSOUtil.buildSAMLAssertion(authnReqDTO, Instant.ofEpochMilli(0L), TestConstants
                 .SESSION_ID);
         return assertion;
     }
@@ -348,8 +347,8 @@ public class AssertionBuildingTest extends PowerMockTestCase {
             AuthnStatement authStmt = authStatements.get(0);
             String sessionNotOnOrAfterValue = TestConstants.SAML_SESSION_NOT_ON_OR_AFTER_PERIOD_NUMERIC;
             if (SAMLSSOUtil.isSAMLNotOnOrAfterPeriodDefined(sessionNotOnOrAfterValue)) {
-                DateTime sessionNotOnOrAfter = new DateTime(authStmt.getAuthnInstant().getMillis() +
-                        TimeUnit.SECONDS.toMillis((long) SAMLSSOUtil.getSAMLSessionNotOnOrAfterPeriod(sessionNotOnOrAfterValue)));
+                Instant sessionNotOnOrAfter = Instant.ofEpochMilli(authStmt.getAuthnInstant().toEpochMilli() +
+                        TimeUnit.SECONDS.toMillis(SAMLSSOUtil.getSAMLSessionNotOnOrAfterPeriod(sessionNotOnOrAfterValue)));
                 authStmt.setSessionNotOnOrAfter(sessionNotOnOrAfter);
             }
         }
@@ -373,16 +372,11 @@ public class AssertionBuildingTest extends PowerMockTestCase {
     @Test
     public void testisSAMLNotOnOrAfterPeriodDefined() {
 
-        assertEquals(SAMLSSOUtil.isSAMLNotOnOrAfterPeriodDefined(TestConstants.SAML_SESSION_NOT_ON_OR_AFTER_PERIOD_NUMERIC),
-                true, "Expected to return true for a numeric value.");
-        assertEquals(SAMLSSOUtil.isSAMLNotOnOrAfterPeriodDefined(TestConstants.SAML_SESSION_NOT_ON_OR_AFTER_PERIOD_ALPHA),
-                false, "Expected to false false for a alphabetic value.");
-        assertEquals(SAMLSSOUtil.isSAMLNotOnOrAfterPeriodDefined(TestConstants.SAML_SESSION_NOT_ON_OR_AFTER_PERIOD_ZERO),
-                false, "Expected to return false for a zero.");
-        assertEquals(SAMLSSOUtil.isSAMLNotOnOrAfterPeriodDefined(TestConstants.SAML_SESSION_NOT_ON_OR_AFTER_PERIOD_EMPTY),
-                false, "Expected to return false for a empty string.");
-        assertEquals(SAMLSSOUtil.isSAMLNotOnOrAfterPeriodDefined(TestConstants.SAML_SESSION_NOT_ON_OR_AFTER_PERIOD_WHITE_SPACE),
-                false, "Expected to return false for white space.");
+        assertTrue(SAMLSSOUtil.isSAMLNotOnOrAfterPeriodDefined(TestConstants.SAML_SESSION_NOT_ON_OR_AFTER_PERIOD_NUMERIC), "Expected to return true for a numeric value.");
+        assertFalse(SAMLSSOUtil.isSAMLNotOnOrAfterPeriodDefined(TestConstants.SAML_SESSION_NOT_ON_OR_AFTER_PERIOD_ALPHA), "Expected to false false for a alphabetic value.");
+        assertFalse(SAMLSSOUtil.isSAMLNotOnOrAfterPeriodDefined(TestConstants.SAML_SESSION_NOT_ON_OR_AFTER_PERIOD_ZERO), "Expected to return false for a zero.");
+        assertFalse(SAMLSSOUtil.isSAMLNotOnOrAfterPeriodDefined(TestConstants.SAML_SESSION_NOT_ON_OR_AFTER_PERIOD_EMPTY), "Expected to return false for a empty string.");
+        assertFalse(SAMLSSOUtil.isSAMLNotOnOrAfterPeriodDefined(TestConstants.SAML_SESSION_NOT_ON_OR_AFTER_PERIOD_WHITE_SPACE), "Expected to return false for white space.");
     }
 
     @Test

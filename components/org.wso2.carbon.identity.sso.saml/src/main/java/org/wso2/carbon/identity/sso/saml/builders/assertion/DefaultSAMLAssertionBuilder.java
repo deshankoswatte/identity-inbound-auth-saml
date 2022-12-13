@@ -20,7 +20,6 @@ package org.wso2.carbon.identity.sso.saml.builders.assertion;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.joda.time.DateTime;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.saml1.core.NameIdentifier;
@@ -66,6 +65,7 @@ import org.wso2.carbon.identity.sso.saml.builders.SignKeyDataHolder;
 import org.wso2.carbon.identity.sso.saml.dto.SAMLSSOAuthnReqDTO;
 import org.wso2.carbon.identity.sso.saml.util.SAMLSSOUtil;
 
+import java.time.Instant;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -84,9 +84,10 @@ public class DefaultSAMLAssertionBuilder implements SAMLAssertionBuilder {
     }
 
     @Override
-    public Assertion buildAssertion(SAMLSSOAuthnReqDTO authReqDTO, DateTime notOnOrAfter, String sessionId) throws IdentityException {
+    public Assertion buildAssertion(SAMLSSOAuthnReqDTO authReqDTO, Instant notOnOrAfter, String sessionId) throws IdentityException {
+
         try {
-            DateTime currentTime = new DateTime();
+            Instant currentTime = Instant.now();
             Assertion samlAssertion = new AssertionBuilder().buildObject();
 
             this.setBasicInfo(samlAssertion, currentTime);
@@ -95,9 +96,9 @@ public class DefaultSAMLAssertionBuilder implements SAMLAssertionBuilder {
 
             this.addAuthStatement(authReqDTO, sessionId, samlAssertion);
             /*
-                * If <AttributeConsumingServiceIndex> element is in the <AuthnRequest> and according to
-                * the spec 2.0 the subject MUST be in the assertion
-                */
+             * If <AttributeConsumingServiceIndex> element is in the <AuthnRequest> and according to
+             * the spec 2.0 the subject MUST be in the assertion
+             */
 
             this.addAttributeStatements(authReqDTO, samlAssertion);
 
@@ -113,14 +114,17 @@ public class DefaultSAMLAssertionBuilder implements SAMLAssertionBuilder {
                     "Error when reading claim values for generating SAML Response", e);
         }
     }
-    protected void setBasicInfo(Assertion samlAssertion, DateTime currentTime)throws IdentityException{
+
+    protected void setBasicInfo(Assertion samlAssertion, Instant currentTime) throws IdentityException {
+
         samlAssertion.setID(SAMLSSOUtil.createID());
         samlAssertion.setVersion(SAMLVersion.VERSION_20);
         samlAssertion.setIssuer(SAMLSSOUtil.getIssuer());
         samlAssertion.setIssueInstant(currentTime);
     }
 
-    protected  void setNameId(SAMLSSOAuthnReqDTO authReqDTO, Subject subject){
+    protected void setNameId(SAMLSSOAuthnReqDTO authReqDTO, Subject subject) {
+
         NameID nameId = new NameIDBuilder().buildObject();
 
         nameId.setValue(authReqDTO.getUser().getAuthenticatedSubjectIdentifier());
@@ -132,7 +136,8 @@ public class DefaultSAMLAssertionBuilder implements SAMLAssertionBuilder {
         subject.setNameID(nameId);
     }
 
-    protected void addSubjectConfirmation(SAMLSSOAuthnReqDTO authReqDTO, DateTime notOnOrAfter, Subject subject ){
+    protected void addSubjectConfirmation(SAMLSSOAuthnReqDTO authReqDTO, Instant notOnOrAfter, Subject subject) {
+
         SubjectConfirmation subjectConfirmation = new SubjectConfirmationBuilder()
                 .buildObject();
         subjectConfirmation.setMethod(SAMLSSOConstants.SUBJECT_CONFIRM_BEARER);
@@ -162,18 +167,19 @@ public class DefaultSAMLAssertionBuilder implements SAMLAssertionBuilder {
         }
     }
 
-    protected void setSubject (SAMLSSOAuthnReqDTO authReqDTO, DateTime notOnOrAfter, Assertion samlAssertion){
+    protected void setSubject(SAMLSSOAuthnReqDTO authReqDTO, Instant notOnOrAfter, Assertion samlAssertion) {
+
         Subject subject = new SubjectBuilder().buildObject();
 
         this.setNameId(authReqDTO, subject);
 
-        this.addSubjectConfirmation(authReqDTO,notOnOrAfter,subject);
+        this.addSubjectConfirmation(authReqDTO, notOnOrAfter, subject);
 
         samlAssertion.setSubject(subject);
     }
 
+    protected void setSignature(SAMLSSOAuthnReqDTO authReqDTO, Assertion samlAssertion) throws IdentityException {
 
-    protected void setSignature(SAMLSSOAuthnReqDTO authReqDTO, Assertion samlAssertion) throws IdentityException{
         if (authReqDTO.getDoSignAssertions()) {
             SAMLSSOUtil.setSignature(samlAssertion, authReqDTO.getSigningAlgorithmUri(), authReqDTO
                     .getDigestAlgorithmUri(), new SignKeyDataHolder(authReqDTO.getUser()
@@ -181,7 +187,8 @@ public class DefaultSAMLAssertionBuilder implements SAMLAssertionBuilder {
         }
     }
 
-    protected void setConditions(SAMLSSOAuthnReqDTO authReqDTO,  DateTime currentTime, DateTime notOnOrAfter,  Assertion samlAssertion) {
+    protected void setConditions(SAMLSSOAuthnReqDTO authReqDTO, Instant currentTime, Instant notOnOrAfter, Assertion samlAssertion) {
+
         AudienceRestriction audienceRestriction = new AudienceRestrictionBuilder()
                 .buildObject();
         addAudience(audienceRestriction, authReqDTO.getIssuerWithDomain());
@@ -209,7 +216,8 @@ public class DefaultSAMLAssertionBuilder implements SAMLAssertionBuilder {
         audienceRestriction.getAudiences().add(audience);
     }
 
-    protected void addAttributeStatements(SAMLSSOAuthnReqDTO authReqDTO, Assertion samlAssertion) throws IdentityException{
+    protected void addAttributeStatements(SAMLSSOAuthnReqDTO authReqDTO, Assertion samlAssertion) throws IdentityException {
+
         Map<String, String> claims = SAMLSSOUtil.getAttributes(authReqDTO);
 
         // IDP session key is included in the AttributeStatement section of the SAML assertion.
@@ -233,18 +241,18 @@ public class DefaultSAMLAssertionBuilder implements SAMLAssertionBuilder {
     /**
      * Add Authn Statement to the Assertion
      *
-     * @param authReqDTO SAMLSSOAuthnReqDTO
-     * @param sessionId Session Id
+     * @param authReqDTO    SAMLSSOAuthnReqDTO
+     * @param sessionId     Session Id
      * @param samlAssertion SAML Assertion
      */
     protected void addAuthStatement(SAMLSSOAuthnReqDTO authReqDTO, String sessionId, Assertion samlAssertion) {
 
-        DateTime authnInstant;
+        Instant authnInstant;
 
         if (authReqDTO.getCreatedTimeStamp() != 0L) {
-            authnInstant = new DateTime(authReqDTO.getCreatedTimeStamp());
+            authnInstant = Instant.ofEpochMilli(authReqDTO.getCreatedTimeStamp());
         } else {
-            authnInstant = new DateTime();
+            authnInstant = Instant.now();
         }
 
         if (authReqDTO.getIdpAuthenticationContextProperties().get(SAMLSSOConstants.AUTHN_CONTEXT_CLASS_REF) != null
@@ -254,8 +262,8 @@ public class DefaultSAMLAssertionBuilder implements SAMLAssertionBuilder {
             List<AuthenticationContextProperty> authenticationContextProperties = authReqDTO
                     .getIdpAuthenticationContextProperties().get(SAMLSSOConstants.AUTHN_CONTEXT_CLASS_REF);
 
-            for(AuthenticationContextProperty authenticationContextProperty : authenticationContextProperties) {
-                if(authenticationContextProperty.getPassThroughData() != null) {
+            for (AuthenticationContextProperty authenticationContextProperty : authenticationContextProperties) {
+                if (authenticationContextProperty.getPassThroughData() != null) {
                     Map<String, Object> passThroughData = (Map<String, Object>) authenticationContextProperty
                             .getPassThroughData();
                     List<String> authnContextClassRefList;
@@ -268,10 +276,10 @@ public class DefaultSAMLAssertionBuilder implements SAMLAssertionBuilder {
                             idpEntityId = (String) passThroughData.get(IdentityApplicationConstants.Authenticator
                                     .SAML2SSO.IDP_ENTITY_ID);
                         }
-                        DateTime applicableAuthnInstant = (DateTime) passThroughData.get(
+                        Instant applicableAuthnInstant = (Instant) passThroughData.get(
                                 SAMLSSOConstants.AUTHN_INSTANT);
                         if (applicableAuthnInstant == null) {
-                            if(log.isDebugEnabled()) {
+                            if (log.isDebugEnabled()) {
                                 log.debug(
                                         "Treating AuthnInstant as current time, as it is not found in the pass-through data");
                             }
@@ -301,21 +309,21 @@ public class DefaultSAMLAssertionBuilder implements SAMLAssertionBuilder {
     /**
      * Build AuthnStatement
      *
-     * @param authReqDTO SAMLSSOAuthnReqDTO
-     * @param sessionId session id
+     * @param authReqDTO           SAMLSSOAuthnReqDTO
+     * @param sessionId            session id
      * @param authnContextClassRef AuthnContextClassRef
-     * @param authnInstant issue instance
-     * @param idPEntityId idp entity id
+     * @param authnInstant         issue instance
+     * @param idPEntityId          idp entity id
      * @return AuthnStatement instance
      */
     private AuthnStatement getAuthnStatement(SAMLSSOAuthnReqDTO authReqDTO, String sessionId,
-                                             String authnContextClassRef, DateTime authnInstant, String idPEntityId) {
+                                             String authnContextClassRef, Instant authnInstant, String idPEntityId) {
 
         AuthnStatement authStmt = new AuthnStatementBuilder().buildObject();
         authStmt.setAuthnInstant(authnInstant);
         String sessionNotOnOrAfterValue = IdentityUtil.getProperty(IdentityConstants.ServerConfig.SAML_SESSION_NOT_ON_OR_AFTER_PERIOD);
         if (SAMLSSOUtil.isSAMLNotOnOrAfterPeriodDefined(sessionNotOnOrAfterValue)) {
-            DateTime sessionNotOnOrAfter = new DateTime(authnInstant.getMillis() +
+            Instant sessionNotOnOrAfter = Instant.ofEpochMilli(authnInstant.toEpochMilli() +
                     TimeUnit.SECONDS.toMillis((long) SAMLSSOUtil.getSAMLSessionNotOnOrAfterPeriod(sessionNotOnOrAfterValue)));
             authStmt.setSessionNotOnOrAfter(sessionNotOnOrAfter);
         }
@@ -323,7 +331,7 @@ public class DefaultSAMLAssertionBuilder implements SAMLAssertionBuilder {
         AuthnContextClassRef authCtxClassRef = new AuthnContextClassRefBuilder().buildObject();
         authCtxClassRef.setAuthnContextClassRef(authnContextClassRef);
         authContext.setAuthnContextClassRef(authCtxClassRef);
-        if(StringUtils.isNotBlank(idPEntityId)) {
+        if (StringUtils.isNotBlank(idPEntityId)) {
             AuthenticatingAuthority authenticatingAuthority = new AuthenticatingAuthorityImpl();
             authenticatingAuthority.setURI(idPEntityId);
             authContext.getAuthenticatingAuthorities().add(authenticatingAuthority);

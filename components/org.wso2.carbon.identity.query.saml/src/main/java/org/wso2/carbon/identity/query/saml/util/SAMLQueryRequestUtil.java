@@ -22,7 +22,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xerces.impl.Constants;
 import org.apache.xerces.util.SecurityManager;
-import org.joda.time.DateTime;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -94,9 +93,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.Iterator;
 import java.util.Map;
-
 
 public class SAMLQueryRequestUtil {
 
@@ -105,13 +104,14 @@ public class SAMLQueryRequestUtil {
     private static boolean isBootstrapped = false;
 
     /**
-     * convert xml string into DOM object
+     * Convert an XML string into a DOM object.
      *
-     * @param xmlString XML content in string format
-     * @return XMLObject well-formed XML object
-     * @throws IdentitySAML2QueryException if unable to unmarshall request message
+     * @param xmlString XML content in string format.
+     * @return XMLObject well-formed XML object.
+     * @throws IdentitySAML2QueryException if it is unable to unmarshall request message.
      */
     public static XMLObject unmarshall(String xmlString) throws IdentitySAML2QueryException {
+
         InputStream inputStream;
         try {
             doBootstrap();
@@ -123,18 +123,15 @@ public class SAMLQueryRequestUtil {
             UnmarshallerFactory unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
             Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(element);
             return unmarshaller.unmarshall(element);
-        } catch (IOException e) {
-            log.error("Unable to parse inputstream", e);
-            throw new IdentitySAML2QueryException("Unable to parse inputstream");
+        } catch (IOException | SAXException e) {
+            log.error("Unable to parse input stream", e);
+            throw new IdentitySAML2QueryException("Unable to parse input stream");
         } catch (UnmarshallingException e) {
             log.error("Unable unmarshall XML element", e);
             throw new IdentitySAML2QueryException("Unable unmarshall XML element");
         } catch (ParserConfigurationException e) {
             log.error("Unable to initiate document builder", e);
             throw new IdentitySAML2QueryException("Unable to initiate document builder");
-        } catch (SAXException e) {
-            log.error("Unable to parse inputstream", e);
-            throw new IdentitySAML2QueryException("Unable to parse inputstream");
         } catch (IdentityException e) {
             log.error("Unable to bootstrap while unmarshall", e);
             throw new IdentitySAML2QueryException("Unable to bootstrap while unmarshall");
@@ -143,11 +140,11 @@ public class SAMLQueryRequestUtil {
     }
 
     /**
-     * Create DocumentBuilderFactory with the XXE and XEE prevention measurements.
+     * Create a DocumentBuilderFactory with the XXE and XEE prevention measurements.
      *
-     * @return DocumentBuilderFactory instance
+     * @return An instance of the DocumentBuilderFactory.
      */
-    public static DocumentBuilderFactory getSecuredDocumentBuilderFactory() throws  IdentitySAML2QueryException{
+    public static DocumentBuilderFactory getSecuredDocumentBuilderFactory() throws IdentitySAML2QueryException {
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
@@ -168,7 +165,7 @@ public class SAMLQueryRequestUtil {
                     " or secure-processing.");
             throw new IdentitySAML2QueryException("Failed to load XML Processor Feature " + Constants.EXTERNAL_GENERAL_ENTITIES_FEATURE + " or " +
                     Constants.EXTERNAL_PARAMETER_ENTITIES_FEATURE + " or " + Constants.LOAD_EXTERNAL_DTD_FEATURE +
-                    " or secure-processing.",e);
+                    " or secure-processing.", e);
         }
 
         SecurityManager securityManager = new SecurityManager();
@@ -179,13 +176,13 @@ public class SAMLQueryRequestUtil {
 
     }
 
-
     /**
-     * Initializes the OpenSAML library modules, if not initialized yet.
+     * Initializes the OpenSAML library modules, if it is not initialized yet.
      *
-     * @throws IdentitySAML2QueryException If unable to initialize
+     * @throws IdentitySAML2QueryException If it is unable to initialize the OpenSAML library.
      */
     public static void doBootstrap() throws IdentitySAML2QueryException {
+
         try {
             if (!isBootstrapped) {
                 SAMLInitializer.doBootstrap();
@@ -199,14 +196,15 @@ public class SAMLQueryRequestUtil {
     }
 
     /**
-     * This method is used to load Service Provider Configurations
+     * This method is used to load Service Provider Configurations.
      *
-     * @param issuer issuer name
-     * @return SAMLSSOServiceProviderDO issuer config instance
-     * @throws IdentitySAML2QueryException If unable to get issuer information
+     * @param issuer The name of the issuer.
+     * @return A SAMLSSOServiceProviderDO issuer config instance.
+     * @throws IdentitySAML2QueryException If it is unable to get issuer information.
      */
     public static SAMLSSOServiceProviderDO getServiceProviderConfig(String issuer)
             throws IdentitySAML2QueryException {
+
         try {
             SSOServiceProviderConfigManager idPConfigManager =
                     SSOServiceProviderConfigManager.getInstance();
@@ -232,23 +230,21 @@ public class SAMLQueryRequestUtil {
     }
 
     /**
-     * this method is used to build SAML2.0 assertion
+     * This method is used to build the SAML2.0 assertion.
      *
-     * @param ssoIdPConfigs          issuer information
-     * @param tenantDomain           tenant domain of issuer
-     * @param authzDecisionStatement authentication decision statements
-     * @return Assertion set of elements contain inside assertion
-     * @throws IdentitySAML2QueryException If unable to collect issuer information
+     * @param ssoIdPConfigs          Issuer information.
+     * @param tenantDomain           Tenant domain of the issuer.
+     * @param authzDecisionStatement Authentication decision statements.
+     * @return Assertion that contains a set of elements.
+     * @throws IdentitySAML2QueryException If it is unable to collect issuer information.
      */
     public static Assertion buildSAMLAssertion(String tenantDomain, AuthzDecisionStatement authzDecisionStatement,
                                                SAMLSSOServiceProviderDO ssoIdPConfigs)
             throws IdentitySAML2QueryException {
 
-        DateTime currentTime = new DateTime();
-        DateTime notOnOrAfter =
-                new DateTime(currentTime.getMillis() +
-                        (long) SAMLSSOUtil.getSAMLResponseValidityPeriod() * 60 *
-                                1000);
+        Instant currentTime = Instant.now();
+        Instant notOnOrAfter = Instant.ofEpochMilli(currentTime.toEpochMilli() +
+                (long) SAMLSSOUtil.getSAMLResponseValidityPeriod() * 60 * 1000);
         Assertion samlAssertion = new AssertionBuilder().buildObject();
         samlAssertion.setID(SAMLSSOUtil.createID());
         samlAssertion.setVersion(SAMLVersion.VERSION_20);
@@ -277,7 +273,7 @@ public class SAMLQueryRequestUtil {
         samlAssertion.setSubject(subject);
 
         AuthnStatement authStmt = new AuthnStatementBuilder().buildObject();
-        authStmt.setAuthnInstant(new DateTime());
+        authStmt.setAuthnInstant(Instant.now());
 
         AuthnContext authContext = new AuthnContextBuilder().buildObject();
         AuthnContextClassRef authCtxClassRef = new AuthnContextClassRefBuilder().buildObject();
@@ -321,23 +317,21 @@ public class SAMLQueryRequestUtil {
     }
 
     /**
-     * this method is used to build SAML2.0 assertion
+     * This method is used to build SAML2.0 assertion.
      *
-     * @param ssoIdPConfigs issuer information
-     * @param tenantDomain  tenant domain of issuer
-     * @param claims        List of requested claims
-     * @return Assertion set of elements contain inside assertion
-     * @throws IdentitySAML2QueryException If unable to collect issuer information
+     * @param ssoIdPConfigs Issuer information
+     * @param tenantDomain  Tenant domain of the issuer.
+     * @param claims        List of the requested claims.
+     * @return Assertion that contains a set of elements.
+     * @throws IdentitySAML2QueryException If it is unable to collect issuer information.
      */
     public static Assertion buildSAMLAssertion(String tenantDomain, Map<String, String> claims,
                                                SAMLSSOServiceProviderDO ssoIdPConfigs)
             throws IdentitySAML2QueryException {
 
-        DateTime currentTime = new DateTime();
-        DateTime notOnOrAfter =
-                new DateTime(currentTime.getMillis() +
-                        (long) SAMLSSOUtil.getSAMLResponseValidityPeriod() * 60 *
-                                1000);
+        Instant currentTime = Instant.now();
+        Instant notOnOrAfter = Instant.ofEpochMilli(currentTime.toEpochMilli() +
+                (long) SAMLSSOUtil.getSAMLResponseValidityPeriod() * 60 * 1000);
         Assertion samlAssertion = new AssertionBuilder().buildObject();
         samlAssertion.setID(SAMLSSOUtil.createID());
         samlAssertion.setVersion(SAMLVersion.VERSION_20);
@@ -345,7 +339,6 @@ public class SAMLQueryRequestUtil {
         samlAssertion.setIssueInstant(currentTime);
         Subject subject = new SubjectBuilder().buildObject();
         NameID nameId = new NameIDBuilder().buildObject();
-
 
         if (ssoIdPConfigs.getNameIDFormat() != null) {
             nameId.setFormat(ssoIdPConfigs.getNameIDFormat());
@@ -368,7 +361,7 @@ public class SAMLQueryRequestUtil {
         samlAssertion.setSubject(subject);
 
         AuthnStatement authStmt = new AuthnStatementBuilder().buildObject();
-        authStmt.setAuthnInstant(new DateTime());
+        authStmt.setAuthnInstant(Instant.now());
 
         AuthnContext authContext = new AuthnContextBuilder().buildObject();
         AuthnContextClassRef authCtxClassRef = new AuthnContextClassRefBuilder().buildObject();
@@ -413,16 +406,17 @@ public class SAMLQueryRequestUtil {
         return samlAssertion;
     }
 
-
     /**
-     * This method is used to build Attribute Statement including user attributes
+     * This method is used to build an Attribute Statement including the user attributes.
      *
-     * @param claims List of requested claims
-     * @return AttributeStatement set of attributes contain inside attribute statement
-     * @throws  IdentitySAML2QueryException If unable to filter attributes from Map
+     * @param claims List of the requested claims.
+     * @return AttributeStatement that contains a set of attributes.
+     * @throws IdentitySAML2QueryException If it is unable to filter attributes from the Map.
      */
 
-    public static AttributeStatement buildAttributeStatement(Map<String, String> claims) throws IdentitySAML2QueryException {
+    public static AttributeStatement buildAttributeStatement(Map<String, String> claims)
+            throws IdentitySAML2QueryException {
+
         AttributeStatement attStmt = null;
         if (claims != null) {
             attStmt = new AttributeStatementBuilder().buildObject();
@@ -447,11 +441,11 @@ public class SAMLQueryRequestUtil {
     }
 
     /**
-     * This method is used to serialize response message
+     * This method is used to serialize a response message.
      *
-     * @param xmlObject well formed XML object
-     * @return String serialized response
-     * @throws IdentitySAML2QueryException If unable to marshall response
+     * @param xmlObject A well formed XML object.
+     * @return String Serialized response message.
+     * @throws IdentitySAML2QueryException If it is unable to marshall response.
      */
     public static String marshall(XMLObject xmlObject) throws IdentitySAML2QueryException {
 

@@ -133,6 +133,7 @@ public class SamlSPMetadataUploadExecutor extends AbstractFileUploadExecutor {
 
     @Override
     protected String getErrorRedirectionPage() {
+
         return errorRedirectionPage;
     }
 }

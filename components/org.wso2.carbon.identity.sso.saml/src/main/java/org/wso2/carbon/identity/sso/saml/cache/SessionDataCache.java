@@ -31,6 +31,7 @@ public class SessionDataCache extends AuthenticationBaseCache<SessionDataCacheKe
     private boolean isTemporarySessionDataPersistEnabled = false;
 
     private SessionDataCache() {
+
         super(SESSION_DATA_CACHE_NAME, true);
         if (IdentityUtil.getProperty("JDBCPersistenceManager.SessionDataPersist.Temporary") != null) {
             isTemporarySessionDataPersistEnabled = Boolean.parseBoolean(
@@ -39,6 +40,7 @@ public class SessionDataCache extends AuthenticationBaseCache<SessionDataCacheKe
     }
 
     public static SessionDataCache getInstance() {
+
         if (instance == null) {
             synchronized (SessionDataCache.class) {
                 if (instance == null) {
@@ -50,6 +52,7 @@ public class SessionDataCache extends AuthenticationBaseCache<SessionDataCacheKe
     }
 
     public void addToCache(SessionDataCacheKey key, SessionDataCacheEntry entry) {
+
         super.addToCache(key, entry);
         if (isTemporarySessionDataPersistEnabled) {
             long validityPeriod = TimeUnit.MINUTES.toNanos(IdentityUtil.getTempDataCleanUpTimeout());
@@ -59,6 +62,7 @@ public class SessionDataCache extends AuthenticationBaseCache<SessionDataCacheKe
     }
 
     public SessionDataCacheEntry getValueFromCache(SessionDataCacheKey key) {
+
         SessionDataCacheEntry cacheEntry = super.getValueFromCache(key);
         if (cacheEntry == null && isTemporarySessionDataPersistEnabled) {
             cacheEntry = (SessionDataCacheEntry) SessionDataStore.getInstance().getSessionData(key.getSessionDataKey(),
@@ -68,6 +72,7 @@ public class SessionDataCache extends AuthenticationBaseCache<SessionDataCacheKe
     }
 
     public void clearCacheEntry(SessionDataCacheKey key) {
+
         super.clearCacheEntry(key);
         if (isTemporarySessionDataPersistEnabled) {
             SessionDataStore.getInstance().clearSessionData(key.getSessionDataKey(), SESSION_DATA_CACHE_NAME);

@@ -37,7 +37,7 @@ public interface SAMLExtensionProcessor {
      * @return true if the request can be handled
      * @throws IdentitySAML2SSOException
      */
-    public boolean canHandle(RequestAbstractType request) throws IdentitySAML2SSOException;
+    boolean canHandle(RequestAbstractType request) throws IdentitySAML2SSOException;
 
     /**
      * Check whether the SAML response can be handled by this extension processor.
@@ -48,27 +48,27 @@ public interface SAMLExtensionProcessor {
      * @return true if the request can be handled
      * @throws IdentitySAML2SSOException
      */
-    public boolean canHandle(StatusResponseType response, Assertion assertion, SAMLSSOAuthnReqDTO authReqDTO)
+    boolean canHandle(StatusResponseType response, Assertion assertion, SAMLSSOAuthnReqDTO authReqDTO)
             throws IdentitySAML2SSOException;
 
     /**
      * Process the SAML extensions in a request.
      *
-     * @param request SAML request
+     * @param request        SAML request
      * @param validationResp Authentication response data object
      * @throws IdentitySAML2SSOException
      */
-    public void processSAMLExtensions(RequestAbstractType request, SAMLSSOReqValidationResponseDTO validationResp)
+    void processSAMLExtensions(RequestAbstractType request, SAMLSSOReqValidationResponseDTO validationResp)
             throws IdentitySAML2SSOException;
 
     /**
      * Process the SAML extensions in a response or process against the SAML request with extensions.
      *
-     * @param response SAML response
-     * @param assertion SAML assertion
+     * @param response   SAML response
+     * @param assertion  SAML assertion
      * @param authReqDTO Authentication request data object
      * @throws IdentitySAML2SSOException
      */
-    public void processSAMLExtensions(StatusResponseType response, Assertion assertion, SAMLSSOAuthnReqDTO authReqDTO)
+    void processSAMLExtensions(StatusResponseType response, Assertion assertion, SAMLSSOAuthnReqDTO authReqDTO)
             throws IdentitySAML2SSOException;
 }

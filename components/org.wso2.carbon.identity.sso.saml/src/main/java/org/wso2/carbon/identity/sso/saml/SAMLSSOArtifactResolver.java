@@ -23,7 +23,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xml.security.exceptions.Base64DecodingException;
 import org.apache.xml.security.utils.Base64;
-import org.joda.time.DateTime;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLVersion;
@@ -49,6 +48,7 @@ import org.wso2.carbon.identity.sso.saml.exception.ArtifactBindingException;
 import org.wso2.carbon.identity.sso.saml.util.SAMLSSOUtil;
 
 import java.math.BigInteger;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -69,7 +69,7 @@ public class SAMLSSOArtifactResolver {
     public ArtifactResponse resolveArtifact(ArtifactResolve artifactResolve) throws ArtifactBindingException {
 
         Response response = null;
-        ArtifactResponse artifactResponse = null;
+        ArtifactResponse artifactResponse;
         String artifact = artifactResolve.getArtifact().getArtifact();
         try {
             // Decode and depart SAML artifactResolve.
@@ -105,8 +105,7 @@ public class SAMLSSOArtifactResolver {
 
         } catch (IdentityException e) {
             throw new ArtifactBindingException("Error while building response for SAML2 artifact: " + artifact, e);
-        }
-        catch (Base64DecodingException e) {
+        } catch (Base64DecodingException e) {
             throw new ArtifactBindingException("Error while Base64 decoding SAML2 artifact: " + artifact, e);
         }
 
@@ -124,10 +123,10 @@ public class SAMLSSOArtifactResolver {
             throws IdentityException, ArtifactBindingException {
 
         // Checking for artifactResolve validity period.
-        DateTime currentTime = new DateTime();
+        Instant currentTime = Instant.now();
         if (!artifactInfo.getExpTimestamp().isAfter(currentTime)) {
             log.warn("Artifact validity period (" + artifactInfo.getExpTimestamp() + ") has been " +
-                        "exceeded for artifact: " + artifactResolve.getArtifact().getArtifact());
+                    "exceeded for artifact: " + artifactResolve.getArtifact().getArtifact());
             return false;
         }
 
@@ -158,7 +157,7 @@ public class SAMLSSOArtifactResolver {
      * @throws ArtifactBindingException
      */
     private boolean validateArtifactResolveSignature(ArtifactResolve artifactResolve,
-                                                  SAMLSSOServiceProviderDO serviceProviderDO)
+                                                     SAMLSSOServiceProviderDO serviceProviderDO)
             throws ArtifactBindingException {
 
         if (log.isDebugEnabled()) {
@@ -169,8 +168,8 @@ public class SAMLSSOArtifactResolver {
 
         if (artifactResolve.getSignature() == null) {
             log.warn("Signature was not found in the SAML2 Artifact Resolve with artifact: " +
-                        artifactResolve.getArtifact().getArtifact() + " issuer: " +
-                        artifactResolve.getIssuer().getValue());
+                    artifactResolve.getArtifact().getArtifact() + " issuer: " +
+                    artifactResolve.getIssuer().getValue());
             return false;
         }
         SignatureImpl signImpl = (SignatureImpl) artifactResolve.getSignature();

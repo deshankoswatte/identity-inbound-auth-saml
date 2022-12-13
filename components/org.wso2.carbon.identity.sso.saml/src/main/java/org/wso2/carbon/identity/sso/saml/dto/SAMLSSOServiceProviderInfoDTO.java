@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml.dto;
 
 import java.io.Serializable;
@@ -48,18 +49,22 @@ public class SAMLSSOServiceProviderInfoDTO implements Serializable {
     }
 
     public String getPubCertFilePath() {
+
         return pubCertFilePath;
     }
 
     public void setPubCertFilePath(String pubCertFilePath) {
+
         this.pubCertFilePath = pubCertFilePath;
     }
 
     public boolean isTenantZero() {
+
         return isTenantZero;
     }
 
     public void setTenantZero(boolean tenantZero) {
+
         isTenantZero = tenantZero;
     }
 }

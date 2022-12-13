@@ -32,11 +32,12 @@ public class SAMLSSOUIUtil {
 
     public static final boolean DEFAULT_VALUE_FOR_RESPONSE_SIGNING = true;
     public static final boolean DEFAULT_VALUE_FOR_SIGNATURE_VALIDATE_FOR_REQUESTS = true;
-    public static final boolean DEFAULT_VALUE_FOR_SINGLE_LOGOUT= true;
-    public static final boolean DEFAULT_VALUE_FOR_ATTRIBUTE_PROFILE= true;
+    public static final boolean DEFAULT_VALUE_FOR_SINGLE_LOGOUT = true;
+    public static final boolean DEFAULT_VALUE_FOR_ATTRIBUTE_PROFILE = true;
     public static final boolean DEFAULT_VALUE_FOR_ECP = false;
 
     private SAMLSSOUIUtil() {
+
     }
 
     /**
@@ -47,6 +48,7 @@ public class SAMLSSOUIUtil {
      * @return
      */
     public static String getSafeInput(HttpServletRequest request, String parameter) {
+
         return request.getParameter(parameter);
     }
 
@@ -74,6 +76,7 @@ public class SAMLSSOUIUtil {
 
     public static SAMLSSOServiceProviderDTO[] doFilter(String filter,
                                                        SAMLSSOServiceProviderDTO[] serviceProviderSet) {
+
         String regPattern = filter.replace("*", ".*");
         List<SAMLSSOServiceProviderDTO> list = new ArrayList<>();
         for (SAMLSSOServiceProviderDTO serviceProvider : serviceProviderSet) {
@@ -102,7 +105,7 @@ public class SAMLSSOUIUtil {
         return false;
     }
 
-    public static boolean isSamlECPEnabled(boolean isSpEdit , SAMLSSOServiceProviderDTO provider ) {
+    public static boolean isSamlECPEnabled(boolean isSpEdit, SAMLSSOServiceProviderDTO provider) {
 
         return false;
     }
@@ -145,6 +148,7 @@ public class SAMLSSOUIUtil {
 
     /**
      * Check front-Channel logout HTTP Redirect Binding enable and if not enable return false.
+     *
      * @param isSpEdit Operation on service provider, create or edit.
      * @param provider SAML2 service provider configuration.
      * @return boolean true if redirect binding enabled.
@@ -157,6 +161,7 @@ public class SAMLSSOUIUtil {
 
     /**
      * Check front-Channel logout HTTP Post Binding enable and if not enabled, return false.
+     *
      * @param isSpEdit Operation on service provider, create or edit.
      * @param provider SAML2 service provider configuration
      * @return boolean true if post binding enabled.

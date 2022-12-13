@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml.dto;
 
 import org.wso2.carbon.identity.application.authentication.framework.model.AuthenticatedUser;
@@ -33,50 +34,62 @@ public class SAMLSSORespDTO implements Serializable {
     private AuthenticatedUser subject;
 
     public String getRespString() {
+
         return respString;
     }
 
     public void setRespString(String respString) {
+
         this.respString = respString;
     }
 
     public boolean isSessionEstablished() {
+
         return isSessionEstablished;
     }
 
     public void setSessionEstablished(boolean sessionEstablished) {
+
         isSessionEstablished = sessionEstablished;
     }
 
     public String getAssertionConsumerURL() {
+
         return assertionConsumerURL;
     }
 
     public void setAssertionConsumerURL(String assertionConsumerURL) {
+
         this.assertionConsumerURL = assertionConsumerURL;
     }
 
     public String getLoginPageURL() {
+
         return loginPageURL;
     }
 
     public void setLoginPageURL(String loginPageURL) {
+
         this.loginPageURL = loginPageURL;
     }
 
     public String getErrorMsg() {
+
         return errorMsg;
     }
 
     public void setErrorMsg(String errorMsg) {
+
         this.errorMsg = errorMsg;
     }
 
     public AuthenticatedUser getSubject() {
+
         return subject;
     }
 
     public void setSubject(AuthenticatedUser subject) {
+
         this.subject = subject;
     }
 }

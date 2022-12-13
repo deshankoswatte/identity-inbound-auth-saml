@@ -82,7 +82,7 @@ public class SSOSessionPersistenceManagerTest extends PowerMockTestCase {
     @Test
     public void testAddSessionIndexToCache() throws Exception {
 
-        String actualSessionIndex = null;
+        String actualSessionIndex;
         SSOSessionPersistenceManager.addSessionIndexToCache("tokenid", "sessionIndex",
                 MultitenantConstants.SUPER_TENANT_DOMAIN_NAME);
         SAMLSSOSessionIndexCacheKey cacheKey = new SAMLSSOSessionIndexCacheKey("tokenid");
@@ -191,12 +191,12 @@ public class SSOSessionPersistenceManagerTest extends PowerMockTestCase {
         String sessionIndex = "sessionIndex";
         SSOSessionPersistenceManager.addSessionIndexToCache("sessionIndex", sessionIndex,
                 MultitenantConstants.SUPER_TENANT_DOMAIN_NAME);
-        Assert.assertEquals(ssoSessionPersistenceManager.isExistingTokenId("sessionIndex",
-                MultitenantConstants.SUPER_TENANT_DOMAIN_NAME), true);
+        Assert.assertTrue(ssoSessionPersistenceManager.isExistingTokenId("sessionIndex",
+                MultitenantConstants.SUPER_TENANT_DOMAIN_NAME));
         SSOSessionPersistenceManager.removeSessionIndexFromCache(sessionIndex,
                 MultitenantConstants.SUPER_TENANT_DOMAIN_NAME);
-        Assert.assertEquals(ssoSessionPersistenceManager.isExistingTokenId("sessionIndex",
-                MultitenantConstants.SUPER_TENANT_DOMAIN_NAME), false);
+        Assert.assertFalse(ssoSessionPersistenceManager.isExistingTokenId("sessionIndex",
+                MultitenantConstants.SUPER_TENANT_DOMAIN_NAME));
     }
 
     @Test
@@ -227,12 +227,12 @@ public class SSOSessionPersistenceManagerTest extends PowerMockTestCase {
         SessionInfoData sessionInfoData = new SessionInfoData();
         SSOSessionPersistenceManager.addSessionInfoDataToCache("sessionIndex", sessionInfoData,
                 MultitenantConstants.SUPER_TENANT_DOMAIN_NAME);
-        Assert.assertEquals(ssoSessionPersistenceManager.isExistingSession("sessionIndex",
-                MultitenantConstants.SUPER_TENANT_DOMAIN_NAME), true);
+        Assert.assertTrue(ssoSessionPersistenceManager.isExistingSession("sessionIndex",
+                MultitenantConstants.SUPER_TENANT_DOMAIN_NAME));
         SSOSessionPersistenceManager.removeSessionInfoDataFromCache("sessionIndex",
                 MultitenantConstants.SUPER_TENANT_DOMAIN_NAME);
-        Assert.assertEquals(ssoSessionPersistenceManager.isExistingSession("sessionIndex",
-                MultitenantConstants.SUPER_TENANT_DOMAIN_NAME), false);
+        Assert.assertFalse(ssoSessionPersistenceManager.isExistingSession("sessionIndex",
+                MultitenantConstants.SUPER_TENANT_DOMAIN_NAME));
     }
 
     @DataProvider(name = "testPersistSession1")

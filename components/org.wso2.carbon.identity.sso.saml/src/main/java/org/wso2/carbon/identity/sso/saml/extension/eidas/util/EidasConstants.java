@@ -34,6 +34,7 @@ public class EidasConstants {
     public static final String EIDAS_SP_TYPE_PRIVATE = "private";
 
     private EidasConstants() {
+
     }
 
 }

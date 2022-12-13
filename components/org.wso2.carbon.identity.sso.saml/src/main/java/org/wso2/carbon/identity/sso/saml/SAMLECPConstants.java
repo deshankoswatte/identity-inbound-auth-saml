@@ -24,9 +24,8 @@ package org.wso2.carbon.identity.sso.saml;
 public class SAMLECPConstants {
 
     public static final String SAMLECP_URL = "/samlecp";
-    public static final String IS_ECP_REQUEST  = "isECPRequest";
+    public static final String IS_ECP_REQUEST = "isECPRequest";
     public static final String AUTHORIZATION_HEADER = "Authorization";
-
 
     /**
      * This class defines the SOAP Fault Codes for SOAP Faults.
@@ -50,12 +49,14 @@ public class SAMLECPConstants {
      * This class defines the ECP Header Elements for SOAP Responses.
      */
     public static class SOAPECPHeaderElements {
+
         public static final String SOAP_ECP_HEADER_LOCAL_NAME = "Response";
         public static final String SOAP_ECP_HEADER_PREFIX = "ecp";
         public static final String SOAP_ECP_HEADER_URI = "urn:oasis:names:tc:SAML:2.0:profiles:SSO:ecp";
     }
 
     public static class SOAPNamespaceURI {
+
         public static final String SOAP_NAMESPACE_URI = "http://schemas.xmlsoap.org/soap/envelope/";
     }
 }

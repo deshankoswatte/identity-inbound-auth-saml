@@ -18,9 +18,11 @@
 
 package org.wso2.carbon.identity.sso.saml;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
-import org.joda.time.DateTime;
+
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Issuer;
@@ -59,7 +61,8 @@ import org.wso2.carbon.identity.sso.saml.util.SAMLSSOUtil;
 
 public class SAMLTestAssertionBuilder {
 
-    public static Assertion buildDefaultSAMLAssertion(){
+    public static Assertion buildDefaultSAMLAssertion() {
+
         Map<String, String> userAttributes = new HashMap<>();
         userAttributes.put("first_name", "John");
         userAttributes.put("last_name", "Snow");
@@ -69,8 +72,9 @@ public class SAMLTestAssertionBuilder {
 
     public static Assertion buildSAMLAssertion(String issuerStr, String nameIdStr, String sessionId,
                                                String idpEntityId, Map<String, String> userAttributeMap) {
-        DateTime now = new DateTime();
-        DateTime notOnOrAfter = now.plusMinutes(15);
+
+        Instant now = Instant.now();
+        Instant notOnOrAfter = now.plus(15, ChronoUnit.MINUTES);
 
         Assertion samlAssertion = new AssertionBuilder().buildObject();
 
@@ -117,7 +121,7 @@ public class SAMLTestAssertionBuilder {
         // Create attributeStatement.
         AttributeStatement attStmt = new AttributeStatementBuilder().buildObject();
         XSStringBuilder stringBuilder = new XSStringBuilder();
-        for(Map.Entry<String, String> entry : userAttributeMap.entrySet()){
+        for (Map.Entry<String, String> entry : userAttributeMap.entrySet()) {
             Attribute attribute = new AttributeBuilder().buildObject();
             // Setting attribute name.
             attribute.setName(entry.getKey());

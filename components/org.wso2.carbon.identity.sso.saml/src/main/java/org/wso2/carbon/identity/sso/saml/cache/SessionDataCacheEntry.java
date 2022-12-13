@@ -27,10 +27,12 @@ public class SessionDataCacheEntry extends CacheEntry {
     private SAMLSSOSessionDTO sessionDTO;
 
     public SAMLSSOSessionDTO getSessionDTO() {
+
         return sessionDTO;
     }
 
     public void setSessionDTO(SAMLSSOSessionDTO sessionDTO) {
+
         this.sessionDTO = sessionDTO;
     }
 }

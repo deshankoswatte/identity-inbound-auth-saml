@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml.validators;
 
 import org.apache.commons.lang.StringUtils;
@@ -64,7 +65,7 @@ public class IdPInitSSOAuthnRequestValidator extends SSOAuthnRequestAbstractVali
             } else {
                 String errorResp = SAMLSSOUtil.buildErrorResponse(SAMLSSOConstants.StatusCodes.REQUESTOR_ERROR,
                         "spEntityID parameter not found in request", null);
-                if(log.isDebugEnabled()) {
+                if (log.isDebugEnabled()) {
                     log.debug("spEntityID parameter not found in request");
                 }
                 validationResponse.setResponse(errorResp);
@@ -74,10 +75,10 @@ public class IdPInitSSOAuthnRequestValidator extends SSOAuthnRequestAbstractVali
 
             if (!SAMLSSOUtil.isSAMLIssuerExists(spEntityID, SAMLSSOUtil.getTenantDomainFromThreadLocal())) {
                 String message = "A SAML Service Provider with the Issuer '" + spEntityID + "' is not registered. " +
-                                 "Service Provider should be registered in advance";
+                        "Service Provider should be registered in advance";
                 log.error(message);
                 String errorResp = SAMLSSOUtil.buildErrorResponse(SAMLSSOConstants.StatusCodes.REQUESTOR_ERROR,
-                                                                  message, null);
+                        message, null);
                 validationResponse.setResponse(errorResp);
                 validationResponse.setValid(false);
                 return validationResponse;

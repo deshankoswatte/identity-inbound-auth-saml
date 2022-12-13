@@ -24,10 +24,12 @@ package org.wso2.carbon.identity.sso.saml.exception;
 public class ArtifactBindingException extends Exception {
 
     public ArtifactBindingException(String message) {
+
         super(message);
     }
 
     public ArtifactBindingException(String message, Throwable cause) {
+
         super(message, cause);
     }
 }

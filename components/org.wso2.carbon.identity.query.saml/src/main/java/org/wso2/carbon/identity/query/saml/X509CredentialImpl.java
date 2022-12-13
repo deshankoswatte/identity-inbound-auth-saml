@@ -44,7 +44,7 @@ import java.util.Collection;
  */
 public class X509CredentialImpl implements X509Credential {
 
-    private PublicKey publicKey = null;
+    private PublicKey publicKey;
     private X509Certificate signingCert = null;
 
     /**
@@ -57,6 +57,7 @@ public class X509CredentialImpl implements X509Credential {
      */
     public X509CredentialImpl(BigInteger modulus, BigInteger publicExponent)
             throws NoSuchAlgorithmException, InvalidKeySpecException {
+
         RSAPublicKeySpec spec = new RSAPublicKeySpec(modulus, publicExponent);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         publicKey = keyFactory.generatePublic(spec);
@@ -68,22 +69,25 @@ public class X509CredentialImpl implements X509Credential {
      * @param cert certificate of the source
      */
     public X509CredentialImpl(X509Certificate cert) {
+
         publicKey = cert.getPublicKey();
         signingCert = cert;
     }
 
     @Nullable
     public String getEntityId() {
+
         return null;
     }
 
     @Nullable
     public UsageType getUsageType() {
+
         return null;
     }
 
-
     public Collection<String> getKeyNames() {
+
         return null;
     }
 
@@ -94,27 +98,30 @@ public class X509CredentialImpl implements X509Credential {
      */
     @Nullable
     public PublicKey getPublicKey() {
+
         return publicKey;
     }
 
-
     @Nullable
     public PrivateKey getPrivateKey() {
+
         return null;
     }
 
     @Nullable
     public SecretKey getSecretKey() {
+
         return null;
     }
 
     @Nullable
     public CredentialContextSet getCredentialContextSet() {
+
         return null;
     }
 
-
     public Class<? extends Credential> getCredentialType() {
+
         return null;
     }
 
@@ -124,11 +131,13 @@ public class X509CredentialImpl implements X509Credential {
      * @return X509Certificate signature certificate
      */
     public X509Certificate getSigningCert() {
+
         return signingCert;
     }
 
     @Nonnull
     public X509Certificate getEntityCertificate() {
+
         return signingCert;
     }
 
@@ -140,7 +149,7 @@ public class X509CredentialImpl implements X509Credential {
     @Nonnull
     public Collection<X509Certificate> getEntityCertificateChain() {
 
-        return new ArrayList<X509Certificate>();
+        return new ArrayList<>();
     }
 
     @Nullable
@@ -148,6 +157,5 @@ public class X509CredentialImpl implements X509Credential {
 
         return null;
     }
-
 
 }

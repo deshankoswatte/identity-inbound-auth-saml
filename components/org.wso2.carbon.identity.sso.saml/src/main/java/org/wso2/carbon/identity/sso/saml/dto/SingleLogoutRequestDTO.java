@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml.dto;
 
 import java.io.Serializable;
@@ -30,42 +31,52 @@ public class SingleLogoutRequestDTO implements Serializable {
     private String tenantDomain;
 
     public String getAssertionConsumerURL() {
+
         return assertionConsumerURL;
     }
 
     public void setAssertionConsumerURL(String assertionConsumerURL) {
+
         this.assertionConsumerURL = assertionConsumerURL;
     }
 
     public String getLogoutResponse() {
+
         return logoutResponse;
     }
 
     public void setLogoutResponse(String logoutResponse) {
+
         this.logoutResponse = logoutResponse;
     }
 
     public String getRpSessionId() {
+
         return rpSessionId;
     }
 
     public void setRpSessionId(String rpSessionId) {
+
         this.rpSessionId = rpSessionId;
     }
 
     public String getCertificateAlias() {
+
         return certificateAlias;
     }
 
     public void setCertificateAlias(String certificateAlias) {
+
         this.certificateAlias = certificateAlias;
     }
 
     public String getTenantDomain() {
+
         return tenantDomain;
     }
 
     public void setTenantDomain(String tenantDomain) {
+
         this.tenantDomain = tenantDomain;
     }
 }

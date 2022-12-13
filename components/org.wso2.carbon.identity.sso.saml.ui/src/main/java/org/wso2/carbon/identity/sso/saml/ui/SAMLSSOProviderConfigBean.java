@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml.ui;
 
 import java.util.ArrayList;
@@ -32,9 +33,9 @@ public class SAMLSSOProviderConfigBean {
     private String enableClaims = "false";
     private String enableAudiences = "false";
     private String enableRecipients = "false";
-    private List<String> selectedClaims = new ArrayList<String>();
-    private List<String> selectedAudiences = new ArrayList<String>();
-    private List<String> selectedRecipients = new ArrayList<String>();
+    private List<String> selectedClaims = new ArrayList<>();
+    private List<String> selectedAudiences = new ArrayList<>();
+    private List<String> selectedRecipients = new ArrayList<>();
     private String attributeConsumingServiceIndex = null;
     private String isIdPInitSSOEnabled;
 
@@ -42,6 +43,7 @@ public class SAMLSSOProviderConfigBean {
      * clears the values in bean
      */
     public void clearBean() {
+
         issuer = "";
         assertionConsumerUrl = "";
         enableAssertionSigning = "false";
@@ -60,6 +62,7 @@ public class SAMLSSOProviderConfigBean {
      * @return the singleLogoutUrl
      */
     public String getSingleLogoutUrl() {
+
         return singleLogoutUrl;
     }
 
@@ -67,6 +70,7 @@ public class SAMLSSOProviderConfigBean {
      * @param singleLogoutUrl the singleLogoutUrl to set
      */
     public void setSingleLogoutUrl(String singleLogoutUrl) {
+
         this.singleLogoutUrl = singleLogoutUrl;
     }
 
@@ -74,6 +78,7 @@ public class SAMLSSOProviderConfigBean {
      * @return the enableSingleLogout
      */
     public String getEnableSingleLogout() {
+
         return enableSingleLogout;
     }
 
@@ -81,6 +86,7 @@ public class SAMLSSOProviderConfigBean {
      * @param enableSingleLogout the enableSingleLogout to set
      */
     public void setEnableSingleLogout(String enableSingleLogout) {
+
         this.enableSingleLogout = enableSingleLogout;
     }
 
@@ -88,6 +94,7 @@ public class SAMLSSOProviderConfigBean {
      * @return the certificateAlias
      */
     public String getCertificateAlias() {
+
         return certificateAlias;
     }
 
@@ -95,6 +102,7 @@ public class SAMLSSOProviderConfigBean {
      * @param certificateAlias the certificateAlias to set
      */
     public void setCertificateAlias(String certificateAlias) {
+
         this.certificateAlias = certificateAlias;
     }
 
@@ -102,6 +110,7 @@ public class SAMLSSOProviderConfigBean {
      * @return the enableSignatureValidation
      */
     public String getEnableSignatureValidation() {
+
         return enableSignatureValidation;
     }
 
@@ -109,6 +118,7 @@ public class SAMLSSOProviderConfigBean {
      * @param enableSignatureValidation the enableSignatureValidation to set
      */
     public void setEnableSignatureValidation(String enableSignatureValidation) {
+
         this.enableSignatureValidation = enableSignatureValidation;
     }
 
@@ -116,6 +126,7 @@ public class SAMLSSOProviderConfigBean {
      * @return the enableAssertionSigning
      */
     public String getEnableAssertionSigning() {
+
         return enableAssertionSigning;
     }
 
@@ -123,6 +134,7 @@ public class SAMLSSOProviderConfigBean {
      * @param enableAssertionSigning the enableAssertionSigning to set
      */
     public void setEnableAssertionSigning(String enableAssertionSigning) {
+
         this.enableAssertionSigning = enableAssertionSigning;
     }
 
@@ -130,6 +142,7 @@ public class SAMLSSOProviderConfigBean {
      * @return the assertionConsumerUrl
      */
     public String getAssertionConsumerUrl() {
+
         return assertionConsumerUrl;
     }
 
@@ -137,6 +150,7 @@ public class SAMLSSOProviderConfigBean {
      * @param assertionConsumerUrl the assertionConsumerUrl to set
      */
     public void setAssertionConsumerUrl(String assertionConsumerUrl) {
+
         this.assertionConsumerUrl = assertionConsumerUrl;
     }
 
@@ -144,6 +158,7 @@ public class SAMLSSOProviderConfigBean {
      * @return the issuer
      */
     public String getIssuer() {
+
         return issuer;
     }
 
@@ -151,6 +166,7 @@ public class SAMLSSOProviderConfigBean {
      * @param issuer the issuer to set
      */
     public void setIssuer(String issuer) {
+
         this.issuer = issuer;
     }
 
@@ -158,6 +174,7 @@ public class SAMLSSOProviderConfigBean {
      * @return the enableClaims
      */
     public String getEnableClaims() {
+
         return enableClaims;
     }
 
@@ -165,6 +182,7 @@ public class SAMLSSOProviderConfigBean {
      * @param enableClaims the enableClaims to set
      */
     public void setEnableClaims(String enableClaims) {
+
         this.enableClaims = enableClaims;
     }
 
@@ -172,10 +190,12 @@ public class SAMLSSOProviderConfigBean {
      * @return the selectedClaims
      */
     public List<String> getSelectedClaims() {
+
         return selectedClaims;
     }
 
     public String[] getSelectedClaimsAttay() {
+
         return selectedClaims.toArray(new String[selectedClaims.size()]);
     }
 
@@ -183,6 +203,7 @@ public class SAMLSSOProviderConfigBean {
      * @param selectedClaims the selected claims to set
      */
     public void setSelectedAttributes(List<String> selectedClaims) {
+
         this.selectedClaims = selectedClaims;
     }
 
@@ -193,6 +214,7 @@ public class SAMLSSOProviderConfigBean {
      * @return
      */
     public boolean addClaimToList(String claim) {
+
         if (selectedClaims.contains(claim)) {
             return false;
         }
@@ -206,6 +228,7 @@ public class SAMLSSOProviderConfigBean {
      * @param claim
      */
     public void removeClaimFromList(String claim) {
+
         selectedClaims.remove(claim);
     }
 
@@ -213,6 +236,7 @@ public class SAMLSSOProviderConfigBean {
      * @return the enableAudiences
      */
     public String getEnableAudiences() {
+
         return enableAudiences;
     }
 
@@ -220,6 +244,7 @@ public class SAMLSSOProviderConfigBean {
      * @param enableAudiences the enableAudiences to set
      */
     public void setEnableAudiences(String enableAudiences) {
+
         this.enableAudiences = enableAudiences;
     }
 
@@ -227,10 +252,12 @@ public class SAMLSSOProviderConfigBean {
      * @return the selectedAudiences
      */
     public List<String> getSelectedAudiences() {
+
         return selectedAudiences;
     }
 
     public String[] getSelectedAudiencesArray() {
+
         return selectedAudiences.toArray(new String[selectedAudiences.size()]);
     }
 
@@ -241,6 +268,7 @@ public class SAMLSSOProviderConfigBean {
      * @return
      */
     public boolean addAudienceToList(String audience) {
+
         if (selectedAudiences.contains(audience)) {
             return false;
         }
@@ -254,6 +282,7 @@ public class SAMLSSOProviderConfigBean {
      * @param audience
      */
     public void removeAudienceFromList(String audience) {
+
         selectedAudiences.remove(audience);
     }
 
@@ -261,6 +290,7 @@ public class SAMLSSOProviderConfigBean {
      * @return the enableRecipients
      */
     public String getEnableRecipients() {
+
         return enableRecipients;
     }
 
@@ -268,6 +298,7 @@ public class SAMLSSOProviderConfigBean {
      * @param enableRecipients the enableRecipients to set
      */
     public void setEnableRecipients(String enableRecipients) {
+
         this.enableRecipients = enableRecipients;
     }
 
@@ -275,10 +306,12 @@ public class SAMLSSOProviderConfigBean {
      * @return the selectedRecipients
      */
     public List<String> getSelectedRecipients() {
+
         return selectedRecipients;
     }
 
     public String[] getSelectedRecipientsArray() {
+
         return selectedRecipients.toArray(new String[selectedRecipients.size()]);
     }
 
@@ -289,6 +322,7 @@ public class SAMLSSOProviderConfigBean {
      * @return
      */
     public boolean addRecipientToList(String recipient) {
+
         if (selectedRecipients.contains(recipient)) {
             return false;
         }
@@ -302,6 +336,7 @@ public class SAMLSSOProviderConfigBean {
      * @param recipient
      */
     public void removeRecipientFromList(String recipient) {
+
         selectedRecipients.remove(recipient);
     }
 
@@ -309,6 +344,7 @@ public class SAMLSSOProviderConfigBean {
      * @return the attributeConsumingServiceIndex
      */
     public String getAttributeConsumingServiceIndex() {
+
         return attributeConsumingServiceIndex;
     }
 
@@ -316,14 +352,17 @@ public class SAMLSSOProviderConfigBean {
      * @param attributeConsumingServiceIndex the issuer to set
      */
     public void setAttributeConsumingServiceIndex(String attributeConsumingServiceIndex) {
+
         this.attributeConsumingServiceIndex = attributeConsumingServiceIndex;
     }
 
     public String isIdPInitSSOEnabled() {
+
         return isIdPInitSSOEnabled;
     }
 
     public void setIdPInitSSOEnabled(String idPInitSSOEnabled) {
+
         isIdPInitSSOEnabled = idPInitSSOEnabled;
     }
 }

@@ -25,15 +25,18 @@ public class SAMLSSOSessionIndexCacheKey extends CacheKey {
     private String tokenId;
 
     public SAMLSSOSessionIndexCacheKey(String tokenId) {
+
         this.tokenId = tokenId;
     }
 
     public String getTokenId() {
+
         return tokenId;
     }
 
     @Override
     public int hashCode() {
+
         final int prime = 31;
         int result = 1;
         result = prime * result + ((tokenId == null) ? 0 : tokenId.hashCode());
@@ -42,6 +45,7 @@ public class SAMLSSOSessionIndexCacheKey extends CacheKey {
 
     @Override
     public boolean equals(Object obj) {
+
         if (this == obj)
             return true;
         if (obj == null)
@@ -50,10 +54,7 @@ public class SAMLSSOSessionIndexCacheKey extends CacheKey {
             return false;
         SAMLSSOSessionIndexCacheKey other = (SAMLSSOSessionIndexCacheKey) obj;
         if (tokenId == null) {
-            if (other.tokenId != null)
-                return false;
-        } else if (!tokenId.equals(other.tokenId))
-            return false;
-        return true;
+            return other.tokenId == null;
+        } else return tokenId.equals(other.tokenId);
     }
 }

@@ -25,15 +25,18 @@ public class SAMLSSOParticipantCacheKey extends CacheKey {
     private String sessionIndex;
 
     public SAMLSSOParticipantCacheKey(String sessionIndex) {
+
         this.sessionIndex = sessionIndex;
     }
 
     public String getSessionIndex() {
+
         return sessionIndex;
     }
 
     @Override
     public int hashCode() {
+
         final int prime = 31;
         int result = 1;
         result = prime * result + ((sessionIndex == null) ? 0 : sessionIndex.hashCode());
@@ -42,6 +45,7 @@ public class SAMLSSOParticipantCacheKey extends CacheKey {
 
     @Override
     public boolean equals(Object obj) {
+
         if (this == obj)
             return true;
         if (obj == null)
@@ -50,10 +54,7 @@ public class SAMLSSOParticipantCacheKey extends CacheKey {
             return false;
         SAMLSSOParticipantCacheKey other = (SAMLSSOParticipantCacheKey) obj;
         if (sessionIndex == null) {
-            if (other.sessionIndex != null)
-                return false;
-        } else if (!sessionIndex.equals(other.sessionIndex))
-            return false;
-        return true;
+            return other.sessionIndex == null;
+        } else return sessionIndex.equals(other.sessionIndex);
     }
 }

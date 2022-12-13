@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml.ui;
 
 import org.apache.axiom.util.UIDGenerator;
@@ -36,7 +37,6 @@ import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallerFactory;
-import net.shibboleth.utilities.java.support.codec.Base64Support;
 import org.w3c.dom.Element;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import org.w3c.dom.ls.DOMImplementationLS;
@@ -47,6 +47,7 @@ import org.wso2.carbon.identity.saml.common.util.SAMLInitializer;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 public class ErrorResponseBuilder {
 
@@ -62,9 +63,11 @@ public class ErrorResponseBuilder {
     }
 
     private ErrorResponseBuilder() {
+
     }
 
     public static String generateErrorneousResponse() {
+
         Response response = new ResponseBuilder().buildObject();
         response.setIssuer(getIssuer());
         response.setStatus(buildStatus());
@@ -80,7 +83,6 @@ public class ErrorResponseBuilder {
             return null;
         }
     }
-
 
     private static Status buildStatus() {
 
@@ -98,6 +100,7 @@ public class ErrorResponseBuilder {
     }
 
     private static String marshall(XMLObject xmlObject) throws org.wso2.carbon.identity.base.IdentityException {
+
         try {
             System.setProperty("javax.xml.parsers.DocumentBuilderFactory",
                     "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
@@ -122,6 +125,7 @@ public class ErrorResponseBuilder {
     }
 
     private static Issuer getIssuer() {
+
         Issuer issuer = new IssuerBuilder().buildObject();
         issuer.setValue("WSO2 Identity Server");
         issuer.setFormat("urn:oasis:names:tc:SAML:2.0:nameid-format:entity");
@@ -129,7 +133,7 @@ public class ErrorResponseBuilder {
     }
 
     public static String encode(String authReq) {
-        return Base64Support.encode(authReq.getBytes(StandardCharsets.UTF_8),
-                        Base64Support.UNCHUNKED);
+
+        return Base64.getEncoder().encodeToString(authReq.getBytes(StandardCharsets.UTF_8));
     }
 }

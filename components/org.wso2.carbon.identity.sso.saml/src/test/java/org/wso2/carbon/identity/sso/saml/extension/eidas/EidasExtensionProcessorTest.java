@@ -56,7 +56,7 @@ public class EidasExtensionProcessorTest {
         validationResp = new SAMLSSOReqValidationResponseDTO();
     }
 
-    @Test(priority = 0)
+    @Test()
     public void testCanHandle() throws IdentityException {
 
         Assert.assertTrue(eidasExtensionProcessor.canHandle(request), "Error in validating whether can handle " +

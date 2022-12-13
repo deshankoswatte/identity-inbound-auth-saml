@@ -21,7 +21,6 @@ package org.wso2.carbon.identity.sso.saml.builders;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.joda.time.DateTime;
 import org.opensaml.saml.saml2.core.LogoutRequest;
 import org.opensaml.saml.saml2.core.LogoutResponse;
 import org.opensaml.saml.saml2.core.NameID;
@@ -42,6 +41,8 @@ import org.wso2.carbon.identity.sso.saml.SAMLSSOConstants;
 import org.wso2.carbon.identity.sso.saml.util.SAMLSSOUtil;
 import org.wso2.carbon.user.api.UserStoreException;
 import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
+
+import java.time.Instant;
 
 public class SingleLogoutMessageBuilder {
 
@@ -70,8 +71,8 @@ public class SingleLogoutMessageBuilder {
                 throw IdentityException.error("Error occurred while retrieving tenant id from tenant domain", e);
             }
 
-            if(MultitenantConstants.INVALID_TENANT_ID == tenantId) {
-                throw IdentityException.error("Invalid tenant domain - '" + tenantDomain + "'" );
+            if (MultitenantConstants.INVALID_TENANT_ID == tenantId) {
+                throw IdentityException.error("Invalid tenant domain - '" + tenantDomain + "'");
             }
         }
 
@@ -107,10 +108,10 @@ public class SingleLogoutMessageBuilder {
 
         logoutReq.setID(SAMLSSOUtil.createID());
 
-        DateTime issueInstant = new DateTime();
+        Instant issueInstant = Instant.now();
         logoutReq.setIssueInstant(issueInstant);
         logoutReq.setIssuer(SAMLSSOUtil.getIssuerFromTenantDomain(tenantDomain));
-        logoutReq.setNotOnOrAfter(new DateTime(issueInstant.getMillis() +
+        logoutReq.setNotOnOrAfter(Instant.ofEpochMilli(issueInstant.toEpochMilli() +
                 SAMLSSOUtil.getSAMLResponseValidityPeriod() * 60 * 1000L));
 
         NameID nameId = new NameIDBuilder().buildObject();
@@ -140,10 +141,10 @@ public class SingleLogoutMessageBuilder {
         logoutResp.setInResponseTo(id);
         logoutResp.setIssuer(SAMLSSOUtil.getIssuer());
         logoutResp.setStatus(buildStatus(status, statMsg));
-        logoutResp.setIssueInstant(new DateTime());
+        logoutResp.setIssueInstant(Instant.now());
         logoutResp.setDestination(destination);
 
-        // Currently, does not sign the error response since this message pass through a url to the error page
+        // Currently, does not sign the error response since this message pass through an url to the error page
         if (isSignResponse && SAMLSSOConstants.StatusCodes.SUCCESS_CODE.equals(status)) {
             int tenantId;
             if (StringUtils.isEmpty(tenantDomain)) {
@@ -156,8 +157,8 @@ public class SingleLogoutMessageBuilder {
                     throw IdentityException.error("Error occurred while retrieving tenant id from tenant domain", e);
                 }
 
-                if(MultitenantConstants.INVALID_TENANT_ID == tenantId) {
-                    throw IdentityException.error("Invalid tenant domain - '" + tenantDomain + "'" );
+                if (MultitenantConstants.INVALID_TENANT_ID == tenantId) {
+                    throw IdentityException.error("Invalid tenant domain - '" + tenantDomain + "'");
                 }
             }
 
@@ -186,9 +187,9 @@ public class SingleLogoutMessageBuilder {
 
         //Set the status Message
         if (statMsg != null) {
-            StatusMessage statMesssage = new StatusMessageBuilder().buildObject();
-            statMesssage.setMessage(statMsg);
-            stat.setStatusMessage(statMesssage);
+            StatusMessage statMessage = new StatusMessageBuilder().buildObject();
+            statMessage.setMessage(statMsg);
+            stat.setStatusMessage(statMessage);
         }
 
         return stat;

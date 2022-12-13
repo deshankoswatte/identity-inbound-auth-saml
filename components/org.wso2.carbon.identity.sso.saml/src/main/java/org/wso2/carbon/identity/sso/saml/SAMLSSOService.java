@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml;
 
 import org.opensaml.saml.saml2.core.Extensions;
@@ -51,6 +52,7 @@ import java.util.Map;
 public class SAMLSSOService {
 
     public static boolean isOpenIDLoginAccepted() {
+
         if (IdentityUtil.getProperty(IdentityConstants.ServerConfig.ACCEPT_OPENID_LOGIN) != null &&
                 !"".equals(IdentityUtil.getProperty(IdentityConstants.ServerConfig.ACCEPT_OPENID_LOGIN).trim())) {
             return Boolean.parseBoolean(IdentityUtil.getProperty(IdentityConstants.ServerConfig.ACCEPT_OPENID_LOGIN).trim());
@@ -60,6 +62,7 @@ public class SAMLSSOService {
     }
 
     public static boolean isSAMLSSOLoginAccepted() {
+
         if (IdentityUtil.getProperty(IdentityConstants.ServerConfig.ACCEPT_SAMLSSO_LOGIN) != null &&
                 !"".equals(IdentityUtil.getProperty(IdentityConstants.ServerConfig.ACCEPT_SAMLSSO_LOGIN).trim())) {
             return Boolean.parseBoolean(IdentityUtil.getProperty(IdentityConstants.ServerConfig.ACCEPT_SAMLSSO_LOGIN).trim());
@@ -82,7 +85,6 @@ public class SAMLSSOService {
      * @param authnMode
      * @return
      * @throws IdentityException
-     *
      * @deprecated This method was deprecated to move SAMLSSOParticipantCache to the tenant space.
      * Use {@link #validateSPInitSSORequest(String, String, String, String, String, boolean, String)} instead.
      */
@@ -169,9 +171,8 @@ public class SAMLSSOService {
      * @param isLogout
      * @return
      * @throws IdentityException
-     *
      * @deprecated This method was deprecated to move saml caches to the tenant space.
-     * Use {@link #validateIdPInitSSORequest(String,String,QueryParamDTO[],String,String,String,String,boolean,String)}
+     * Use {@link #validateIdPInitSSORequest(String, String, QueryParamDTO[], String, String, String, String, boolean, String)}
      * instead.
      */
     public SAMLSSOReqValidationResponseDTO validateIdPInitSSORequest(String relayState, String queryString,
@@ -190,16 +191,16 @@ public class SAMLSSOService {
      * If the user already having a SSO session then the Response
      * will be returned if not only the validation results will be returned.
      *
-     * @param relayState            Relay State
-     * @param queryString           Query String
-     * @param queryParamDTOs        Query Param DTOs
-     * @param serverURL             Server url
-     * @param sessionId             Session id
-     * @param rpSessionId           Rp Session id
-     * @param authnMode             Authn Mode
-     * @param isLogout              Is Logout
-     * @param loginTenantDomain     Login tenant Domain
-     * @return      validationResponseDTO
+     * @param relayState        Relay State
+     * @param queryString       Query String
+     * @param queryParamDTOs    Query Param DTOs
+     * @param serverURL         Server url
+     * @param sessionId         Session id
+     * @param rpSessionId       Rp Session id
+     * @param authnMode         Authn Mode
+     * @param isLogout          Is Logout
+     * @param loginTenantDomain Login tenant Domain
+     * @return validationResponseDTO
      * @throws IdentityException
      */
     public SAMLSSOReqValidationResponseDTO validateIdPInitSSORequest(String relayState, String queryString,
@@ -235,6 +236,7 @@ public class SAMLSSOService {
      */
     public SAMLSSORespDTO authenticate(SAMLSSOAuthnReqDTO authReqDTO, String sessionId, boolean authenticated, String authenticators, String authMode)
             throws IdentityException {
+
         if (authReqDTO.isIdPInitSSOEnabled()) {
             IdPInitSSOAuthnRequestProcessor authnRequestProcessor = SAMLSSOUtil.getIdPInitSSOAuthnRequestProcessor();
             try {
@@ -263,11 +265,13 @@ public class SAMLSSOService {
      */
     public SAMLSSOReqValidationResponseDTO doSingleLogout(String sessionId)
             throws IdentityException {
-       return invalidateSession(sessionId);
+
+        return invalidateSession(sessionId);
     }
 
     /**
      * Invalidates the SSO session for the given session ID.
+     *
      * @param sessionId sessionId.
      * @return SAMLSSOReqValidationResponseDTO.
      * @throws IdentityException
@@ -288,7 +292,6 @@ public class SAMLSSOService {
      * @param sessionId
      * @param issuer
      * @throws IdentityException
-     *
      * @deprecated This method was deprecated to move caches to the tenant space.
      * Use {@link #doSingleLogout(String, String, String)} )} instead.
      */
@@ -301,9 +304,9 @@ public class SAMLSSOService {
     /**
      * Gets all the session participants from session ID send logout requests to them.
      *
-     * @param sessionId             Session Id.
-     * @param issuer                Name of the issuer.
-     * @param loginTenantDomain     Login Tenant Domain.
+     * @param sessionId         Session Id.
+     * @param issuer            Name of the issuer.
+     * @param loginTenantDomain Login Tenant Domain.
      * @throws IdentityException
      */
     public void doSingleLogout(String sessionId, String issuer, String loginTenantDomain) throws IdentityException {

@@ -21,7 +21,6 @@ package org.wso2.carbon.identity.sso.saml.servlet;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.joda.time.DateTime;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -48,6 +47,7 @@ import java.io.StringWriter;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -162,7 +162,7 @@ public class SAMLArtifactResolveServlet extends HttpServlet {
             throws IOException, ServletException {
 
         String id = URLDecoder.decode(artifactResolve.getID(), StandardCharsets.UTF_8.name());
-        DateTime issueInstant = artifactResolve.getIssueInstant();
+        Instant issueInstant = artifactResolve.getIssueInstant();
         String samlArt = URLDecoder.decode(artifactResolve.getArtifact().getArtifact(),
                 StandardCharsets.UTF_8.name());
         String issuer = artifactResolve.getIssuer().getValue();

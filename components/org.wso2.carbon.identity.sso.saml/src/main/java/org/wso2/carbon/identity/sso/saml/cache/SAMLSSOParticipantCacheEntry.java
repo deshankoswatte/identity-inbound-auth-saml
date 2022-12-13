@@ -27,10 +27,12 @@ public class SAMLSSOParticipantCacheEntry extends CacheEntry {
     private SessionInfoData sessionInfoData;
 
     public SessionInfoData getSessionInfoData() {
+
         return sessionInfoData;
     }
 
     public void setSessionInfoData(SessionInfoData sessionInfoData) {
+
         this.sessionInfoData = sessionInfoData;
     }
 }

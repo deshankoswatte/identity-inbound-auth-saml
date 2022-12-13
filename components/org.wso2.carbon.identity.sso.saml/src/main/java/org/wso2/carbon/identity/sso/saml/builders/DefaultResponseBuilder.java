@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml.builders;
 
 import org.apache.commons.logging.Log;
@@ -36,6 +37,7 @@ import org.wso2.carbon.identity.sso.saml.extension.SAMLExtensionProcessor;
 import org.wso2.carbon.identity.sso.saml.util.SAMLSSOUtil;
 
 import java.security.cert.X509Certificate;
+import java.time.Instant;
 
 /**
  * This class is used to build the default SAML response.
@@ -52,12 +54,12 @@ public class DefaultResponseBuilder implements ResponseBuilder {
     public Response buildResponse(SAMLSSOAuthnReqDTO authReqDTO, String sessionId)
             throws IdentityException {
 
-        DateTime issueInstant = new DateTime();
+        Instant issueInstant = Instant.now();
         return buildResponse(authReqDTO, sessionId, issueInstant, null);
     }
 
     @Override
-    public Response buildResponse(SAMLSSOAuthnReqDTO authReqDTO, String sessionId, DateTime issueInstant,
+    public Response buildResponse(SAMLSSOAuthnReqDTO authReqDTO, String sessionId, Instant issueInstant,
                                   String assertionId) throws IdentityException {
 
         if (log.isDebugEnabled()) {
@@ -75,7 +77,7 @@ public class DefaultResponseBuilder implements ResponseBuilder {
                         assertionId, e);
             }
         } else {
-            DateTime notOnOrAfter = new DateTime(issueInstant.getMillis()
+            Instant notOnOrAfter = Instant.ofEpochMilli(issueInstant.toEpochMilli()
                     + SAMLSSOUtil.getSAMLResponseValidityPeriod() * 60 * 1000L);
 
             assertion = SAMLSSOUtil.buildSAMLAssertion(authReqDTO, notOnOrAfter, sessionId);
@@ -138,7 +140,7 @@ public class DefaultResponseBuilder implements ResponseBuilder {
         response.setDestination(authReqDTO.getAssertionConsumerURL());
         response.setStatus(SAMLSSOUtil.buildResponseStatus(SAMLSSOConstants.StatusCodes.SUCCESS_CODE, null));
         response.setVersion(SAMLVersion.VERSION_20);
-        DateTime issueInstant = new DateTime();
+        Instant issueInstant = Instant.now();
         response.setIssueInstant(issueInstant);
         response.getAssertions().add(assertion);
         if (authReqDTO.isDoSignResponse()) {

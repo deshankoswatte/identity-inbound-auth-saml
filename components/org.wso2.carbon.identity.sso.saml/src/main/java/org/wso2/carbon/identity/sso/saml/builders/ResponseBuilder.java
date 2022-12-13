@@ -15,12 +15,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml.builders;
 
-import org.joda.time.DateTime;
 import org.opensaml.saml.saml2.core.Response;
 import org.wso2.carbon.identity.base.IdentityException;
 import org.wso2.carbon.identity.sso.saml.dto.SAMLSSOAuthnReqDTO;
+
+import java.time.Instant;
 
 public interface ResponseBuilder {
 
@@ -31,7 +33,7 @@ public interface ResponseBuilder {
      * @param sessionIndexId Session index ID.
      * @return Built response object.
      * @throws IdentityException
-     * @deprecated Use {@link #buildResponse(SAMLSSOAuthnReqDTO, String, DateTime, String)} instead.
+     * @deprecated Use {@link #buildResponse(SAMLSSOAuthnReqDTO, String, Instant, String)} instead.
      */
     @Deprecated
     Response buildResponse(SAMLSSOAuthnReqDTO authnReqDTO, String sessionIndexId) throws IdentityException;
@@ -42,12 +44,12 @@ public interface ResponseBuilder {
      * @param authnReqDTO    SAML sso authentication request DTO.
      * @param sessionIndexId Session index ID.
      * @param initTime       Initiated timestamp of the response.
-     * @param assetionId     SAML Assertion ID of the response.
+     * @param assertionId    SAML Assertion ID of the response.
      * @return Built response object.
      * @throws IdentityException
      */
-    default Response buildResponse(SAMLSSOAuthnReqDTO authnReqDTO, String sessionIndexId, DateTime initTime,
-                                   String assetionId) throws IdentityException {
+    default Response buildResponse(SAMLSSOAuthnReqDTO authnReqDTO, String sessionIndexId, Instant initTime,
+                                   String assertionId) throws IdentityException {
 
         return buildResponse(authnReqDTO, sessionIndexId);
     }

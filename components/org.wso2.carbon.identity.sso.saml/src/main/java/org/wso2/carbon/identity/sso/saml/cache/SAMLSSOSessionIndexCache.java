@@ -29,10 +29,12 @@ public class SAMLSSOSessionIndexCache extends BaseCache<SAMLSSOSessionIndexCache
     private static volatile SAMLSSOSessionIndexCache instance;
 
     private SAMLSSOSessionIndexCache() {
+
         super(CACHE_NAME);
     }
 
     public static SAMLSSOSessionIndexCache getInstance() {
+
         if (instance == null) {
             synchronized (SAMLSSOSessionIndexCache.class) {
                 if (instance == null) {
@@ -85,8 +87,8 @@ public class SAMLSSOSessionIndexCache extends BaseCache<SAMLSSOSessionIndexCache
      * Retrieve the session Index from the cache.
      * At a cache miss data is loaded from the Session Data Store.
      *
-     * @param key                SAMLSSOSessionIndexCacheKey Key which cache entry is indexed.
-     * @param loginTenantDomain  Login Tenant Domain.
+     * @param key               SAMLSSOSessionIndexCacheKey Key which cache entry is indexed.
+     * @param loginTenantDomain Login Tenant Domain.
      * @return Cache entry
      */
     @Override
@@ -115,8 +117,8 @@ public class SAMLSSOSessionIndexCache extends BaseCache<SAMLSSOSessionIndexCache
     /**
      * Clears the Session Index from the cache and remove from session data store.
      *
-     * @param key                   Key to clear cache.
-     * @param loginTenantDomain     Login Tenant Domain where cache was added.
+     * @param key               Key to clear cache.
+     * @param loginTenantDomain Login Tenant Domain where cache was added.
      */
     @Override
     public void clearCacheEntry(SAMLSSOSessionIndexCacheKey key, String loginTenantDomain) {

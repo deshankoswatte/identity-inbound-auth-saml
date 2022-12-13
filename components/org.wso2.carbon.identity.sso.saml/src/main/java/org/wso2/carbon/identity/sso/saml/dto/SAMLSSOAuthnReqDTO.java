@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml.dto;
 
 import org.apache.commons.lang.StringUtils;
@@ -100,87 +101,106 @@ public class SAMLSSOAuthnReqDTO implements Serializable {
     }
 
     public String getDigestAlgorithmUri() {
+
         return digestAlgorithmUri;
     }
 
     public void setDigestAlgorithmUri(String digestAlgorithmUri) {
+
         if (StringUtils.isNotBlank(digestAlgorithmUri)) {
             this.digestAlgorithmUri = digestAlgorithmUri;
         }
     }
 
     public String getSigningAlgorithmUri() {
+
         return signingAlgorithmUri;
     }
 
     public void setSigningAlgorithmUri(String signingAlgorithmUri) {
+
         if (StringUtils.isNotBlank(signingAlgorithmUri)) {
             this.signingAlgorithmUri = signingAlgorithmUri;
         }
     }
 
     public String getAssertionEncryptionAlgorithmUri() {
+
         return assertionEncryptionAlgorithmUri;
     }
 
     public void setAssertionEncryptionAlgorithmUri(String assertionEncryptionAlgorithmUri) {
+
         if (StringUtils.isNotBlank(assertionEncryptionAlgorithmUri)) {
             this.assertionEncryptionAlgorithmUri = assertionEncryptionAlgorithmUri;
         }
     }
 
     public String getKeyEncryptionAlgorithmUri() {
+
         return keyEncryptionAlgorithmUri;
     }
 
     public void setKeyEncryptionAlgorithmUri(String keyEncryptionAlgorithmUri) {
+
         if (StringUtils.isNotBlank(keyEncryptionAlgorithmUri)) {
             this.keyEncryptionAlgorithmUri = keyEncryptionAlgorithmUri;
         }
     }
 
     public String getNameIdClaimUri() {
+
         return nameIdClaimUri;
     }
 
     public void setNameIdClaimUri(String nameIdClaimUri) {
+
         this.nameIdClaimUri = nameIdClaimUri;
     }
 
     public int getAttributeConsumingServiceIndex() {
+
         return attributeConsumingServiceIndex;
     }
 
     public void setAttributeConsumingServiceIndex(
             int attributeConsumingServiceIndex) {
+
         this.attributeConsumingServiceIndex = attributeConsumingServiceIndex;
     }
 
     public String getCertAlias() {
+
         return certAlias;
     }
 
     public void setCertAlias(String certAlias) {
+
         this.certAlias = certAlias;
     }
 
     public AuthenticatedUser getUser() {
+
         return user;
     }
 
     public void setUser(AuthenticatedUser user) {
+
         this.user = user;
     }
 
     public String getPassword() {
+
         return password;
     }
 
     public void setPassword(String password) {
+
         this.password = password;
     }
 
     public String getIssuer() {
+
         if (issuer.contains("@")) {
             String[] splitIssuer = issuer.split("@");
             return splitIssuer[0];
@@ -189,106 +209,132 @@ public class SAMLSSOAuthnReqDTO implements Serializable {
     }
 
     public void setIssuer(String issuer) {
+
         this.issuer = issuer;
     }
 
     public String getIssuerWithDomain() {
+
         return issuer;
     }
 
     public String getSubject() {
+
         return subject;
     }
 
     public void setSubject(String subject) {
+
         this.subject = subject;
     }
 
     public String getAssertionConsumerURL() {
+
         return assertionConsumerURL;
     }
 
     public void setAssertionConsumerURL(String assertionConsumerURL) {
+
         this.assertionConsumerURL = assertionConsumerURL;
     }
 
     public String getId() {
+
         return id;
     }
 
     public void setId(String id) {
+
         this.id = id;
     }
 
     public String getNameIDFormat() {
+
         return nameIDFormat;
     }
 
     public void setNameIDFormat(String nameIDFormat) {
+
         this.nameIDFormat = nameIDFormat;
     }
 
     public String getClaim() {
+
         return claim;
     }
 
     public void setClaim(String claim) {
+
         this.claim = claim;
     }
 
     public String getAudience() {
+
         return audience;
     }
 
     public void setAudience(String audience) {
+
         this.audience = audience;
     }
 
     public String getRecipient() {
+
         return recipient;
     }
 
     public void setRecipient(String recipient) {
+
         this.recipient = recipient;
     }
 
     public String getSloResponseURL() {
+
         return sloResponseURL;
     }
 
     public void setSloResponseURL(String sloResponseURL) {
+
         this.sloResponseURL = sloResponseURL;
     }
 
     public boolean isDoSingleLogout() {
+
         return doSingleLogout;
     }
 
     public void setDoSingleLogout(boolean doSingleLogout) {
+
         this.doSingleLogout = doSingleLogout;
     }
 
     public String getLoginPageURL() {
+
         return loginPageURL;
     }
 
     public void setLoginPageURL(String loginPageURL) {
+
         this.loginPageURL = loginPageURL;
     }
 
     public String getRpSessionId() {
+
         return rpSessionId;
     }
 
     public void setRpSessionId(String rpSessionId) {
+
         this.rpSessionId = rpSessionId;
     }
 
     public boolean getDoSignAssertions() {
+
         return doSignAssertions;
     }
 
     public void setDoSignAssertions(boolean doSignAssertions) {
+
         this.doSignAssertions = doSignAssertions;
     }
 
@@ -316,6 +362,7 @@ public class SAMLSSOAuthnReqDTO implements Serializable {
      * @return
      */
     public String getRequestMessageString() {
+
         return requestMessageString;
     }
 
@@ -323,10 +370,12 @@ public class SAMLSSOAuthnReqDTO implements Serializable {
      * @param requestMessageString
      */
     public void setRequestMessageString(String requestMessageString) {
+
         this.requestMessageString = requestMessageString;
     }
 
     public String[] getRequestedClaims() {
+
         if (requestedClaims == null) {
             return new String[0];
         }
@@ -334,6 +383,7 @@ public class SAMLSSOAuthnReqDTO implements Serializable {
     }
 
     public void setRequestedClaims(String[] requestedClaims) {
+
         if (requestedClaims == null) {
             this.requestedClaims = new String[0];
         } else {
@@ -342,6 +392,7 @@ public class SAMLSSOAuthnReqDTO implements Serializable {
     }
 
     public String[] getRequestedAudiences() {
+
         if (requestedAudiences == null) {
             return new String[0];
         }
@@ -349,6 +400,7 @@ public class SAMLSSOAuthnReqDTO implements Serializable {
     }
 
     public void setRequestedAudiences(String[] requestedAudiences) {
+
         if (requestedAudiences == null) {
             this.requestedAudiences = new String[0];
         } else {
@@ -357,6 +409,7 @@ public class SAMLSSOAuthnReqDTO implements Serializable {
     }
 
     public String[] getRequestedRecipients() {
+
         if (requestedRecipients == null) {
             return new String[0];
         }
@@ -364,6 +417,7 @@ public class SAMLSSOAuthnReqDTO implements Serializable {
     }
 
     public void setRequestedRecipients(String[] requestedRecipients) {
+
         if (requestedRecipients == null) {
             this.requestedRecipients = new String[0];
         } else {
@@ -372,10 +426,12 @@ public class SAMLSSOAuthnReqDTO implements Serializable {
     }
 
     public boolean isStratosDeployment() {
+
         return isStratosDeployment;
     }
 
     public void setStratosDeployment(boolean isStratosDeployment) {
+
         this.isStratosDeployment = isStratosDeployment;
     }
 
@@ -383,6 +439,7 @@ public class SAMLSSOAuthnReqDTO implements Serializable {
      * @return the queryString
      */
     public String getQueryString() {
+
         return queryString;
     }
 
@@ -390,6 +447,7 @@ public class SAMLSSOAuthnReqDTO implements Serializable {
      * @param queryString the queryString to set
      */
     public void setQueryString(String queryString) {
+
         this.queryString = queryString;
     }
 
@@ -397,6 +455,7 @@ public class SAMLSSOAuthnReqDTO implements Serializable {
      * @return the doSignResponse
      */
     public boolean isDoSignResponse() {
+
         return doSignResponse;
     }
 
@@ -404,6 +463,7 @@ public class SAMLSSOAuthnReqDTO implements Serializable {
      * @param doSignResponse the doSignResponse to set
      */
     public void setDoSignResponse(boolean doSignResponse) {
+
         this.doSignResponse = doSignResponse;
     }
 
@@ -411,6 +471,7 @@ public class SAMLSSOAuthnReqDTO implements Serializable {
      * @return the 'destination' attribute of the SAML request
      */
     public String getDestination() {
+
         return destination;
     }
 
@@ -418,87 +479,108 @@ public class SAMLSSOAuthnReqDTO implements Serializable {
      * @param destination Set the SAML request's 'destination' attribute
      */
     public void setDestination(String destination) {
+
         this.destination = destination;
     }
 
     public boolean isIdPInitSSOEnabled() {
+
         return idPInitSSOEnabled;
     }
 
     public void setIdPInitSSOEnabled(boolean isIdPInitSSO) {
+
         this.idPInitSSOEnabled = isIdPInitSSO;
     }
 
     public boolean isDoEnableEncryptedAssertion() {
+
         return doEnableEncryptedAssertion;
     }
 
     public void setDoEnableEncryptedAssertion(boolean doEnableEncryptedAssertion) {
+
         this.doEnableEncryptedAssertion = doEnableEncryptedAssertion;
     }
 
     public boolean isDoValidateSignatureInRequests() {
+
         return doValidateSignatureInRequests;
     }
 
     public void setDoValidateSignatureInRequests(
             boolean doValidateSignatureInRequests) {
+
         this.doValidateSignatureInRequests = doValidateSignatureInRequests;
     }
 
     public Map<String, String> getClaimMapping() {
+
         return claimMapping;
     }
 
     public void setClaimMapping(Map<String, String> claimMapping) {
+
         this.claimMapping = claimMapping;
     }
 
     public String getTenantDomain() {
+
         return tenantDomain;
     }
 
     public void setTenantDomain(String tenantDomain) {
+
         this.tenantDomain = tenantDomain;
     }
 
     public boolean isIdPInitSLOEnabled() {
+
         return idPInitSLOEnabled;
     }
 
     public void setIdPInitSLOEnabled(boolean idPInitSLOEnabled) {
+
         this.idPInitSLOEnabled = idPInitSLOEnabled;
     }
 
     public String[] getAssertionConsumerURLs() {
+
         return assertionConsumerURLs;
     }
 
     public void setAssertionConsumerURLs(String[] assertionConsumerURLs) {
+
         this.assertionConsumerURLs = assertionConsumerURLs;
     }
 
     public String[] getIdpInitSLOReturnToURLs() {
+
         return idpInitSLOReturnToURLs;
     }
 
     public void setIdpInitSLOReturnToURLs(String[] idpInitSLOReturnToURLs) {
+
         this.idpInitSLOReturnToURLs = idpInitSLOReturnToURLs;
     }
 
     public String getSloRequestURL() {
+
         return sloRequestURL;
     }
 
     public void setSloRequestURL(String sloRequestURL) {
+
         this.sloRequestURL = sloRequestURL;
     }
 
     public void setAssertionQueryRequestProfileEnabled(boolean assertionQueryRequestProfileEnabled) {
+
         this.isAssertionQueryRequestProfileEnabled = assertionQueryRequestProfileEnabled;
     }
 
     public boolean isAssertionQueryRequestProfileEnabled() {
+
         return this.isAssertionQueryRequestProfileEnabled;
     }
 
@@ -512,11 +594,13 @@ public class SAMLSSOAuthnReqDTO implements Serializable {
         return enableSAML2ArtifactBinding;
     }
 
-    public boolean isSamlECPEnabled(){
+    public boolean isSamlECPEnabled() {
+
         return samlECPEnabled;
     }
 
-    public void setSamlECPEnabled(boolean samlECPEnabled){
+    public void setSamlECPEnabled(boolean samlECPEnabled) {
+
         this.samlECPEnabled = samlECPEnabled;
     }
 
@@ -669,7 +753,7 @@ public class SAMLSSOAuthnReqDTO implements Serializable {
     /**
      * Add a request property.
      *
-     * @param key key of the properties entry
+     * @param key   key of the properties entry
      * @param value value of the properties entry
      */
     public void addProperty(String key, String value) {
@@ -694,10 +778,12 @@ public class SAMLSSOAuthnReqDTO implements Serializable {
     }
 
     public long getCreatedTimeStamp() {
+
         return createdTimeStamp;
     }
 
     public void setCreatedTimeStamp(long createdTimeStamp) {
+
         this.createdTimeStamp = createdTimeStamp;
     }
 

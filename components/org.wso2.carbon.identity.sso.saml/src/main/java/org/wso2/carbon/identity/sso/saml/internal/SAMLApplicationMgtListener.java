@@ -15,6 +15,7 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml.internal;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -189,7 +190,7 @@ public class SAMLApplicationMgtListener extends AbstractApplicationMgtListener {
                         String inboundConfiguration = authConfig.getInboundConfiguration();
                         if (StringUtils.isEmpty(inboundConfiguration)) {
                             String errorMsg = String.format("No inbound configurations found for oauth in the" +
-                                            " imported %s", serviceProvider.getApplicationName());
+                                    " imported %s", serviceProvider.getApplicationName());
                             throw new IdentityApplicationManagementException(errorMsg);
                         }
                         String inboundAuthKey = authConfig.getInboundAuthKey();

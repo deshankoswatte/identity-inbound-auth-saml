@@ -37,7 +37,7 @@ public interface SAML2ArtifactInfoDAO {
     /**
      * Return the SAML2 artifact data of a given SAML2 artifact. Return null otherwise.
      *
-     * @param sourceId Extracted source ID of the SAML2 artifact.
+     * @param sourceId       Extracted source ID of the SAML2 artifact.
      * @param messageHandler Extracted message handler of the SAML2 artifact.
      * @return SAML2ArtifactInfo object with data in the database.
      */

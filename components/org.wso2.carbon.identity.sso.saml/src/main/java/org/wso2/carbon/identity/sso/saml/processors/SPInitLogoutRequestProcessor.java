@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml.processors;
 
 import org.apache.commons.lang.StringUtils;
@@ -66,7 +67,6 @@ public class SPInitLogoutRequestProcessor implements SPInitSSOLogoutRequestProce
      * @param queryString
      * @return
      * @throws IdentityException
-     *
      * @deprecated This method was deprecated to move saml caches to the tenant space.
      * Use {@link #process(LogoutRequest, String, String, String)}  instead.
      */

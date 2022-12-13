@@ -18,7 +18,7 @@
 
 package org.wso2.carbon.identity.sso.saml.dto;
 
-import org.joda.time.DateTime;
+import java.time.Instant;
 
 /**
  * This class is used to transfer artifact resolve data.
@@ -30,15 +30,15 @@ public class SAML2ArtifactInfo {
     private String messageHandler;
     private SAMLSSOAuthnReqDTO authnReqDTO;
     private String sessionID;
-    private DateTime initTimestamp;
-    private DateTime expTimestamp;
+    private Instant initTimestamp;
+    private Instant expTimestamp;
     private String assertionID;
 
     public SAML2ArtifactInfo() {
     }
 
-    public SAML2ArtifactInfo(int id, SAMLSSOAuthnReqDTO authnReqDTO, String sessionID, DateTime initTimestamp,
-                             DateTime expTimestamp) {
+    public SAML2ArtifactInfo(int id, SAMLSSOAuthnReqDTO authnReqDTO, String sessionID, Instant initTimestamp,
+                             Instant expTimestamp) {
 
         this.id = id;
         this.authnReqDTO = authnReqDTO;
@@ -72,12 +72,12 @@ public class SAML2ArtifactInfo {
         this.sessionID = sessionID;
     }
 
-    public void setInitTimestamp(DateTime initTimestamp) {
+    public void setInitTimestamp(Instant initTimestamp) {
 
         this.initTimestamp = initTimestamp;
     }
 
-    public void setExpTimestamp(DateTime expTimestamp) {
+    public void setExpTimestamp(Instant expTimestamp) {
 
         this.expTimestamp = expTimestamp;
     }
@@ -112,12 +112,12 @@ public class SAML2ArtifactInfo {
         return sessionID;
     }
 
-    public DateTime getInitTimestamp() {
+    public Instant getInitTimestamp() {
 
         return initTimestamp;
     }
 
-    public DateTime getExpTimestamp() {
+    public Instant getExpTimestamp() {
 
         return expTimestamp;
     }

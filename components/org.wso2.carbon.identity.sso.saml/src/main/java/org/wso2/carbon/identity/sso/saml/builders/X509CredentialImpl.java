@@ -59,7 +59,7 @@ import javax.crypto.SecretKey;
  */
 public class X509CredentialImpl implements X509Credential {
 
-    private PublicKey publicKey = null;
+    private PublicKey publicKey;
     private PrivateKey privateKey = null;
     private X509Certificate signingCert = null;
     private String entityId = "";
@@ -126,7 +126,7 @@ public class X509CredentialImpl implements X509Credential {
         try {
             privateKey = keyStoreManager.getDefaultPrivateKey();
             signingCert = keyStoreManager.getDefaultPrimaryCertificate();
-        // This Exception is thrown from the KeyStoreManager.
+            // This Exception is thrown from the KeyStoreManager.
         } catch (Exception e) {
             throw new IdentityException("Error retrieving private key and the certificate for tenant " +
                     MultitenantConstants.SUPER_TENANT_DOMAIN_NAME, e);
@@ -210,7 +210,7 @@ public class X509CredentialImpl implements X509Credential {
             String jksName = ksName + ".jks";
             privateKey = (PrivateKey) keyStoreManager.getPrivateKey(jksName, tenantDomain);
             signingCert = (X509Certificate) keyStoreManager.getKeyStore(jksName).getCertificate(tenantDomain);
-        // This Exception is thrown from the KeyStoreManager.
+            // This Exception is thrown from the KeyStoreManager.
         } catch (Exception e) {
             throw new IdentityException("Error retrieving private key and the certificate for tenant " +
                     tenantDomain, e);
@@ -250,12 +250,14 @@ public class X509CredentialImpl implements X509Credential {
      */
     public X509CredentialImpl(BigInteger modulus, BigInteger publicExponent)
             throws NoSuchAlgorithmException, InvalidKeySpecException {
+
         RSAPublicKeySpec spec = new RSAPublicKeySpec(modulus, publicExponent);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         publicKey = keyFactory.generatePublic(spec);
     }
 
     public X509CredentialImpl(X509Certificate cert) {
+
         publicKey = cert.getPublicKey();
         signingCert = cert;
     }
@@ -271,10 +273,12 @@ public class X509CredentialImpl implements X509Credential {
      */
     @Override
     public PublicKey getPublicKey() {
+
         return publicKey;
     }
 
     public X509Certificate getSigningCert() {
+
         return signingCert;
     }
 
@@ -300,24 +304,29 @@ public class X509CredentialImpl implements X509Credential {
 
     /**
      * Get the credential context set.
+     *
      * @return This method is not supported so, the return is null.
      */
     @Override
     public CredentialContextSet getCredentialContextSet() {
+
         return null;
     }
 
     @Override
     public Class<? extends Credential> getCredentialType() {
+
         return X509Credential.class;
     }
 
     /**
      * Get the entity id of the credential.
+     *
      * @return entityId Entity Id of the credential.
      */
     @Override
     public String getEntityId() {
+
         return entityId;
     }
 
@@ -341,10 +350,12 @@ public class X509CredentialImpl implements X509Credential {
 
     /**
      * Get the usage type.
+     *
      * @return This method is not supported so, it returns the default value.
      */
     @Override
     public UsageType getUsageType() {
+
         return UsageType.UNSPECIFIED;
     }
 }

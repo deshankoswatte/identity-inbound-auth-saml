@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.sso.saml.builders.signature;
 
 import org.apache.xml.security.c14n.Canonicalizer;
@@ -52,6 +53,7 @@ public class DefaultSSOSigner implements SSOSigner {
     @Override
     public boolean validateXMLSignature(RequestAbstractType request, X509Credential cred,
                                         String alias) throws IdentityException {
+
         return validateXMLSignature((SignableXMLObject) request, cred, alias);
     }
 
@@ -129,6 +131,7 @@ public class DefaultSSOSigner implements SSOSigner {
      * @throws IdentityException
      */
     private XMLObject buildXMLObject(QName objectQName) throws IdentityException {
+
         XMLObjectBuilder builder =
                 XMLObjectProviderRegistrySupport.getBuilderFactory()
                         .getBuilder(objectQName);

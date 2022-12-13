@@ -25,15 +25,18 @@ public class SessionDataCacheKey extends CacheKey {
     private String sessionDataKey;
 
     public SessionDataCacheKey(String sessionDataKey) {
+
         this.sessionDataKey = sessionDataKey;
     }
 
     public String getSessionDataKey() {
+
         return sessionDataKey;
     }
 
     @Override
     public int hashCode() {
+
         final int prime = 31;
         int result = 1;
         result = prime * result + ((sessionDataKey == null) ? 0 : sessionDataKey.hashCode());
@@ -42,6 +45,7 @@ public class SessionDataCacheKey extends CacheKey {
 
     @Override
     public boolean equals(Object obj) {
+
         if (this == obj)
             return true;
         if (obj == null)
@@ -50,11 +54,8 @@ public class SessionDataCacheKey extends CacheKey {
             return false;
         SessionDataCacheKey other = (SessionDataCacheKey) obj;
         if (sessionDataKey == null) {
-            if (other.sessionDataKey != null)
-                return false;
-        } else if (!sessionDataKey.equals(other.sessionDataKey))
-            return false;
-        return true;
+            return other.sessionDataKey == null;
+        } else return sessionDataKey.equals(other.sessionDataKey);
     }
 
 }

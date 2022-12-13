@@ -60,6 +60,7 @@ public class SAMLSSOConfigAdmin {
     private UserRegistry registry;
 
     public SAMLSSOConfigAdmin(Registry userRegistry) {
+
         registry = (UserRegistry) userRegistry;
     }
 
@@ -114,7 +115,7 @@ public class SAMLSSOConfigAdmin {
                 throw buildClientException(CONFLICTING_SAML_ISSUER, message);
             }
             return persistSAMLServiceProvider(serviceProviderDO);
-        } catch (IdentitySAML2ClientException e){
+        } catch (IdentitySAML2ClientException e) {
             throw e;
         } catch (IdentityException e) {
             String message = "Error obtaining a registry for adding a new service provider";
@@ -230,6 +231,7 @@ public class SAMLSSOConfigAdmin {
     }
 
     private SAMLSSOServiceProviderDO createSAMLSSOServiceProviderDO(SAMLSSOServiceProviderDTO serviceProviderDTO) throws IdentityException {
+
         SAMLSSOServiceProviderDO serviceProviderDO = new SAMLSSOServiceProviderDO();
 
         validateIssuer(serviceProviderDTO.getIssuer());
@@ -326,6 +328,7 @@ public class SAMLSSOConfigAdmin {
 
     private SAMLSSOServiceProviderDTO createSAMLSSOServiceProviderDTO(SAMLSSOServiceProviderDO serviceProviderDO)
             throws IdentityException {
+
         SAMLSSOServiceProviderDTO serviceProviderDTO = new SAMLSSOServiceProviderDTO();
 
         validateIssuer(serviceProviderDO.getIssuer());
@@ -409,6 +412,7 @@ public class SAMLSSOConfigAdmin {
      * @return set of RP Service Providers + file path of pub. key of generated key pair
      */
     public SAMLSSOServiceProviderInfoDTO getServiceProviders() throws IdentityException {
+
         SAMLSSOServiceProviderDTO[] serviceProviders = null;
         try {
             IdentityPersistenceManager persistenceManager = IdentityPersistenceManager
@@ -500,6 +504,7 @@ public class SAMLSSOConfigAdmin {
      * @throws IdentityException
      */
     public boolean removeServiceProvider(String issuer) throws IdentityException {
+
         try {
             IdentityPersistenceManager persistenceManager = IdentityPersistenceManager.getPersistanceManager();
             return persistenceManager.removeServiceProvider(registry, issuer);
